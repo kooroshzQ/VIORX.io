@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050407">
-<title>K-dev 1.1</title>
+<title>K-dev 0.1</title>
 
 <style>
 :root {
@@ -662,7 +662,7 @@ input[type="color"] {
 }
 
 /* =========================================================
-   ADDITIONAL CLOCK TOOLS
+   CLOCK TOOLS
    ========================================================= */
 
 .clock-overlay {
@@ -954,10 +954,7 @@ input[type="color"] {
 .clock-lap-row span:first-child { color: var(--muted); }
 .clock-empty-laps { padding: 16px 4px; color: #777083; font-size: 11px; text-align: center; }
 
-/* =========================================================
-   NEW RANGE / PROGRESS TOOL — isolated additive styles
-   ========================================================= */
-
+/* RANGE / PROGRESS */
 .range-summary {
     padding: 20px 16px 18px;
     border: 1px solid rgba(var(--orb-color), .20);
@@ -1255,29 +1252,8 @@ input[type="color"] {
     background: rgba(var(--orb-color), .08);
 }
 
-@media (max-width: 600px) {
-    .clock-overlay { padding: 105px 14px 20px; }
-    .clock-window { border-radius: 20px; }
-    .clock-window-header { padding: 17px; }
-    .clock-body { padding: 23px 17px 18px; }
-    .clock-action { min-width: 84px; padding: 11px 12px; }
-    .range-visual-wrap { min-height: 160px; }
-    .range-visual { height: 160px; }
-}
-
-@media (max-width: 390px) {
-    .clock-overlay { padding: 155px 12px 15px; }
-    .clock-display { letter-spacing: -1.5px; }
-    .clock-actions { gap: 7px; }
-    .clock-action { min-width: 78px; padding: 10px; }
-    .range-controls { gap: 7px; }
-    .range-control input { font-size: 12px; padding: 6px 3px; }
-    .range-style-grid { gap: 6px; }
-    .range-style-option { padding: 8px 7px; font-size: 9px; }
-}
-
 /* =========================================================
-   NEW OAi CHAT — isolated additive styles
+   OAi CHAT — isolated styles
    ========================================================= */
 
 .oai-overlay {
@@ -1431,9 +1407,7 @@ input[type="color"] {
     box-shadow: 0 0 8px rgba(255,255,255,.09);
 }
 
-.oai-status.ready .oai-status-dot {
-    background: #9a8bb8;
-}
+.oai-status.ready .oai-status-dot { background: #9a8bb8; }
 
 .oai-status.busy .oai-status-dot {
     background: #e8c47a;
@@ -1687,17 +1661,17 @@ input[type="color"] {
 }
 
 @media (max-width: 600px) {
-    .oai-overlay {
-        padding: 105px 12px 18px;
-    }
+    .clock-overlay { padding: 105px 14px 20px; }
+    .clock-window { border-radius: 20px; }
+    .clock-window-header { padding: 17px; }
+    .clock-body { padding: 23px 17px 18px; }
+    .clock-action { min-width: 84px; padding: 11px 12px; }
+    .range-visual-wrap { min-height: 160px; }
+    .range-visual { height: 160px; }
 
+    .oai-overlay { padding: 105px 12px 18px; }
     .oai-window { border-radius: 20px; }
-
-    .oai-header {
-        padding: 15px;
-        gap: 8px;
-    }
-
+    .oai-header { padding: 15px; gap: 8px; }
     .oai-brand { gap: 9px; }
 
     .oai-brand-icon {
@@ -1709,7 +1683,6 @@ input[type="color"] {
 
     .oai-brand-text h2 { font-size: 13px; }
     .oai-brand-text p { font-size: 9px; }
-
     .oai-header-actions { gap: 5px; }
 
     .oai-header-button {
@@ -1745,10 +1718,18 @@ input[type="color"] {
 }
 
 @media (max-width: 390px) {
+    .clock-overlay { padding: 155px 12px 15px; }
+    .clock-display { letter-spacing: -1.5px; }
+    .clock-actions { gap: 7px; }
+    .clock-action { min-width: 78px; padding: 10px; }
+    .range-controls { gap: 7px; }
+    .range-control input { font-size: 12px; padding: 6px 3px; }
+    .range-style-grid { gap: 6px; }
+    .range-style-option { padding: 8px 7px; font-size: 9px; }
+
     .oai-overlay { padding: 150px 9px 12px; }
     .oai-header { padding: 12px; }
     .oai-brand-text p { max-width: 120px; }
-
     .oai-header-button.new-chat-label { font-size: 0; }
 
     .oai-header-button.new-chat-label::after {
@@ -1873,7 +1854,6 @@ input[type="color"] {
                 </div>
             </section>
 
-            <!-- OAi CATEGORY -->
             <section class="category" id="oaiCategory">
                 <button class="category-header" type="button"
                     aria-expanded="false" aria-controls="oaiCategoryContent">
@@ -1882,8 +1862,7 @@ input[type="color"] {
                         OAi
                     </span>
                     <svg class="category-chevron" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"
-                            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
 
@@ -1953,17 +1932,14 @@ input[type="color"] {
     </aside>
 
     <!-- CLOCK workspace -->
-    <section class="clock-overlay" id="clockOverlay"
-        aria-hidden="true" aria-label="Clock tools">
-        <div class="clock-window" role="dialog" aria-modal="true"
-            aria-labelledby="clockWindowTitle">
+    <section class="clock-overlay" id="clockOverlay" aria-hidden="true" aria-label="Clock tools">
+        <div class="clock-window" role="dialog" aria-modal="true" aria-labelledby="clockWindowTitle">
             <header class="clock-window-header">
                 <div class="clock-heading">
                     <h2 id="clockWindowTitle">DEVICE CLOCK</h2>
                     <p id="clockWindowSubtitle">Your local time, updated live</p>
                 </div>
-                <button class="clock-close" id="clockClose" type="button"
-                    aria-label="Close clock tool">✕</button>
+                <button class="clock-close" id="clockClose" type="button" aria-label="Close clock tool">✕</button>
             </header>
 
             <div class="clock-body">
@@ -2046,7 +2022,6 @@ input[type="color"] {
 
                 <section class="clock-tool" data-clock-panel="stopwatch">
                     <div class="clock-eyebrow">PRECISION STOPWATCH</div>
-
                     <div class="clock-stopwatch-display">
                         <span id="stopwatchMain">00:00:00</span><span class="clock-centiseconds" id="stopwatchCentiseconds">.00</span>
                     </div>
@@ -2069,22 +2044,16 @@ input[type="color"] {
                     </div>
                 </section>
 
-                <!-- RANGE / PROGRESS PANEL -->
                 <section class="clock-tool" data-clock-panel="range">
                     <div class="clock-eyebrow">RANGE / PROGRESS</div>
 
                     <div class="range-summary">
                         <div class="range-percent" id="rangePercent">50.00%</div>
-                        <div class="range-value-caption" id="rangeValueCaption">
-                            Current value: 50 · Range: 0–100
-                        </div>
+                        <div class="range-value-caption" id="rangeValueCaption">Current value: 50 · Range: 0–100</div>
                     </div>
 
                     <div class="range-visual-wrap">
-                        <svg class="range-visual" id="rangeVisual"
-                            viewBox="0 0 360 180" role="img"
-                            aria-label="Selected range progress visualization">
-                        </svg>
+                        <svg class="range-visual" id="rangeVisual" viewBox="0 0 360 180" role="img" aria-label="Selected range progress visualization"></svg>
                     </div>
 
                     <div class="range-controls">
@@ -2092,12 +2061,10 @@ input[type="color"] {
                             <label for="rangeMin">MINIMUM</label>
                             <input id="rangeMin" type="number" value="0" step="any">
                         </div>
-
                         <div class="range-control">
                             <label for="rangeMax">MAXIMUM</label>
                             <input id="rangeMax" type="number" value="100" step="any">
                         </div>
-
                         <div class="range-control">
                             <label for="rangeCurrent">CURRENT</label>
                             <input id="rangeCurrent" type="number" value="50" step="any">
@@ -2109,8 +2076,7 @@ input[type="color"] {
                             <label for="rangeSlider">ADJUST CURRENT VALUE</label>
                             <output id="rangeSliderOutput">50</output>
                         </div>
-                        <input class="range-slider" id="rangeSlider"
-                            type="range" min="0" max="100" value="50" step="any">
+                        <input class="range-slider" id="rangeSlider" type="range" min="0" max="100" value="50" step="any">
                         <div class="range-boundaries">
                             <span id="rangeMinLabel">0</span>
                             <span id="rangeMaxLabel">100</span>
@@ -2120,66 +2086,28 @@ input[type="color"] {
                     <div class="range-style-heading">VISUALIZATION STYLE</div>
 
                     <div class="range-style-grid" id="rangeStyleGrid">
-                        <button class="range-style-option active" type="button" data-range-style="gradient">
-                            <span class="range-style-number">01</span>
-                            <span>Gradient Bar</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="gauge">
-                            <span class="range-style-number">02</span>
-                            <span>Half Gauge</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="ring">
-                            <span class="range-style-number">03</span>
-                            <span>Progress Ring</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="segments">
-                            <span class="range-style-number">04</span>
-                            <span>Segmented Ring</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="arc">
-                            <span class="range-style-number">05</span>
-                            <span>Moving Arc</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="blocks">
-                            <span class="range-style-number">06</span>
-                            <span>Blocks</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="graph">
-                            <span class="range-style-number">07</span>
-                            <span>Line Graph</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="marker">
-                            <span class="range-style-number">08</span>
-                            <span>Slider Track</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="wave">
-                            <span class="range-style-number">09</span>
-                            <span>Wave</span>
-                        </button>
-                        <button class="range-style-option" type="button" data-range-style="ruler">
-                            <span class="range-style-number">10</span>
-                            <span>Ruler</span>
-                        </button>
+                        <button class="range-style-option active" type="button" data-range-style="gradient"><span class="range-style-number">01</span><span>Gradient Bar</span></button>
+                        <button class="range-style-option" type="button" data-range-style="gauge"><span class="range-style-number">02</span><span>Half Gauge</span></button>
+                        <button class="range-style-option" type="button" data-range-style="ring"><span class="range-style-number">03</span><span>Progress Ring</span></button>
+                        <button class="range-style-option" type="button" data-range-style="segments"><span class="range-style-number">04</span><span>Segmented Ring</span></button>
+                        <button class="range-style-option" type="button" data-range-style="arc"><span class="range-style-number">05</span><span>Moving Arc</span></button>
+                        <button class="range-style-option" type="button" data-range-style="blocks"><span class="range-style-number">06</span><span>Blocks</span></button>
+                        <button class="range-style-option" type="button" data-range-style="graph"><span class="range-style-number">07</span><span>Line Graph</span></button>
+                        <button class="range-style-option" type="button" data-range-style="marker"><span class="range-style-number">08</span><span>Slider Track</span></button>
+                        <button class="range-style-option" type="button" data-range-style="wave"><span class="range-style-number">09</span><span>Wave</span></button>
+                        <button class="range-style-option" type="button" data-range-style="ruler"><span class="range-style-number">10</span><span>Ruler</span></button>
                     </div>
 
-                    <div class="range-note" id="rangeNote" aria-live="polite">
-                        Gradient bar — progress between your minimum and maximum.
-                    </div>
-
-                    <button class="range-reset" id="rangeReset" type="button">
-                        Reset to 0–100
-                    </button>
+                    <div class="range-note" id="rangeNote" aria-live="polite">Gradient bar — progress between your minimum and maximum.</div>
+                    <button class="range-reset" id="rangeReset" type="button">Reset to 0–100</button>
                 </section>
             </div>
         </div>
     </section>
 
-    <!-- OAi CHAT WORKSPACE -->
-    <section class="oai-overlay" id="oaiOverlay"
-        aria-hidden="true" aria-label="OAi chat">
-        <div class="oai-window" role="dialog" aria-modal="true"
-            aria-labelledby="oaiWindowTitle">
-
+    <!-- OAi chat -->
+    <section class="oai-overlay" id="oaiOverlay" aria-hidden="true" aria-label="OAi chat">
+        <div class="oai-window" role="dialog" aria-modal="true" aria-labelledby="oaiWindowTitle">
             <header class="oai-header">
                 <div class="oai-brand">
                     <div class="oai-brand-icon" aria-hidden="true">⫘</div>
@@ -2190,12 +2118,8 @@ input[type="color"] {
                 </div>
 
                 <div class="oai-header-actions">
-                    <button class="oai-header-button new-chat-label" id="oaiNewChat"
-                        type="button" title="Start a new conversation">
-                        + New chat
-                    </button>
-                    <button class="oai-header-button oai-close" id="oaiClose"
-                        type="button" aria-label="Close OAi">✕</button>
+                    <button class="oai-header-button new-chat-label" id="oaiNewChat" type="button" title="Start a new conversation">+ New chat</button>
+                    <button class="oai-header-button oai-close" id="oaiClose" type="button" aria-label="Close OAi">✕</button>
                 </div>
             </header>
 
@@ -2211,31 +2135,18 @@ input[type="color"] {
                 <div class="oai-welcome" id="oaiWelcome">
                     <div class="oai-welcome-symbol" aria-hidden="true">⫘</div>
                     <h3>What are we thinking today?</h3>
-                    <p>
-                        Your AI workspace inside K-DEV.
-                        Send a message to start a conversation.
-                    </p>
+                    <p>Your AI workspace inside K-DEV. Send a message to start a conversation.</p>
                 </div>
             </div>
 
             <div class="oai-composer-wrap">
                 <form class="oai-composer" id="oaiForm">
-                    <textarea class="oai-input" id="oaiInput"
-                        placeholder="Message OAi..."
-                        rows="1" maxlength="12000"
-                        aria-label="Write a message"></textarea>
-
-                    <button class="oai-send" id="oaiSend" type="submit"
-                        aria-label="Send message" title="Send message">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 19V5M5 12l7-7 7 7"></path>
-                        </svg>
+                    <textarea class="oai-input" id="oaiInput" placeholder="Message OAi..." rows="1" maxlength="12000" aria-label="Write a message"></textarea>
+                    <button class="oai-send" id="oaiSend" type="submit" aria-label="Send message" title="Send message">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
                     </button>
                 </form>
-
-                <p class="oai-footnote">
-                    AI responses may be inaccurate. Avoid sending passwords or private information.
-                </p>
+                <p class="oai-footnote">AI responses may be inaccurate. Avoid sending passwords or private information.</p>
             </div>
         </div>
     </section>
@@ -2258,9 +2169,7 @@ input[type="color"] {
     const orbCanvas = document.getElementById("orbCanvas");
     const ambientCtx = ambientCanvas.getContext("2d");
 
-    const categorySections = document.querySelectorAll(".category");
-
-    categorySections.forEach(category => {
+    document.querySelectorAll(".category").forEach(category => {
         const header = category.querySelector(".category-header");
 
         header.addEventListener("click", () => {
@@ -2278,14 +2187,6 @@ input[type="color"] {
     let width = 1;
     let height = 1;
     let dpr = 1;
-
-    let animationRunning = false;
-    let ambientFrame = null;
-    let renderFrame = null;
-
-    const reducedMotionQuery = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    );
 
     function setColor(hex) {
         const clean = hex.replace("#", "");
@@ -2315,10 +2216,6 @@ input[type="color"] {
         toggleColorPanel.classList.toggle("active", open);
     }
 
-    function togglePanel() {
-        setPanelOpen(!colorPanel.classList.contains("open"));
-    }
-
     colorPicker.addEventListener("input", event => setColor(event.target.value));
 
     document.querySelectorAll(".preset").forEach(button => {
@@ -2343,7 +2240,7 @@ input[type="color"] {
 
     toggleColorPanel.addEventListener("click", event => {
         event.stopPropagation();
-        togglePanel();
+        setPanelOpen(!colorPanel.classList.contains("open"));
     });
 
     colorPanel.addEventListener("click", event => event.stopPropagation());
@@ -2395,7 +2292,6 @@ input[type="color"] {
 
     window.addEventListener("resize", resize);
 
-    /* Ambient solar light */
     const lightPatches = Array.from({ length: 17 }, (_, i) => ({
         angle: (i / 17) * Math.PI * 2 + Math.random() * .3,
         distance: .12 + Math.random() * .31,
@@ -2494,7 +2390,7 @@ input[type="color"] {
         ambientCtx.fillRect(0, 0, width, height);
     }
 
-    /* WebGL Orb — shader preserved */
+    /* Original WebGL Orb shader */
     const gl = orbCanvas.getContext("webgl", {
         alpha: true,
         antialias: true,
@@ -2518,14 +2414,11 @@ input[type="color"] {
 
     const fragmentShaderSource = `
         precision highp float;
-
         varying vec2 vUv;
-
         uniform vec2 uResolution;
         uniform float uTime;
         uniform vec2 uMouse;
         uniform vec3 uColor;
-
         #define PI 3.14159265359
 
         mat2 rotate2D(float a) {
@@ -2581,7 +2474,6 @@ input[type="color"] {
 
             float z = sqrt(max(0.0, .25 - dot(uv, uv)));
             vec3 normal = normalize(vec3(uv, z));
-
             vec3 viewDir = vec3(0.0, 0.0, 1.0);
             vec3 p = normal;
 
@@ -3205,11 +3097,7 @@ input[type="color"] {
     updateStopwatchDisplay();
     renderLaps();
 
-    /* =====================================================
-       RANGE / PROGRESS TOOL
-       Ten render styles, with shared range calculations.
-       ===================================================== */
-
+    /* Range / progress visualizations */
     const rangeMinInput = document.getElementById("rangeMin");
     const rangeMaxInput = document.getElementById("rangeMax");
     const rangeCurrentInput = document.getElementById("rangeCurrent");
@@ -3227,46 +3115,16 @@ input[type="color"] {
     let activeRangeStyle = "gradient";
 
     const rangeStyleInfo = {
-        gradient: {
-            name: "Gradient Bar",
-            note: "A smooth gradient bar showing the current position in the range."
-        },
-        gauge: {
-            name: "Half Gauge",
-            note: "A semicircular gauge fills as the current value approaches the maximum."
-        },
-        ring: {
-            name: "Progress Ring",
-            note: "A circular ring visualizes the percentage of the range completed."
-        },
-        segments: {
-            name: "Segmented Ring",
-            note: "A segmented circular display lights up in proportion to the current value."
-        },
-        arc: {
-            name: "Moving Arc",
-            note: "An arc grows from the start point, with a glowing marker at the current value."
-        },
-        blocks: {
-            name: "Blocks",
-            note: "A sequence of individual blocks fills to represent the current progress."
-        },
-        graph: {
-            name: "Line Graph",
-            note: "A line graph marks the current position against a horizontal range."
-        },
-        marker: {
-            name: "Slider Track",
-            note: "A simple track uses a moving marker to indicate the current value."
-        },
-        wave: {
-            name: "Wave",
-            note: "A liquid-style wave fills a container according to the progress percentage."
-        },
-        ruler: {
-            name: "Ruler",
-            note: "A graduated ruler highlights the current position between the endpoints."
-        }
+        gradient: { note: "A smooth gradient bar showing the current position in the range." },
+        gauge: { note: "A semicircular gauge fills as the current value approaches the maximum." },
+        ring: { note: "A circular ring visualizes the percentage of the range completed." },
+        segments: { note: "A segmented circular display lights up in proportion to the current value." },
+        arc: { note: "An arc grows from the start point, with a glowing marker at the current value." },
+        blocks: { note: "A sequence of individual blocks fills to represent the current progress." },
+        graph: { note: "A line graph marks the current position against a horizontal range." },
+        marker: { note: "A simple track uses a moving marker to indicate the current value." },
+        wave: { note: "A liquid-style wave fills a container according to the progress percentage." },
+        ruler: { note: "A graduated ruler highlights the current position between the endpoints." }
     };
 
     function rangeNumber(input, fallback) {
@@ -3277,13 +3135,9 @@ input[type="color"] {
     function getRangeData() {
         let min = rangeNumber(rangeMinInput, 0);
         let max = rangeNumber(rangeMaxInput, 100);
-        let current = rangeNumber(rangeCurrentInput, min);
+        const current = rangeNumber(rangeCurrentInput, min);
 
-        if (max < min) {
-            const temporary = min;
-            min = max;
-            max = temporary;
-        }
+        if (max < min) [min, max] = [max, min];
 
         const span = max - min;
         const percent = span === 0
@@ -3295,19 +3149,12 @@ input[type="color"] {
 
     function formatRangeNumber(value) {
         if (Object.is(value, -0)) value = 0;
-
-        return new Intl.NumberFormat(undefined, {
-            maximumFractionDigits: 6
-        }).format(value);
+        return new Intl.NumberFormat(undefined, { maximumFractionDigits: 6 }).format(value);
     }
 
     function svgNode(tag, attributes = {}, textContent = null) {
         const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
-
-        Object.entries(attributes).forEach(([key, value]) => {
-            node.setAttribute(key, String(value));
-        });
-
+        Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
         if (textContent !== null) node.textContent = textContent;
         return node;
     }
@@ -3319,14 +3166,11 @@ input[type="color"] {
     }
 
     function addText(parent, x, y, text, anchor = "middle") {
-        return addSvg(parent, "text", {
-            x, y, "text-anchor": anchor
-        }, text);
+        return addSvg(parent, "text", { x, y, "text-anchor": anchor }, text);
     }
 
     function polarPoint(cx, cy, radius, angleDegrees) {
         const angle = (angleDegrees - 90) * Math.PI / 180;
-
         return {
             x: cx + radius * Math.cos(angle),
             y: cy + radius * Math.sin(angle)
@@ -3337,7 +3181,6 @@ input[type="color"] {
         const start = polarPoint(cx, cy, radius, startAngle);
         const end = polarPoint(cx, cy, radius, endAngle);
         const largeArc = endAngle - startAngle > 180 ? 1 : 0;
-
         return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
     }
 
@@ -3346,118 +3189,81 @@ input[type="color"] {
     }
 
     function renderGradientBar(data) {
-        const x = 28;
-        const y = 76;
-        const w = 304;
-        const h = 18;
+        const x = 28, y = 76, w = 304, h = 18;
         const filled = w * data.percent / 100;
 
-        addSvg(rangeVisual, "rect", {
-            x, y, width: w, height: h, rx: 9,
-            class: "range-track"
-        });
+        addSvg(rangeVisual, "rect", { x, y, width: w, height: h, rx: 9, class: "range-track" });
 
         if (data.percent > 0) {
-            const gradientId = "rangeGradientFill";
             const defs = addSvg(rangeVisual, "defs");
-
             const gradient = addSvg(defs, "linearGradient", {
-                id: gradientId, x1: "0%", y1: "0%", x2: "100%", y2: "0%"
+                id: "rangeGradientFill", x1: "0%", y1: "0%", x2: "100%", y2: "0%"
             });
 
             addSvg(gradient, "stop", {
-                offset: "0%", "stop-color": "rgb(var(--orb-color))",
-                "stop-opacity": ".55"
+                offset: "0%", "stop-color": "rgb(var(--orb-color))", "stop-opacity": ".55"
             });
-
             addSvg(gradient, "stop", {
                 offset: "100%", "stop-color": "rgb(var(--orb-color))"
             });
 
             addSvg(rangeVisual, "rect", {
                 x, y, width: filled, height: h, rx: 9,
-                fill: `url(#${gradientId})`,
+                fill: "url(#rangeGradientFill)",
                 filter: "drop-shadow(0 0 5px rgba(var(--orb-color), .45))"
             });
         }
 
-        addSvg(rangeVisual, "circle", {
-            cx: x + filled, cy: y + h / 2, r: 5,
-            class: "range-dot"
-        });
-
+        addSvg(rangeVisual, "circle", { cx: x + filled, cy: y + h / 2, r: 5, class: "range-dot" });
         addText(rangeVisual, x, 119, formatRangeNumber(data.min), "start");
         addText(rangeVisual, x + w, 119, formatRangeNumber(data.max), "end");
         addText(rangeVisual, x + filled, 58, `${data.percent.toFixed(1)}%`);
     }
 
     function renderGauge(data) {
-        const cx = 180;
-        const cy = 126;
-        const radius = 78;
-        const startAngle = -90;
-        const endAngle = 90;
+        const cx = 180, cy = 126, radius = 78;
+        const startAngle = -90, endAngle = 90;
         const progressAngle = startAngle + (endAngle - startAngle) * data.percent / 100;
 
         addSvg(rangeVisual, "path", {
             d: describeArc(cx, cy, radius, startAngle, endAngle),
-            class: "range-track",
-            "stroke-width": 13,
-            "stroke-linecap": "round"
+            class: "range-track", "stroke-width": 13, "stroke-linecap": "round"
         });
 
         if (data.percent > 0) {
             addSvg(rangeVisual, "path", {
                 d: describeArc(cx, cy, radius, startAngle, progressAngle),
-                class: "range-active",
-                "stroke-width": 13,
-                "stroke-linecap": "round"
+                class: "range-active", "stroke-width": 13, "stroke-linecap": "round"
             });
         }
 
         const point = polarPoint(cx, cy, radius, progressAngle);
-        addSvg(rangeVisual, "circle", {
-            cx: point.x, cy: point.y, r: 5, class: "range-dot"
-        });
-
+        addSvg(rangeVisual, "circle", { cx: point.x, cy: point.y, r: 5, class: "range-dot" });
         addText(rangeVisual, 180, 96, `${data.percent.toFixed(1)}%`);
         addText(rangeVisual, 40, 151, formatRangeNumber(data.min), "start");
         addText(rangeVisual, 320, 151, formatRangeNumber(data.max), "end");
     }
 
     function renderRing(data) {
-        const cx = 180;
-        const cy = 87;
-        const radius = 56;
+        const cx = 180, cy = 87, radius = 56;
         const circumference = 2 * Math.PI * radius;
 
+        addSvg(rangeVisual, "circle", { cx, cy, r: radius, class: "range-track", "stroke-width": 11 });
         addSvg(rangeVisual, "circle", {
-            cx, cy, r: radius, class: "range-track", "stroke-width": 11
-        });
-
-        addSvg(rangeVisual, "circle", {
-            cx, cy, r: radius,
-            class: "range-active",
-            "stroke-width": 11,
-            "stroke-linecap": "round",
-            "stroke-dasharray": circumference,
+            cx, cy, r: radius, class: "range-active", "stroke-width": 11,
+            "stroke-linecap": "round", "stroke-dasharray": circumference,
             "stroke-dashoffset": circumference * (1 - data.percent / 100),
             transform: `rotate(-90 ${cx} ${cy})`
         });
 
         addText(rangeVisual, cx, cy - 1, `${data.percent.toFixed(1)}%`);
         addText(rangeVisual, cx, cy + 15, "COMPLETE");
-        addText(rangeVisual, 180, 164,
-            `${formatRangeNumber(data.current)} / ${formatRangeNumber(data.max)}`);
+        addText(rangeVisual, 180, 164, `${formatRangeNumber(data.current)} / ${formatRangeNumber(data.max)}`);
     }
 
     function renderSegmentedRing(data) {
-        const cx = 180;
-        const cy = 83;
-        const radius = 53;
-        const total = 24;
-        const segmentAngle = 360 / total;
-        const gap = 4;
+        const cx = 180, cy = 83, radius = 53;
+        const total = 24, segmentAngle = 360 / total, gap = 4;
 
         for (let i = 0; i < total; i++) {
             const start = i * segmentAngle + gap / 2;
@@ -3467,46 +3273,35 @@ input[type="color"] {
             addSvg(rangeVisual, "path", {
                 d: describeArc(cx, cy, radius, start, end),
                 class: active ? "range-active" : "range-track",
-                "stroke-width": 7,
-                "stroke-linecap": "round",
+                "stroke-width": 7, "stroke-linecap": "round",
                 ...(active ? {} : { "stroke-opacity": ".9" })
             });
         }
 
         addText(rangeVisual, cx, cy - 1, `${data.percent.toFixed(1)}%`);
         addText(rangeVisual, cx, cy + 15, "PROGRESS");
-        addText(rangeVisual, 180, 158,
-            `${formatRangeNumber(data.min)} — ${formatRangeNumber(data.max)}`);
+        addText(rangeVisual, 180, 158, `${formatRangeNumber(data.min)} — ${formatRangeNumber(data.max)}`);
     }
 
     function renderArc(data) {
-        const cx = 180;
-        const cy = 94;
-        const radius = 61;
-        const startAngle = -135;
-        const endAngle = 135;
+        const cx = 180, cy = 94, radius = 61;
+        const startAngle = -135, endAngle = 135;
         const currentAngle = startAngle + (endAngle - startAngle) * data.percent / 100;
 
         addSvg(rangeVisual, "path", {
             d: describeArc(cx, cy, radius, startAngle, endAngle),
-            class: "range-track",
-            "stroke-width": 5,
-            "stroke-linecap": "round"
+            class: "range-track", "stroke-width": 5, "stroke-linecap": "round"
         });
 
         if (data.percent > 0) {
             addSvg(rangeVisual, "path", {
                 d: describeArc(cx, cy, radius, startAngle, currentAngle),
-                class: "range-active",
-                "stroke-width": 5,
-                "stroke-linecap": "round"
+                class: "range-active", "stroke-width": 5, "stroke-linecap": "round"
             });
         }
 
         const point = polarPoint(cx, cy, radius, currentAngle);
-        addSvg(rangeVisual, "circle", {
-            cx: point.x, cy: point.y, r: 6, class: "range-dot"
-        });
+        addSvg(rangeVisual, "circle", { cx: point.x, cy: point.y, r: 6, class: "range-dot" });
 
         addText(rangeVisual, cx, cy + 2, `${data.percent.toFixed(1)}%`);
         addText(rangeVisual, 50, 153, formatRangeNumber(data.min));
@@ -3514,21 +3309,14 @@ input[type="color"] {
     }
 
     function renderBlocks(data) {
-        const total = 20;
-        const x = 24;
-        const y = 77;
-        const gap = 4;
+        const total = 20, x = 24, y = 77, gap = 4;
         const blockWidth = (312 - (total - 1) * gap) / total;
-        const blockHeight = 24;
         const activeCount = Math.round(data.percent / 100 * total);
 
         for (let i = 0; i < total; i++) {
             addSvg(rangeVisual, "rect", {
-                x: x + i * (blockWidth + gap),
-                y,
-                width: blockWidth,
-                height: blockHeight,
-                rx: 3,
+                x: x + i * (blockWidth + gap), y,
+                width: blockWidth, height: 24, rx: 3,
                 class: i < activeCount ? "range-block active" : "range-block"
             });
         }
@@ -3539,10 +3327,7 @@ input[type="color"] {
     }
 
     function renderGraph(data) {
-        const left = 28;
-        const right = 332;
-        const top = 32;
-        const bottom = 134;
+        const left = 28, right = 332, top = 32, bottom = 134;
         const x = left + (right - left) * data.percent / 100;
         const y = bottom - (bottom - top) * data.percent / 100;
 
@@ -3568,29 +3353,19 @@ input[type="color"] {
             [right, top]
         ];
 
-        const areaPoints = linePoints
-            .map(point => point.join(","))
-            .join(" ");
+        const areaPoints = linePoints.map(point => point.join(",")).join(" ");
 
         addSvg(rangeVisual, "polygon", {
             points: `${left},${bottom} ${areaPoints} ${right},${bottom}`,
             class: "range-fill"
         });
 
-        addSvg(rangeVisual, "polyline", {
-            points: areaPoints,
-            class: "range-line",
-            opacity: ".38"
-        });
-
+        addSvg(rangeVisual, "polyline", { points: areaPoints, class: "range-line", opacity: ".38" });
         addSvg(rangeVisual, "line", {
             x1: x, y1: top, x2: x, y2: bottom,
             class: "range-marker", "stroke-dasharray": "3 4"
         });
-
-        addSvg(rangeVisual, "circle", {
-            cx: x, cy: y, r: 5, class: "range-dot"
-        });
+        addSvg(rangeVisual, "circle", { cx: x, cy: y, r: 5, class: "range-dot" });
 
         addText(rangeVisual, left, 154, formatRangeNumber(data.min), "start");
         addText(rangeVisual, right, 154, formatRangeNumber(data.max), "end");
@@ -3598,9 +3373,7 @@ input[type="color"] {
     }
 
     function renderMarker(data) {
-        const x = 27;
-        const y = 85;
-        const w = 306;
+        const x = 27, y = 85, w = 306;
         const currentX = x + w * data.percent / 100;
 
         addSvg(rangeVisual, "line", {
@@ -3619,10 +3392,7 @@ input[type="color"] {
             x1: currentX, y1: y - 21, x2: currentX, y2: y + 21,
             class: "range-marker"
         });
-
-        addSvg(rangeVisual, "circle", {
-            cx: currentX, cy: y, r: 6, class: "range-dot"
-        });
+        addSvg(rangeVisual, "circle", { cx: currentX, cy: y, r: 6, class: "range-dot" });
 
         addText(rangeVisual, currentX, 48, `${data.percent.toFixed(1)}%`);
         addText(rangeVisual, x, 126, formatRangeNumber(data.min), "start");
@@ -3630,10 +3400,7 @@ input[type="color"] {
     }
 
     function renderWave(data) {
-        const x = 115;
-        const y = 26;
-        const w = 130;
-        const h = 118;
+        const x = 115, y = 26, w = 130, h = 118;
         const fillHeight = h * data.percent / 100;
         const waterY = y + h - fillHeight;
 
@@ -3643,7 +3410,7 @@ input[type="color"] {
         });
 
         if (data.percent > 0) {
-            const waveAmplitude = data.percent > 0 && data.percent < 100 ? 4 : 0;
+            const waveAmplitude = data.percent < 100 ? 4 : 0;
             const wavePath = [
                 `M ${x} ${waterY}`,
                 `C ${x + w * .22} ${waterY - waveAmplitude},`,
@@ -3667,15 +3434,11 @@ input[type="color"] {
         }
 
         addText(rangeVisual, 180, 83, `${data.percent.toFixed(1)}%`);
-        addText(rangeVisual, 180, 162,
-            `${formatRangeNumber(data.current)} / ${formatRangeNumber(data.max)}`);
+        addText(rangeVisual, 180, 162, `${formatRangeNumber(data.current)} / ${formatRangeNumber(data.max)}`);
     }
 
     function renderRuler(data) {
-        const left = 27;
-        const right = 333;
-        const y = 88;
-        const w = right - left;
+        const left = 27, right = 333, y = 88, w = right - left;
         const currentX = left + w * data.percent / 100;
 
         addSvg(rangeVisual, "line", {
@@ -3691,17 +3454,13 @@ input[type="color"] {
             addSvg(rangeVisual, "line", {
                 x1: tickX, y1: y - tickHeight / 2,
                 x2: tickX, y2: y + tickHeight / 2,
-                stroke: tickX <= currentX
-                    ? "rgb(var(--orb-color))"
-                    : "rgba(255,255,255,.24)",
+                stroke: tickX <= currentX ? "rgb(var(--orb-color))" : "rgba(255,255,255,.24)",
                 "stroke-width": major ? 1.5 : 1
             });
 
             if (major) {
                 addText(
-                    rangeVisual,
-                    tickX,
-                    y + 36,
+                    rangeVisual, tickX, y + 36,
                     formatRangeNumber(data.min + (data.max - data.min) * i / 20)
                 );
             }
@@ -3711,11 +3470,7 @@ input[type="color"] {
             x1: currentX, y1: y - 29, x2: currentX, y2: y - 13,
             class: "range-marker"
         });
-
-        addSvg(rangeVisual, "circle", {
-            cx: currentX, cy: y - 34, r: 5, class: "range-dot"
-        });
-
+        addSvg(rangeVisual, "circle", { cx: currentX, cy: y - 34, r: 5, class: "range-dot" });
         addText(rangeVisual, currentX, 34, `${data.percent.toFixed(1)}%`);
     }
 
@@ -3739,10 +3494,7 @@ input[type="color"] {
         const step = data.span === 0 ? 1 : Math.abs(data.span) / 1000;
         rangeSlider.step = String(Math.max(step, Number.EPSILON));
 
-        rangeSlider.value = String(
-            Math.max(data.min, Math.min(data.max, data.current))
-        );
-
+        rangeSlider.value = String(Math.max(data.min, Math.min(data.max, data.current)));
         rangeSliderOutput.textContent = formatRangeNumber(data.current);
         rangeMinLabel.textContent = formatRangeNumber(data.min);
         rangeMaxLabel.textContent = formatRangeNumber(data.max);
@@ -3758,8 +3510,7 @@ input[type="color"] {
         syncRangeSlider(data);
         clearRangeSvg();
 
-        const renderer = rangeRenderers[activeRangeStyle] || renderGradientBar;
-        renderer(data);
+        (rangeRenderers[activeRangeStyle] || renderGradientBar)(data);
 
         rangeNote.textContent = rangeStyleInfo[activeRangeStyle].note;
 
@@ -3770,28 +3521,15 @@ input[type="color"] {
         });
     }
 
-    function updateRangeFromSlider() {
+    rangeSlider.addEventListener("input", () => {
         rangeCurrentInput.value = rangeSlider.value;
         renderRange();
-    }
-
-    [rangeMinInput, rangeMaxInput, rangeCurrentInput].forEach(input => {
-        input.addEventListener("input", () => {
-            const min = rangeNumber(rangeMinInput, 0);
-            const max = rangeNumber(rangeMaxInput, 100);
-
-            if (max < min) {
-                rangeNote.textContent =
-                    "Maximum is lower than minimum. The range endpoints are normalized for display.";
-            }
-
-            renderRange();
-        });
-
-        input.addEventListener("change", renderRange);
     });
 
-    rangeSlider.addEventListener("input", updateRangeFromSlider);
+    [rangeMinInput, rangeMaxInput, rangeCurrentInput].forEach(input => {
+        input.addEventListener("input", renderRange);
+        input.addEventListener("change", renderRange);
+    });
 
     rangeStyleButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -3810,7 +3548,6 @@ input[type="color"] {
 
     renderRange();
 
-    /* Escape closes CLOCK tool window */
     window.addEventListener("keydown", event => {
         if (event.key === "Escape" && overlay.classList.contains("open")) {
             closeClockTool();
@@ -3819,27 +3556,22 @@ input[type="color"] {
 })();
 </script>
 
-<!-- =======================================================
-     OAi API INTEGRATION — TEMPORARY DEBUG VERSION
-     ======================================================= -->
+<!-- OAi API integration: exactly one API-key variable -->
 <script>
 (() => {
     "use strict";
 
     /*
-     * TEMPORARY CONFIGURATION
+     * TEMPORARY TEST CONFIGURATION
      *
-     * Replace "---" with your own OpenRouter API key for local testing.
-     * Do not publish a real key inside a public GitHub Pages HTML file.
-     *
-     * Endpoint:
-     * https://openrouter.ai/api/v1/chat/completions
+     * For local testing, replace --- with your OpenRouter API key.
+     * Do not publish a real key in a public HTML file.
      */
 
-    const OAI_API_KEY = "---";
-    const OAI_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-    const OAI_MODEL = "openai/gpt-4o-mini";
-    const OAI_TIMEOUT_MS = 30000;
+    const OPENROUTER_API_KEY = "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";
+    const OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
+    const OPENROUTER_MODEL = "openai/gpt-4o-mini";
+    const REQUEST_TIMEOUT_MS = 30000;
 
     const SYSTEM_PROMPT =
         "You are OAi, the AI assistant inside K-DEV. " +
@@ -3862,7 +3594,7 @@ input[type="color"] {
     let isSending = false;
     let conversation = [];
 
-    modelLabel.textContent = OAI_MODEL;
+    modelLabel.textContent = OPENROUTER_MODEL;
 
     function setStatus(message, state = "ready") {
         statusText.textContent = message;
@@ -3873,6 +3605,7 @@ input[type="color"] {
     function openOai() {
         overlay.classList.add("open");
         overlay.setAttribute("aria-hidden", "false");
+
         category.classList.add("open");
         category.querySelector(".category-header")
             .setAttribute("aria-expanded", "true");
@@ -3903,8 +3636,7 @@ input[type="color"] {
     }
 
     function removeWelcome() {
-        const welcome = document.getElementById("oaiWelcome");
-        if (welcome) welcome.remove();
+        document.getElementById("oaiWelcome")?.remove();
     }
 
     function addMessage(role, content, options = {}) {
@@ -3966,67 +3698,58 @@ input[type="color"] {
         document.getElementById("oaiTypingMessage")?.remove();
     }
 
-    /*
-     * Do not reset the status text when a request completes:
-     * keep "Response received" or the actual error visible.
-     */
     function setBusy(busy) {
         isSending = busy;
         sendButton.disabled = busy;
         input.disabled = busy;
         sendButton.title = busy ? "Waiting for response..." : "Send message";
 
-        if (busy) {
-            setStatus("Connecting to OpenRouter...", "busy");
-        }
+        if (busy) setStatus("Connecting to OpenRouter...", "busy");
     }
 
-    function explainApiError(response, payload) {
+    function explainHttpError(response, payload) {
         const serverMessage =
             payload?.error?.message ||
             payload?.message ||
             payload?.detail;
 
         if (response.status === 400) {
-            return "HTTP 400: OpenRouter rejected the request. Check the model ID and request parameters." +
+            return "HTTP 400: The request was rejected. Check the model ID and request parameters." +
                 (serverMessage ? ` Details: ${String(serverMessage)}` : "");
         }
 
         if (response.status === 401) {
-            return "HTTP 401: the API key was rejected. Check that you copied the correct OpenRouter key.";
+            return "HTTP 401: The API key was rejected. Check your OpenRouter API key.";
         }
 
         if (response.status === 402) {
-            return "HTTP 402: the account or API key has insufficient credits, or its spending limit has been reached.";
+            return "HTTP 402: The account may have insufficient credits or a spending limit.";
         }
 
         if (response.status === 403) {
-            return "HTTP 403: this request is forbidden for the selected key or model." +
+            return "HTTP 403: This key or model may not be permitted to make this request." +
                 (serverMessage ? ` Details: ${String(serverMessage)}` : "");
         }
 
         if (response.status === 404) {
-            return "HTTP 404: the model or API endpoint was not found. Check OAI_MODEL.";
+            return "HTTP 404: The model or endpoint was not found. Check OPENROUTER_MODEL.";
         }
 
         if (response.status === 408) {
-            return "HTTP 408: the API request timed out. Try again.";
+            return "HTTP 408: The request timed out. Try again.";
         }
 
         if (response.status === 429) {
-            return "HTTP 429: the request limit was reached. Wait a little and try again.";
+            return "HTTP 429: Rate limit reached. Wait a little and try again.";
         }
 
         if (response.status >= 500) {
-            return `OpenRouter or its model provider returned HTTP ${response.status}. Try again later.` +
+            return `OpenRouter or its provider returned HTTP ${response.status}. Try again later.` +
                 (serverMessage ? ` Details: ${String(serverMessage)}` : "");
         }
 
-        if (serverMessage) {
-            return `API error (HTTP ${response.status}): ${String(serverMessage)}`;
-        }
-
-        return `The API request failed with HTTP ${response.status}.`;
+        return `API request failed with HTTP ${response.status}.` +
+            (serverMessage ? ` Details: ${String(serverMessage)}` : "");
     }
 
     function explainNetworkError(error) {
@@ -4038,33 +3761,26 @@ input[type="color"] {
             return "Your browser reports that it is offline. Reconnect to the internet and try again.";
         }
 
-        if (window.location.protocol === "file:") {
-            return "This page is opened directly as a file. Run it through an HTTPS website or a local development server, then try again.";
-        }
-
         return [
             "The browser could not read a response from OpenRouter.",
-            "Possible causes: a network restriction, a browser extension, a CORS/preflight failure, or a temporary connection issue.",
-            "Open Chrome DevTools (F12) → Console and Network to find the exact cause.",
-            "If DevTools confirms CORS, JavaScript in a static HTML page cannot bypass it; a backend/proxy with the correct CORS configuration is required."
+            "Possible causes include a network restriction, browser extension, CORS/preflight failure, or temporary connection problem.",
+            "Open Chrome DevTools (F12), then inspect Console and Network for the exact error.",
+            "If the error is confirmed to be CORS, a static HTML page cannot bypass it. A backend/proxy with the proper CORS configuration is required."
         ].join("\n");
     }
 
     async function requestOaiResponse() {
-        const key = OAI_API_KEY.trim();
-
         if (
-            !key ||
-            key === "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" ||
-            key === "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"
+            !OPENROUTER_API_KEY.trim() ||
+            OPENROUTER_API_KEY.trim() === "---"
         ) {
             throw new Error(
-                "API key not configured. Replace the --- value in OAI_API_KEY with your own OpenRouter API key for local testing."
+                'API key not configured. Replace the "---" value in OPENROUTER_API_KEY for local testing.'
             );
         }
 
-        const payload = {
-            model: OAI_MODEL,
+        const requestBody = {
+            model: OPENROUTER_MODEL,
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 ...conversation
@@ -4077,35 +3793,27 @@ input[type="color"] {
         const controller = new AbortController();
         const timeoutId = window.setTimeout(
             () => controller.abort(),
-            OAI_TIMEOUT_MS
+            REQUEST_TIMEOUT_MS
         );
 
         let response;
 
         try {
-            /*
-             * The attribution headers have been omitted in this temporary
-             * test to keep the request minimal. They are optional.
-             */
-            response = await fetch(OAI_ENDPOINT, {
+            response = await fetch(OPENROUTER_ENDPOINT, {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${key}`,
+                    "Authorization": `Bearer ${OPENROUTER_API_KEY.trim()}`,
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(requestBody),
                 signal: controller.signal,
                 cache: "no-store"
             });
         } catch (error) {
-            if (error?.name === "AbortError") {
-                throw new Error(explainNetworkError(error));
-            }
-
             console.error("OpenRouter network/fetch failure:", {
                 name: error?.name,
                 message: error?.message,
-                endpoint: OAI_ENDPOINT,
+                endpoint: OPENROUTER_ENDPOINT,
                 pageOrigin: window.location.origin,
                 online: navigator.onLine
             });
@@ -4120,7 +3828,7 @@ input[type="color"] {
         try {
             data = await response.json();
         } catch {
-            // Some errors do not include a JSON response body.
+            // Some server errors do not include JSON.
         }
 
         if (!response.ok) {
@@ -4128,7 +3836,8 @@ input[type="color"] {
                 status: response.status,
                 response: data
             });
-            throw new Error(explainApiError(response, data));
+
+            throw new Error(explainHttpError(response, data));
         }
 
         let answer = data?.choices?.[0]?.message?.content;
@@ -4141,8 +3850,10 @@ input[type="color"] {
         }
 
         if (typeof answer !== "string" || !answer.trim()) {
-            console.error("OpenRouter returned an unexpected response:", data);
-            throw new Error("The API returned an empty or unexpected response. Check the Console for details.");
+            console.error("Unexpected OpenRouter response:", data);
+            throw new Error(
+                "The API returned an empty or unexpected response. Check the browser Console."
+            );
         }
 
         return answer.trim();
@@ -4171,7 +3882,6 @@ input[type="color"] {
             content: userText
         });
 
-        // Keep the request history bounded so conversations don't grow indefinitely.
         const maxConversationMessages = 20;
 
         if (conversation.length > maxConversationMessages) {
@@ -4187,6 +3897,7 @@ input[type="color"] {
 
         try {
             const answer = await requestOaiResponse();
+
             removeTypingIndicator();
 
             conversation.push({
@@ -4199,7 +3910,6 @@ input[type="color"] {
         } catch (error) {
             removeTypingIndicator();
 
-            // Remove the just-submitted message from history if the request failed.
             if (
                 conversation.length &&
                 conversation[conversation.length - 1].role === "user"
@@ -4207,22 +3917,19 @@ input[type="color"] {
                 conversation.pop();
             }
 
-            const errorMessage = error?.message ||
-                "An unexpected error occurred. Check the browser Console for details.";
+            addMessage(
+                "assistant",
+                error?.message || "An unexpected error occurred. Check the browser Console.",
+                { error: true }
+            );
 
-            addMessage("assistant", errorMessage, { error: true });
             setStatus("Request failed", "error");
-
-            console.error("OAi request failure:", error);
+            console.error("OAi request failed:", error);
         } finally {
-            /*
-             * Re-enable the input without overwriting the success/error state.
-             */
             isSending = false;
             sendButton.disabled = false;
             input.disabled = false;
             sendButton.title = "Send message";
-
             input.focus({ preventScroll: true });
         }
     }
