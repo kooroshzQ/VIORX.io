@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050407">
-<title>K-dev 0.1</title>
+<title>K-dev 1.1</title>
 
 <style>
 :root {
@@ -27,7 +27,7 @@ html, body {
     font-family: Inter, "Segoe UI", sans-serif;
 }
 
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
 .app {
@@ -506,6 +506,30 @@ input[type="color"] {
     opacity: 0;
     transition: opacity .4s ease .2s;
     pointer-events: none;
+}
+
+.webgl-fallback {
+    position: absolute;
+    z-index: 4;
+    width: min(88%, 420px);
+    padding: 20px;
+    border: 1px solid rgba(var(--orb-color), .24);
+    border-radius: 16px;
+    background: rgba(15, 13, 23, .86);
+    color: #d9d2e8;
+    font-size: 12px;
+    line-height: 1.9;
+    text-align: center;
+    direction: ltr;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.experience.webgl-unavailable .hud { display: none; }
+
+.range-slider:disabled {
+    opacity: .35;
+    cursor: not-allowed;
 }
 
 .experience.active .hud { opacity: .8; }
@@ -1251,6 +1275,489 @@ input[type="color"] {
     .range-style-grid { gap: 6px; }
     .range-style-option { padding: 8px 7px; font-size: 9px; }
 }
+
+/* =========================================================
+   NEW OAi CHAT — isolated additive styles
+   ========================================================= */
+
+.oai-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 27;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px 24px;
+    background: rgba(5, 4, 9, .65);
+    backdrop-filter: blur(18px) saturate(115%);
+    -webkit-backdrop-filter: blur(18px) saturate(115%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .25s ease, visibility .25s ease;
+}
+
+.oai-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.oai-window {
+    display: flex;
+    flex-direction: column;
+    width: min(780px, 100%);
+    height: min(760px, 100%);
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid rgba(var(--orb-color), .30);
+    border-radius: 24px;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(var(--orb-color), .10), transparent 65%),
+        rgba(13, 11, 21, .97);
+    box-shadow:
+        0 28px 100px rgba(0,0,0,.52),
+        0 0 60px rgba(var(--orb-color), .09);
+    transform: translateY(12px) scale(.985);
+    transition: transform .25s ease;
+}
+
+.oai-overlay.open .oai-window {
+    transform: translateY(0) scale(1);
+}
+
+.oai-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 19px 22px;
+    border-bottom: 1px solid rgba(255,255,255,.075);
+    background: rgba(255,255,255,.015);
+}
+
+.oai-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    direction: ltr;
+}
+
+.oai-brand-icon {
+    width: 43px;
+    height: 43px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(var(--orb-color), .38);
+    border-radius: 14px;
+    background: rgba(var(--orb-color), .13);
+    color: #f6efff;
+    font-size: 28px;
+    line-height: 1;
+    box-shadow: inset 0 0 20px rgba(var(--orb-color), .05),
+                0 0 24px rgba(var(--orb-color), .09);
+}
+
+.oai-brand-text h2 {
+    color: #faf7ff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.oai-brand-text p {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .3px;
+}
+
+.oai-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    direction: ltr;
+}
+
+.oai-header-button {
+    min-height: 36px;
+    padding: 0 11px;
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 11px;
+    background: rgba(255,255,255,.035);
+    color: #cfc7df;
+    font-size: 10px;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.oai-header-button:hover {
+    border-color: rgba(var(--orb-color), .4);
+    background: rgba(var(--orb-color), .10);
+}
+
+.oai-close {
+    width: 36px;
+    min-width: 36px;
+    padding: 0;
+    font-size: 17px;
+}
+
+.oai-status-row {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 22px;
+    border-bottom: 1px solid rgba(255,255,255,.045);
+    color: #827b92;
+    font-size: 10px;
+}
+
+.oai-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.oai-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7a728b;
+    box-shadow: 0 0 8px rgba(255,255,255,.09);
+}
+
+.oai-status.ready .oai-status-dot {
+    background: #9a8bb8;
+}
+
+.oai-status.busy .oai-status-dot {
+    background: #e8c47a;
+    box-shadow: 0 0 10px rgba(232,196,122,.4);
+    animation: oaiPulse 1.1s ease-in-out infinite;
+}
+
+.oai-status.connected .oai-status-dot {
+    background: #69dca4;
+    box-shadow: 0 0 10px rgba(105,220,164,.35);
+}
+
+.oai-status.error .oai-status-dot {
+    background: #ff7795;
+    box-shadow: 0 0 10px rgba(255,119,149,.35);
+}
+
+@keyframes oaiPulse {
+    0%, 100% { opacity: .5; }
+    50% { opacity: 1; }
+}
+
+.oai-messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 25px clamp(15px, 4vw, 30px);
+    scroll-behavior: smooth;
+}
+
+.oai-messages::-webkit-scrollbar { width: 5px; }
+
+.oai-messages::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+    background: rgba(255,255,255,.12);
+}
+
+.oai-welcome {
+    width: min(100%, 480px);
+    align-self: center;
+    margin: auto 0;
+    padding: 20px 12px;
+    text-align: center;
+}
+
+.oai-welcome-symbol {
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 19px;
+    border: 1px solid rgba(var(--orb-color), .32);
+    border-radius: 21px;
+    background: rgba(var(--orb-color), .095);
+    box-shadow: 0 0 40px rgba(var(--orb-color), .08);
+    color: #f5efff;
+    font-size: 37px;
+}
+
+.oai-welcome h3 {
+    color: #f3edff;
+    font-size: 20px;
+    font-weight: 550;
+    letter-spacing: -.3px;
+}
+
+.oai-welcome p {
+    max-width: 360px;
+    margin: 11px auto 0;
+    color: #938ba3;
+    font-size: 12px;
+    line-height: 2;
+}
+
+.oai-message {
+    width: fit-content;
+    max-width: min(88%, 590px);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    animation: oaiMessageIn .22s ease both;
+}
+
+.oai-message.user { align-self: flex-start; }
+.oai-message.assistant { align-self: flex-end; }
+
+@keyframes oaiMessageIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.oai-message-label {
+    padding: 0 5px;
+    color: #8f879f;
+    font-size: 10px;
+    direction: ltr;
+    text-align: left;
+}
+
+.oai-message-bubble {
+    padding: 13px 15px;
+    border: 1px solid rgba(255,255,255,.075);
+    border-radius: 16px;
+    background: rgba(255,255,255,.045);
+    color: #e9e3f6;
+    font-size: 13px;
+    line-height: 1.95;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    text-align: start;
+    direction: auto;
+}
+
+.oai-message.user .oai-message-bubble {
+    border-color: rgba(var(--orb-color), .24);
+    border-bottom-left-radius: 5px;
+    background: rgba(var(--orb-color), .115);
+}
+
+.oai-message.assistant .oai-message-bubble {
+    border-bottom-right-radius: 5px;
+    background: rgba(255,255,255,.035);
+}
+
+.oai-message.error .oai-message-bubble {
+    border-color: rgba(255,119,149,.28);
+    background: rgba(255,119,149,.065);
+    color: #ffb0c1;
+}
+
+.oai-typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 22px;
+}
+
+.oai-typing span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #b4a5d7;
+    animation: oaiTyping 1s ease-in-out infinite;
+}
+
+.oai-typing span:nth-child(2) { animation-delay: .14s; }
+.oai-typing span:nth-child(3) { animation-delay: .28s; }
+
+@keyframes oaiTyping {
+    0%, 60%, 100% { transform: translateY(0); opacity: .35; }
+    30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.oai-composer-wrap {
+    flex: 0 0 auto;
+    padding: 15px clamp(12px, 3vw, 23px) 18px;
+    border-top: 1px solid rgba(255,255,255,.065);
+    background: rgba(0,0,0,.12);
+}
+
+.oai-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 9px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 17px;
+    background: rgba(255,255,255,.035);
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.oai-composer:focus-within {
+    border-color: rgba(var(--orb-color), .48);
+    background: rgba(255,255,255,.045);
+    box-shadow: 0 0 0 3px rgba(var(--orb-color), .06);
+}
+
+.oai-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-height: 150px;
+    min-height: 42px;
+    padding: 11px 9px;
+    resize: none;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #f1ebff;
+    font-size: 13px;
+    line-height: 1.8;
+    direction: auto;
+    text-align: start;
+}
+
+.oai-input::placeholder { color: #827b92; }
+
+.oai-send {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(var(--orb-color), .48);
+    border-radius: 12px;
+    background: rgba(var(--orb-color), .19);
+    color: #fff;
+    font-size: 19px;
+    transition: background .2s ease, transform .2s ease, opacity .2s ease;
+}
+
+.oai-send:hover:not(:disabled) {
+    background: rgba(var(--orb-color), .34);
+    transform: translateY(-1px);
+}
+
+.oai-send:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.oai-send svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.oai-footnote {
+    margin-top: 10px;
+    color: #777083;
+    font-size: 9px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.oai-empty-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #a89ac7;
+    font-size: 10px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .oai-overlay {
+        padding: 105px 12px 18px;
+    }
+
+    .oai-window { border-radius: 20px; }
+
+    .oai-header {
+        padding: 15px;
+        gap: 8px;
+    }
+
+    .oai-brand { gap: 9px; }
+
+    .oai-brand-icon {
+        width: 37px;
+        height: 37px;
+        border-radius: 12px;
+        font-size: 24px;
+    }
+
+    .oai-brand-text h2 { font-size: 13px; }
+    .oai-brand-text p { font-size: 9px; }
+
+    .oai-header-actions { gap: 5px; }
+
+    .oai-header-button {
+        min-height: 33px;
+        padding: 0 8px;
+        font-size: 9px;
+    }
+
+    .oai-close {
+        width: 33px;
+        min-width: 33px;
+    }
+
+    .oai-status-row {
+        padding: 9px 15px;
+        font-size: 9px;
+    }
+
+    .oai-messages {
+        padding: 19px 13px;
+        gap: 14px;
+    }
+
+    .oai-message { max-width: 94%; }
+
+    .oai-message-bubble {
+        padding: 11px 12px;
+        font-size: 12px;
+    }
+
+    .oai-composer-wrap { padding: 11px 12px 13px; }
+    .oai-input { font-size: 12px; }
+}
+
+@media (max-width: 390px) {
+    .oai-overlay { padding: 150px 9px 12px; }
+    .oai-header { padding: 12px; }
+    .oai-brand-text p { max-width: 120px; }
+
+    .oai-header-button.new-chat-label { font-size: 0; }
+
+    .oai-header-button.new-chat-label::after {
+        content: "New";
+        font-size: 9px;
+    }
+
+    .oai-status-row { padding: 8px 12px; }
+}
 </style>
 </head>
 
@@ -1352,7 +1859,6 @@ input[type="color"] {
                                 <span class="category-item-label">Stopwatch</span>
                             </button>
 
-                            <!-- NEW: Range / Progress -->
                             <button class="category-item" type="button" data-clock-tool="range">
                                 <svg viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M4 7h16M4 12h16M4 17h16"></path>
@@ -1361,6 +1867,32 @@ input[type="color"] {
                                     <circle cx="12" cy="17" r="2"></circle>
                                 </svg>
                                 <span class="category-item-label">Range / Progress</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OAi CATEGORY -->
+            <section class="category" id="oaiCategory">
+                <button class="category-header" type="button"
+                    aria-expanded="false" aria-controls="oaiCategoryContent">
+                    <span class="category-title">
+                        <span class="category-indicator"></span>
+                        OAi
+                    </span>
+                    <svg class="category-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"
+                            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="category-content" id="oaiCategoryContent">
+                    <div class="category-content-inner">
+                        <div class="category-items">
+                            <button class="category-item" id="openOaiChat" type="button">
+                                <span class="category-item-symbol" aria-hidden="true">⫘</span>
+                                <span class="category-item-label">Open AI Chat</span>
                             </button>
                         </div>
                     </div>
@@ -1537,7 +2069,7 @@ input[type="color"] {
                     </div>
                 </section>
 
-                <!-- NEW RANGE / PROGRESS PANEL -->
+                <!-- RANGE / PROGRESS PANEL -->
                 <section class="clock-tool" data-clock-panel="range">
                     <div class="clock-eyebrow">RANGE / PROGRESS</div>
 
@@ -1641,6 +2173,72 @@ input[type="color"] {
             </div>
         </div>
     </section>
+
+    <!-- OAi CHAT WORKSPACE -->
+    <section class="oai-overlay" id="oaiOverlay"
+        aria-hidden="true" aria-label="OAi chat">
+        <div class="oai-window" role="dialog" aria-modal="true"
+            aria-labelledby="oaiWindowTitle">
+
+            <header class="oai-header">
+                <div class="oai-brand">
+                    <div class="oai-brand-icon" aria-hidden="true">⫘</div>
+                    <div class="oai-brand-text">
+                        <h2 id="oaiWindowTitle">OAi</h2>
+                        <p>K-DEV INTELLIGENCE INTERFACE</p>
+                    </div>
+                </div>
+
+                <div class="oai-header-actions">
+                    <button class="oai-header-button new-chat-label" id="oaiNewChat"
+                        type="button" title="Start a new conversation">
+                        + New chat
+                    </button>
+                    <button class="oai-header-button oai-close" id="oaiClose"
+                        type="button" aria-label="Close OAi">✕</button>
+                </div>
+            </header>
+
+            <div class="oai-status-row">
+                <span class="oai-status ready" id="oaiStatus" role="status" aria-live="polite">
+                    <span class="oai-status-dot"></span>
+                    <span id="oaiStatusText">Ready to chat</span>
+                </span>
+                <span id="oaiModelLabel">OpenRouter API</span>
+            </div>
+
+            <div class="oai-messages" id="oaiMessages" aria-live="polite">
+                <div class="oai-welcome" id="oaiWelcome">
+                    <div class="oai-welcome-symbol" aria-hidden="true">⫘</div>
+                    <h3>What are we thinking today?</h3>
+                    <p>
+                        Your AI workspace inside K-DEV.
+                        Send a message to start a conversation.
+                    </p>
+                </div>
+            </div>
+
+            <div class="oai-composer-wrap">
+                <form class="oai-composer" id="oaiForm">
+                    <textarea class="oai-input" id="oaiInput"
+                        placeholder="Message OAi..."
+                        rows="1" maxlength="12000"
+                        aria-label="Write a message"></textarea>
+
+                    <button class="oai-send" id="oaiSend" type="submit"
+                        aria-label="Send message" title="Send message">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 19V5M5 12l7-7 7 7"></path>
+                        </svg>
+                    </button>
+                </form>
+
+                <p class="oai-footnote">
+                    AI responses may be inaccurate. Avoid sending passwords or private information.
+                </p>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script>
@@ -1680,6 +2278,14 @@ input[type="color"] {
     let width = 1;
     let height = 1;
     let dpr = 1;
+
+    let animationRunning = false;
+    let ambientFrame = null;
+    let renderFrame = null;
+
+    const reducedMotionQuery = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    );
 
     function setColor(hex) {
         const clean = hex.replace("#", "");
@@ -1888,7 +2494,7 @@ input[type="color"] {
         ambientCtx.fillRect(0, 0, width, height);
     }
 
-    /* WebGL Orb — original shader preserved */
+    /* WebGL Orb — shader preserved */
     const gl = orbCanvas.getContext("webgl", {
         alpha: true,
         antialias: true,
@@ -3209,6 +3815,464 @@ input[type="color"] {
         if (event.key === "Escape" && overlay.classList.contains("open")) {
             closeClockTool();
         }
+    });
+})();
+</script>
+
+<!-- =======================================================
+     OAi API INTEGRATION — TEMPORARY DEBUG VERSION
+     ======================================================= -->
+<script>
+(() => {
+    "use strict";
+
+    /*
+     * TEMPORARY CONFIGURATION
+     *
+     * Replace "---" with your own OpenRouter API key for local testing.
+     * Do not publish a real key inside a public GitHub Pages HTML file.
+     *
+     * Endpoint:
+     * https://openrouter.ai/api/v1/chat/completions
+     */
+
+    const OAI_API_KEY = "---";
+    const OAI_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
+    const OAI_MODEL = "openai/gpt-4o-mini";
+    const OAI_TIMEOUT_MS = 30000;
+
+    const SYSTEM_PROMPT =
+        "You are OAi, the AI assistant inside K-DEV. " +
+        "Be helpful, clear, and accurate. Reply in the user's language. " +
+        "Do not claim to have performed actions that you have not performed.";
+
+    const openButton = document.getElementById("openOaiChat");
+    const category = document.getElementById("oaiCategory");
+    const overlay = document.getElementById("oaiOverlay");
+    const closeButton = document.getElementById("oaiClose");
+    const newChatButton = document.getElementById("oaiNewChat");
+    const form = document.getElementById("oaiForm");
+    const input = document.getElementById("oaiInput");
+    const sendButton = document.getElementById("oaiSend");
+    const messagesContainer = document.getElementById("oaiMessages");
+    const status = document.getElementById("oaiStatus");
+    const statusText = document.getElementById("oaiStatusText");
+    const modelLabel = document.getElementById("oaiModelLabel");
+
+    let isSending = false;
+    let conversation = [];
+
+    modelLabel.textContent = OAI_MODEL;
+
+    function setStatus(message, state = "ready") {
+        statusText.textContent = message;
+        status.classList.remove("ready", "busy", "connected", "error");
+        status.classList.add(state);
+    }
+
+    function openOai() {
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+        category.classList.add("open");
+        category.querySelector(".category-header")
+            .setAttribute("aria-expanded", "true");
+
+        window.setTimeout(() => input.focus({ preventScroll: true }), 80);
+    }
+
+    function closeOai() {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+    }
+
+    openButton.addEventListener("click", openOai);
+    closeButton.addEventListener("click", closeOai);
+
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) closeOai();
+    });
+
+    window.addEventListener("keydown", event => {
+        if (event.key === "Escape" && overlay.classList.contains("open")) {
+            closeOai();
+        }
+    });
+
+    function scrollMessagesToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function removeWelcome() {
+        const welcome = document.getElementById("oaiWelcome");
+        if (welcome) welcome.remove();
+    }
+
+    function addMessage(role, content, options = {}) {
+        removeWelcome();
+
+        const message = document.createElement("article");
+        message.className = `oai-message ${role}`;
+
+        if (options.error) message.classList.add("error");
+
+        const label = document.createElement("div");
+        label.className = "oai-message-label";
+        label.textContent = role === "user"
+            ? "YOU"
+            : options.error
+                ? "OAi · NOTICE"
+                : "OAi";
+
+        const bubble = document.createElement("div");
+        bubble.className = "oai-message-bubble";
+        bubble.textContent = content;
+
+        message.append(label, bubble);
+        messagesContainer.appendChild(message);
+        scrollMessagesToBottom();
+
+        return { message, bubble };
+    }
+
+    function addTypingIndicator() {
+        removeWelcome();
+
+        const message = document.createElement("article");
+        message.className = "oai-message assistant";
+        message.id = "oaiTypingMessage";
+
+        const label = document.createElement("div");
+        label.className = "oai-message-label";
+        label.textContent = "OAi";
+
+        const bubble = document.createElement("div");
+        bubble.className = "oai-message-bubble";
+
+        const typing = document.createElement("span");
+        typing.className = "oai-typing";
+        typing.setAttribute("aria-label", "OAi is thinking");
+
+        for (let i = 0; i < 3; i++) {
+            typing.appendChild(document.createElement("span"));
+        }
+
+        bubble.appendChild(typing);
+        message.append(label, bubble);
+        messagesContainer.appendChild(message);
+        scrollMessagesToBottom();
+    }
+
+    function removeTypingIndicator() {
+        document.getElementById("oaiTypingMessage")?.remove();
+    }
+
+    /*
+     * Do not reset the status text when a request completes:
+     * keep "Response received" or the actual error visible.
+     */
+    function setBusy(busy) {
+        isSending = busy;
+        sendButton.disabled = busy;
+        input.disabled = busy;
+        sendButton.title = busy ? "Waiting for response..." : "Send message";
+
+        if (busy) {
+            setStatus("Connecting to OpenRouter...", "busy");
+        }
+    }
+
+    function explainApiError(response, payload) {
+        const serverMessage =
+            payload?.error?.message ||
+            payload?.message ||
+            payload?.detail;
+
+        if (response.status === 400) {
+            return "HTTP 400: OpenRouter rejected the request. Check the model ID and request parameters." +
+                (serverMessage ? ` Details: ${String(serverMessage)}` : "");
+        }
+
+        if (response.status === 401) {
+            return "HTTP 401: the API key was rejected. Check that you copied the correct OpenRouter key.";
+        }
+
+        if (response.status === 402) {
+            return "HTTP 402: the account or API key has insufficient credits, or its spending limit has been reached.";
+        }
+
+        if (response.status === 403) {
+            return "HTTP 403: this request is forbidden for the selected key or model." +
+                (serverMessage ? ` Details: ${String(serverMessage)}` : "");
+        }
+
+        if (response.status === 404) {
+            return "HTTP 404: the model or API endpoint was not found. Check OAI_MODEL.";
+        }
+
+        if (response.status === 408) {
+            return "HTTP 408: the API request timed out. Try again.";
+        }
+
+        if (response.status === 429) {
+            return "HTTP 429: the request limit was reached. Wait a little and try again.";
+        }
+
+        if (response.status >= 500) {
+            return `OpenRouter or its model provider returned HTTP ${response.status}. Try again later.` +
+                (serverMessage ? ` Details: ${String(serverMessage)}` : "");
+        }
+
+        if (serverMessage) {
+            return `API error (HTTP ${response.status}): ${String(serverMessage)}`;
+        }
+
+        return `The API request failed with HTTP ${response.status}.`;
+    }
+
+    function explainNetworkError(error) {
+        if (error?.name === "AbortError") {
+            return "The request timed out after 30 seconds. Check your connection and try again.";
+        }
+
+        if (navigator.onLine === false) {
+            return "Your browser reports that it is offline. Reconnect to the internet and try again.";
+        }
+
+        if (window.location.protocol === "file:") {
+            return "This page is opened directly as a file. Run it through an HTTPS website or a local development server, then try again.";
+        }
+
+        return [
+            "The browser could not read a response from OpenRouter.",
+            "Possible causes: a network restriction, a browser extension, a CORS/preflight failure, or a temporary connection issue.",
+            "Open Chrome DevTools (F12) → Console and Network to find the exact cause.",
+            "If DevTools confirms CORS, JavaScript in a static HTML page cannot bypass it; a backend/proxy with the correct CORS configuration is required."
+        ].join("\n");
+    }
+
+    async function requestOaiResponse() {
+        const key = OAI_API_KEY.trim();
+
+        if (
+            !key ||
+            key === "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" ||
+            key === "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"
+        ) {
+            throw new Error(
+                "API key not configured. Replace the --- value in OAI_API_KEY with your own OpenRouter API key for local testing."
+            );
+        }
+
+        const payload = {
+            model: OAI_MODEL,
+            messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                ...conversation
+            ],
+            temperature: 0.7,
+            max_tokens: 1200,
+            stream: false
+        };
+
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(
+            () => controller.abort(),
+            OAI_TIMEOUT_MS
+        );
+
+        let response;
+
+        try {
+            /*
+             * The attribution headers have been omitted in this temporary
+             * test to keep the request minimal. They are optional.
+             */
+            response = await fetch(OAI_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${key}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload),
+                signal: controller.signal,
+                cache: "no-store"
+            });
+        } catch (error) {
+            if (error?.name === "AbortError") {
+                throw new Error(explainNetworkError(error));
+            }
+
+            console.error("OpenRouter network/fetch failure:", {
+                name: error?.name,
+                message: error?.message,
+                endpoint: OAI_ENDPOINT,
+                pageOrigin: window.location.origin,
+                online: navigator.onLine
+            });
+
+            throw new Error(explainNetworkError(error));
+        } finally {
+            window.clearTimeout(timeoutId);
+        }
+
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch {
+            // Some errors do not include a JSON response body.
+        }
+
+        if (!response.ok) {
+            console.error("OpenRouter HTTP error:", {
+                status: response.status,
+                response: data
+            });
+            throw new Error(explainApiError(response, data));
+        }
+
+        let answer = data?.choices?.[0]?.message?.content;
+
+        if (Array.isArray(answer)) {
+            answer = answer.map(part => {
+                if (typeof part === "string") return part;
+                return typeof part?.text === "string" ? part.text : "";
+            }).join("");
+        }
+
+        if (typeof answer !== "string" || !answer.trim()) {
+            console.error("OpenRouter returned an unexpected response:", data);
+            throw new Error("The API returned an empty or unexpected response. Check the Console for details.");
+        }
+
+        return answer.trim();
+    }
+
+    async function sendMessage(text) {
+        if (isSending) return;
+
+        const userText = text.trim();
+        if (!userText) return;
+
+        if (userText.length > 12000) {
+            addMessage("assistant", "Please keep each message under 12,000 characters.", {
+                error: true
+            });
+            return;
+        }
+
+        input.value = "";
+        input.style.height = "42px";
+
+        addMessage("user", userText);
+
+        conversation.push({
+            role: "user",
+            content: userText
+        });
+
+        // Keep the request history bounded so conversations don't grow indefinitely.
+        const maxConversationMessages = 20;
+
+        if (conversation.length > maxConversationMessages) {
+            conversation = conversation.slice(-maxConversationMessages);
+
+            while (conversation.length && conversation[0].role !== "user") {
+                conversation.shift();
+            }
+        }
+
+        setBusy(true);
+        addTypingIndicator();
+
+        try {
+            const answer = await requestOaiResponse();
+            removeTypingIndicator();
+
+            conversation.push({
+                role: "assistant",
+                content: answer
+            });
+
+            addMessage("assistant", answer);
+            setStatus("Response received", "connected");
+        } catch (error) {
+            removeTypingIndicator();
+
+            // Remove the just-submitted message from history if the request failed.
+            if (
+                conversation.length &&
+                conversation[conversation.length - 1].role === "user"
+            ) {
+                conversation.pop();
+            }
+
+            const errorMessage = error?.message ||
+                "An unexpected error occurred. Check the browser Console for details.";
+
+            addMessage("assistant", errorMessage, { error: true });
+            setStatus("Request failed", "error");
+
+            console.error("OAi request failure:", error);
+        } finally {
+            /*
+             * Re-enable the input without overwriting the success/error state.
+             */
+            isSending = false;
+            sendButton.disabled = false;
+            input.disabled = false;
+            sendButton.title = "Send message";
+
+            input.focus({ preventScroll: true });
+        }
+    }
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        sendMessage(input.value);
+    });
+
+    input.addEventListener("keydown", event => {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            if (!isSending) form.requestSubmit();
+        }
+    });
+
+    input.addEventListener("input", () => {
+        input.style.height = "42px";
+        input.style.height = `${Math.min(input.scrollHeight, 150)}px`;
+    });
+
+    newChatButton.addEventListener("click", () => {
+        if (isSending) return;
+
+        conversation = [];
+        messagesContainer.replaceChildren();
+
+        const welcomeCard = document.createElement("div");
+        welcomeCard.className = "oai-welcome";
+        welcomeCard.id = "oaiWelcome";
+
+        const symbol = document.createElement("div");
+        symbol.className = "oai-welcome-symbol";
+        symbol.setAttribute("aria-hidden", "true");
+        symbol.textContent = "⫘";
+
+        const heading = document.createElement("h3");
+        heading.textContent = "What are we thinking today?";
+
+        const paragraph = document.createElement("p");
+        paragraph.textContent =
+            "Your AI workspace inside K-DEV. Send a message to start a conversation.";
+
+        welcomeCard.append(symbol, heading, paragraph);
+        messagesContainer.appendChild(welcomeCard);
+
+        input.value = "";
+        input.style.height = "42px";
+        setStatus("New conversation", "ready");
+        input.focus({ preventScroll: true });
     });
 })();
 </script>
