@@ -51,6 +51,7 @@ button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transpare
     mix-blend-mode: screen;
 }
 
+/* Orb experience */
 .experience {
     position: absolute;
     inset: 0;
@@ -148,6 +149,7 @@ button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transpare
     transition: filter .35s ease;
 }
 
+/* Header */
 .topbar {
     position: absolute;
     inset: 0 0 auto 0;
@@ -186,6 +188,7 @@ button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transpare
     letter-spacing: 1px;
 }
 
+/* Category navigation */
 .nav-categories {
     display: flex;
     flex-direction: column;
@@ -330,8 +333,12 @@ button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transpare
     line-height: 1;
 }
 
-.category-empty { height: 0; overflow: hidden; }
+.category-empty {
+    height: 0;
+    overflow: hidden;
+}
 
+/* Close experience */
 .close-button {
     position: absolute;
     top: 24px;
@@ -366,8 +373,9 @@ button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transpare
     background: rgba(var(--orb-color), .15);
     border-color: rgba(var(--orb-color), .55);
     box-shadow: 0 0 24px rgba(var(--orb-color), .12);
-    transform: translateY(-2px);
 }
+
+.icon-button:hover { transform: translateY(-2px); }
 
 .icon-button svg {
     width: 19px;
@@ -379,6 +387,7 @@ button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transpare
     stroke-linejoin: round;
 }
 
+/* Floating settings panel */
 .color-panel {
     position: absolute;
     z-index: 40;
@@ -479,6 +488,7 @@ input[type="color"] {
 .preset:hover { transform: scale(1.13); }
 .preset.selected { outline-color: rgba(255,255,255,.7); }
 
+/* HUD */
 .hud {
     position: absolute;
     z-index: 5;
@@ -516,7 +526,12 @@ input[type="color"] {
 }
 
 .experience.webgl-unavailable .hud { display: none; }
-.range-slider:disabled { opacity: .35; cursor: not-allowed; }
+
+.range-slider:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
 .experience.active .hud { opacity: .8; }
 
 .hud-dot {
@@ -527,6 +542,7 @@ input[type="color"] {
     box-shadow: 0 0 10px rgba(var(--orb-color), .8);
 }
 
+/* Landing screen */
 .intro {
     position: absolute;
     z-index: 3;
@@ -600,7 +616,55 @@ input[type="color"] {
     transform: scale(1);
 }
 
-/* CLOCK */
+@media (max-width: 600px) {
+    .topbar { padding: 18px; }
+    .brand { gap: 7px; font-size: 11px; }
+    .version { font-size: 9px; }
+    .nav-categories { gap: 8px; }
+    .category { width: 150px; }
+    .category-header { padding: 12px; }
+    .category-title { font-size: 10px; }
+    .close-button { top: 17px; left: 17px; }
+
+    .color-panel {
+        top: 18px;
+        right: 176px;
+        width: min(230px, calc(100vw - 195px));
+        padding: 13px;
+    }
+
+    #orbCanvas {
+        width: min(94vw, 64vh, 580px);
+        height: min(94vw, 64vh, 580px);
+    }
+
+    .launch-button { bottom: 21%; }
+    .hud { bottom: 24px; font-size: 9px; }
+}
+
+@media (max-width: 390px) {
+    .color-panel {
+        top: 118px;
+        right: 18px;
+        width: 240px;
+    }
+
+    .brand { gap: 5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .experience::before, .experience::after { animation: none; }
+
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+/* =========================================================
+   CLOCK TOOLS
+   ========================================================= */
+
 .clock-overlay {
     position: absolute;
     inset: 0;
@@ -648,7 +712,12 @@ input[type="color"] {
 }
 
 .clock-heading { direction: ltr; text-align: left; }
-.clock-heading h2 { font-size: 15px; font-weight: 650; letter-spacing: .4px; }
+
+.clock-heading h2 {
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: .4px;
+}
 
 .clock-heading p {
     margin-top: 6px;
@@ -725,14 +794,7 @@ input[type="color"] {
     box-shadow: 0 0 10px rgba(var(--orb-color), .7);
 }
 
-.clock-field {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
+.clock-field { display: flex; flex-direction: column; gap: 9px; margin-bottom: 20px; text-align: left; }
 .clock-field label { color: #bcb4cb; font-size: 11px; }
 
 .clock-select, .clock-number {
@@ -794,12 +856,7 @@ input[type="color"] {
     margin: 4px auto 25px;
 }
 
-.clock-timer-visual svg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    transform: rotate(-90deg);
-}
+.clock-timer-visual svg { width: 100%; height: 100%; overflow: visible; transform: rotate(-90deg); }
 
 .clock-timer-track, .clock-timer-progress { fill: none; stroke-width: 4; }
 .clock-timer-track { stroke: rgba(255,255,255,.08); }
@@ -822,18 +879,9 @@ input[type="color"] {
     justify-content: center;
 }
 
-.clock-timer-center .clock-display {
-    font-size: clamp(27px, 7vw, 39px);
-    letter-spacing: -1.5px;
-}
+.clock-timer-center .clock-display { font-size: clamp(27px, 7vw, 39px); letter-spacing: -1.5px; }
 
-.clock-status {
-    min-height: 18px;
-    margin-top: 9px;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 1.2px;
-}
+.clock-status { min-height: 18px; margin-top: 9px; color: var(--muted); font-size: 10px; letter-spacing: 1.2px; }
 
 .clock-actions {
     display: flex;
@@ -877,17 +925,9 @@ input[type="color"] {
     font-weight: 350;
 }
 
-.clock-stopwatch-display .clock-centiseconds {
-    color: rgb(var(--orb-color));
-    font-size: .57em;
-    letter-spacing: -1px;
-}
+.clock-stopwatch-display .clock-centiseconds { color: rgb(var(--orb-color)); font-size: .57em; letter-spacing: -1px; }
 
-.clock-laps {
-    margin-top: 25px;
-    border-top: 1px solid rgba(255,255,255,.08);
-    text-align: left;
-}
+.clock-laps { margin-top: 25px; border-top: 1px solid rgba(255,255,255,.08); text-align: left; }
 
 .clock-laps-heading {
     display: flex;
@@ -898,13 +938,7 @@ input[type="color"] {
     letter-spacing: 1px;
 }
 
-.clock-lap-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    max-height: 175px;
-    overflow-y: auto;
-}
+.clock-lap-list { display: flex; flex-direction: column; gap: 0; max-height: 175px; overflow-y: auto; }
 
 .clock-lap-row {
     display: flex;
@@ -975,7 +1009,10 @@ input[type="color"] {
     font-size: 9px;
 }
 
-.range-visual .range-track { stroke: rgba(255,255,255,.105); fill: none; }
+.range-visual .range-track {
+    stroke: rgba(255,255,255,.105);
+    fill: none;
+}
 
 .range-visual .range-active {
     stroke: rgb(var(--orb-color));
@@ -1008,7 +1045,11 @@ input[type="color"] {
     filter: drop-shadow(0 0 4px rgba(var(--orb-color), .6));
 }
 
-.range-visual .range-grid { stroke: rgba(255,255,255,.09); stroke-width: 1; fill: none; }
+.range-visual .range-grid {
+    stroke: rgba(255,255,255,.09);
+    stroke-width: 1;
+    fill: none;
+}
 
 .range-visual .range-line {
     stroke: rgb(var(--orb-color));
@@ -1019,7 +1060,10 @@ input[type="color"] {
     filter: drop-shadow(0 0 4px rgba(var(--orb-color), .5));
 }
 
-.range-visual .range-fill { fill: rgba(var(--orb-color), .13); stroke: none; }
+.range-visual .range-fill {
+    fill: rgba(var(--orb-color), .13);
+    stroke: none;
+}
 
 .range-controls {
     display: grid;
@@ -1036,7 +1080,10 @@ input[type="color"] {
     text-align: left;
 }
 
-.range-control label { color: #bcb4cb; font-size: 10px; }
+.range-control label {
+    color: #bcb4cb;
+    font-size: 10px;
+}
 
 .range-control input {
     width: 100%;
@@ -1058,7 +1105,10 @@ input[type="color"] {
     box-shadow: 0 0 0 3px rgba(var(--orb-color), .08);
 }
 
-.range-slider-wrap { margin: 17px 0 21px; text-align: left; }
+.range-slider-wrap {
+    margin: 17px 0 21px;
+    text-align: left;
+}
 
 .range-slider-top {
     display: flex;
@@ -1084,7 +1134,12 @@ input[type="color"] {
     border: 0;
     border-radius: 99px;
     outline: none;
-    background: linear-gradient(to right, rgb(var(--orb-color)) 0%, rgba(var(--orb-color), .30) 50%, rgba(255,255,255,.10) 100%);
+    background: linear-gradient(
+        to right,
+        rgb(var(--orb-color)) 0%,
+        rgba(var(--orb-color), .30) 50%,
+        rgba(255,255,255,.10) 100%
+    );
     cursor: pointer;
 }
 
@@ -1197,7 +1252,10 @@ input[type="color"] {
     background: rgba(var(--orb-color), .08);
 }
 
-/* OAi Chat */
+/* =========================================================
+   OAi CHAT — isolated styles
+   ========================================================= */
+
 .oai-overlay {
     position: absolute;
     inset: 0;
@@ -1233,12 +1291,16 @@ input[type="color"] {
     background:
         radial-gradient(ellipse at 50% 0%, rgba(var(--orb-color), .10), transparent 65%),
         rgba(13, 11, 21, .97);
-    box-shadow: 0 28px 100px rgba(0,0,0,.52), 0 0 60px rgba(var(--orb-color), .09);
+    box-shadow:
+        0 28px 100px rgba(0,0,0,.52),
+        0 0 60px rgba(var(--orb-color), .09);
     transform: translateY(12px) scale(.985);
     transition: transform .25s ease;
 }
 
-.oai-overlay.open .oai-window { transform: translateY(0) scale(1); }
+.oai-overlay.open .oai-window {
+    transform: translateY(0) scale(1);
+}
 
 .oai-header {
     flex: 0 0 auto;
@@ -1271,7 +1333,8 @@ input[type="color"] {
     color: #f6efff;
     font-size: 28px;
     line-height: 1;
-    box-shadow: inset 0 0 20px rgba(var(--orb-color), .05), 0 0 24px rgba(var(--orb-color), .09);
+    box-shadow: inset 0 0 20px rgba(var(--orb-color), .05),
+                0 0 24px rgba(var(--orb-color), .09);
 }
 
 .oai-brand-text h2 {
@@ -1311,7 +1374,12 @@ input[type="color"] {
     background: rgba(var(--orb-color), .10);
 }
 
-.oai-close { width: 36px; min-width: 36px; padding: 0; font-size: 17px; }
+.oai-close {
+    width: 36px;
+    min-width: 36px;
+    padding: 0;
+    font-size: 17px;
+}
 
 .oai-status-row {
     flex: 0 0 auto;
@@ -1325,7 +1393,11 @@ input[type="color"] {
     font-size: 10px;
 }
 
-.oai-status { display: inline-flex; align-items: center; gap: 7px; }
+.oai-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
 
 .oai-status-dot {
     width: 6px;
@@ -1371,7 +1443,11 @@ input[type="color"] {
 }
 
 .oai-messages::-webkit-scrollbar { width: 5px; }
-.oai-messages::-webkit-scrollbar-thumb { border-radius: 99px; background: rgba(255,255,255,.12); }
+
+.oai-messages::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+    background: rgba(255,255,255,.12);
+}
 
 .oai-welcome {
     width: min(100%, 480px);
@@ -1395,7 +1471,12 @@ input[type="color"] {
     font-size: 37px;
 }
 
-.oai-welcome h3 { color: #f3edff; font-size: 20px; font-weight: 550; letter-spacing: -.3px; }
+.oai-welcome h3 {
+    color: #f3edff;
+    font-size: 20px;
+    font-weight: 550;
+    letter-spacing: -.3px;
+}
 
 .oai-welcome p {
     max-width: 360px;
@@ -1461,7 +1542,12 @@ input[type="color"] {
     color: #ffb0c1;
 }
 
-.oai-typing { display: inline-flex; align-items: center; gap: 5px; min-height: 22px; }
+.oai-typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 22px;
+}
 
 .oai-typing span {
     width: 5px;
@@ -1536,8 +1622,15 @@ input[type="color"] {
     transition: background .2s ease, transform .2s ease, opacity .2s ease;
 }
 
-.oai-send:hover:not(:disabled) { background: rgba(var(--orb-color), .34); transform: translateY(-1px); }
-.oai-send:disabled { opacity: .4; cursor: not-allowed; }
+.oai-send:hover:not(:disabled) {
+    background: rgba(var(--orb-color), .34);
+    transform: translateY(-1px);
+}
+
+.oai-send:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
 
 .oai-send svg {
     width: 18px;
@@ -1568,29 +1661,6 @@ input[type="color"] {
 }
 
 @media (max-width: 600px) {
-    .topbar { padding: 18px; }
-    .brand { gap: 7px; font-size: 11px; }
-    .version { font-size: 9px; }
-    .nav-categories { gap: 8px; }
-    .category { width: 150px; }
-    .category-header { padding: 12px; }
-    .category-title { font-size: 10px; }
-    .close-button { top: 17px; left: 17px; }
-
-    .color-panel {
-        top: 18px;
-        right: 176px;
-        width: min(230px, calc(100vw - 195px));
-        padding: 13px;
-    }
-
-    #orbCanvas {
-        width: min(94vw, 64vh, 580px);
-        height: min(94vw, 64vh, 580px);
-    }
-
-    .launch-button { bottom: 21%; }
-    .hud { bottom: 24px; font-size: 9px; }
     .clock-overlay { padding: 105px 14px 20px; }
     .clock-window { border-radius: 20px; }
     .clock-window-header { padding: 17px; }
@@ -1598,6 +1668,7 @@ input[type="color"] {
     .clock-action { min-width: 84px; padding: 11px 12px; }
     .range-visual-wrap { min-height: 160px; }
     .range-visual { height: 160px; }
+
     .oai-overlay { padding: 105px 12px 18px; }
     .oai-window { border-radius: 20px; }
     .oai-header { padding: 15px; gap: 8px; }
@@ -1620,18 +1691,33 @@ input[type="color"] {
         font-size: 9px;
     }
 
-    .oai-close { width: 33px; min-width: 33px; }
-    .oai-status-row { padding: 9px 15px; font-size: 9px; }
-    .oai-messages { padding: 19px 13px; gap: 14px; }
+    .oai-close {
+        width: 33px;
+        min-width: 33px;
+    }
+
+    .oai-status-row {
+        padding: 9px 15px;
+        font-size: 9px;
+    }
+
+    .oai-messages {
+        padding: 19px 13px;
+        gap: 14px;
+    }
+
     .oai-message { max-width: 94%; }
-    .oai-message-bubble { padding: 11px 12px; font-size: 12px; }
+
+    .oai-message-bubble {
+        padding: 11px 12px;
+        font-size: 12px;
+    }
+
     .oai-composer-wrap { padding: 11px 12px 13px; }
     .oai-input { font-size: 12px; }
 }
 
 @media (max-width: 390px) {
-    .color-panel { top: 118px; right: 18px; width: 240px; }
-    .brand { gap: 5px; }
     .clock-overlay { padding: 155px 12px 15px; }
     .clock-display { letter-spacing: -1.5px; }
     .clock-actions { gap: 7px; }
@@ -1640,25 +1726,23 @@ input[type="color"] {
     .range-control input { font-size: 12px; padding: 6px 3px; }
     .range-style-grid { gap: 6px; }
     .range-style-option { padding: 8px 7px; font-size: 9px; }
+
     .oai-overlay { padding: 150px 9px 12px; }
     .oai-header { padding: 12px; }
     .oai-brand-text p { max-width: 120px; }
     .oai-header-button.new-chat-label { font-size: 0; }
-    .oai-header-button.new-chat-label::after { content: "New"; font-size: 9px; }
-    .oai-status-row { padding: 8px 12px; }
-}
 
-@media (prefers-reduced-motion: reduce) {
-    .experience::before, .experience::after { animation: none; }
-
-    *, *::before, *::after {
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
+    .oai-header-button.new-chat-label::after {
+        content: "New";
+        font-size: 9px;
     }
+
+    .oai-status-row { padding: 8px 12px; }
 }
 </style>
 </head>
-  <body>
+
+<body>
 <div class="app" id="app">
     <div class="noise"></div>
 
@@ -2067,7 +2151,8 @@ input[type="color"] {
         </div>
     </section>
 </div>
-    <script>
+
+<script>
 (() => {
     "use strict";
 
@@ -2305,6 +2390,7 @@ input[type="color"] {
         ambientCtx.fillRect(0, 0, width, height);
     }
 
+    /* Original WebGL Orb shader */
     const gl = orbCanvas.getContext("webgl", {
         alpha: true,
         antialias: true,
@@ -2313,7 +2399,6 @@ input[type="color"] {
 
     if (!gl) {
         console.error("WebGL is not supported by this browser.");
-        experience.classList.add("webgl-unavailable");
         return;
     }
 
@@ -2549,15 +2634,942 @@ input[type="color"] {
     requestAnimationFrame(render);
 })();
 </script>
-    <!-- OAi: Cloudflare Worker integration; API key is never stored in this file -->
+
 <script>
 (() => {
     "use strict";
 
-    const OPENROUTER_ENDPOINT =
-        "https://viorx-io.koorosh10181391.workers.dev/chat";
+    const overlay = document.getElementById("clockOverlay");
+    const closeButton = document.getElementById("clockClose");
+    const title = document.getElementById("clockWindowTitle");
+    const subtitle = document.getElementById("clockWindowSubtitle");
+    const toolButtons = document.querySelectorAll("[data-clock-tool]");
+    const toolPanels = document.querySelectorAll("[data-clock-panel]");
 
-    const OPENROUTER_MODEL = "openai/gpt-4o-mini";
+    const toolInfo = {
+        device: { title: "DEVICE CLOCK", subtitle: "Your local time, updated live" },
+        world: { title: "WORLD CLOCK", subtitle: "Explore time in another city" },
+        timer: { title: "TIMER", subtitle: "A simple, precise countdown" },
+        stopwatch: { title: "STOPWATCH", subtitle: "Measure elapsed time and laps" },
+        range: { title: "RANGE / PROGRESS", subtitle: "Visualize any value within a range" }
+    };
+
+    function openClockTool(tool) {
+        if (!toolInfo[tool]) return;
+
+        title.textContent = toolInfo[tool].title;
+        subtitle.textContent = toolInfo[tool].subtitle;
+
+        toolPanels.forEach(panel => {
+            panel.classList.toggle("active", panel.dataset.clockPanel === tool);
+        });
+
+        toolButtons.forEach(button => {
+            button.classList.toggle("active", button.dataset.clockTool === tool);
+        });
+
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+
+        if (tool === "device") updateDeviceClock();
+        if (tool === "world") updateWorldClock();
+        if (tool === "range") renderRange();
+
+        closeButton.focus({ preventScroll: true });
+    }
+
+    function closeClockTool() {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+        toolButtons.forEach(button => button.classList.remove("active"));
+    }
+
+    toolButtons.forEach(button => {
+        button.addEventListener("click", () => openClockTool(button.dataset.clockTool));
+    });
+
+    closeButton.addEventListener("click", closeClockTool);
+
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) closeClockTool();
+    });
+
+    /* Device clock */
+    const deviceTime = document.getElementById("deviceTime");
+    const deviceDate = document.getElementById("deviceDate");
+    const deviceZone = document.getElementById("deviceZone");
+
+    const timeFormatter = new Intl.DateTimeFormat(undefined, {
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+    });
+
+    const dateFormatter = new Intl.DateTimeFormat(undefined, {
+        weekday: "long", year: "numeric", month: "long", day: "numeric"
+    });
+
+    function updateDeviceClock() {
+        const now = new Date();
+        deviceTime.textContent = timeFormatter.format(now);
+        deviceDate.textContent = dateFormatter.format(now);
+
+        try {
+            deviceZone.textContent =
+                Intl.DateTimeFormat().resolvedOptions().timeZone || "Local device time";
+        } catch {
+            deviceZone.textContent = "Local device time";
+        }
+    }
+
+    updateDeviceClock();
+    setInterval(updateDeviceClock, 250);
+
+    /* World clock */
+    const worldCity = document.getElementById("worldCity");
+    const worldCityName = document.getElementById("worldCityName");
+    const worldTime = document.getElementById("worldTime");
+    const worldDate = document.getElementById("worldDate");
+    const worldDifference = document.getElementById("worldDifference");
+
+    function getOffsetMinutes(timeZone, date) {
+        const parts = new Intl.DateTimeFormat("en-US", {
+            timeZone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hourCycle: "h23"
+        }).formatToParts(date);
+
+        const values = {};
+        parts.forEach(part => {
+            if (part.type !== "literal") values[part.type] = Number(part.value);
+        });
+
+        const zoneAsUTC = Date.UTC(
+            values.year, values.month - 1, values.day,
+            values.hour, values.minute, values.second
+        );
+
+        return Math.round((zoneAsUTC - date.getTime()) / 60000);
+    }
+
+    function formatDifference(minutes) {
+        if (minutes === 0) return "Same time as your device";
+
+        const sign = minutes > 0 ? "+" : "−";
+        const absolute = Math.abs(minutes);
+        const hours = Math.floor(absolute / 60);
+        const mins = absolute % 60;
+
+        let result = sign;
+        if (hours) result += `${hours}h`;
+        if (mins) result += `${hours ? " " : ""}${mins}m`;
+
+        return `${result} compared with device`;
+    }
+
+    function updateWorldClock() {
+        const zone = worldCity.value;
+        const now = new Date();
+
+        try {
+            worldTime.textContent = new Intl.DateTimeFormat("en-GB", {
+                timeZone: zone, hour: "2-digit", minute: "2-digit",
+                second: "2-digit", hourCycle: "h23"
+            }).format(now);
+
+            worldDate.textContent = new Intl.DateTimeFormat("en-US", {
+                timeZone: zone, weekday: "long", year: "numeric",
+                month: "long", day: "numeric"
+            }).format(now);
+
+            worldCityName.textContent = worldCity.options[worldCity.selectedIndex].text;
+
+            const targetOffset = getOffsetMinutes(zone, now);
+            const localOffset = -now.getTimezoneOffset();
+
+            worldDifference.textContent =
+                formatDifference(targetOffset - localOffset);
+        } catch (error) {
+            worldTime.textContent = "--:--:--";
+            worldDate.textContent = "Unable to read this time zone.";
+            worldDifference.textContent = "";
+            console.error("World clock error:", error);
+        }
+    }
+
+    worldCity.addEventListener("change", updateWorldClock);
+    updateWorldClock();
+    setInterval(updateWorldClock, 1000);
+
+    /* Timer */
+    const timerHours = document.getElementById("timerHours");
+    const timerMinutes = document.getElementById("timerMinutes");
+    const timerSeconds = document.getElementById("timerSeconds");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerStatus = document.getElementById("timerStatus");
+    const timerProgress = document.getElementById("timerProgress");
+    const timerStart = document.getElementById("timerStart");
+    const timerPause = document.getElementById("timerPause");
+    const timerReset = document.getElementById("timerReset");
+
+    const timerCircumference = 2 * Math.PI * 52;
+
+    let timerInitialMs = 300000;
+    let timerRemainingMs = 300000;
+    let timerEndAt = 0;
+    let timerRunning = false;
+    let timerCompleted = false;
+    let timerInterval = null;
+
+    function clampNumber(input, max) {
+        let value = Number.parseInt(input.value, 10);
+        if (!Number.isFinite(value)) value = 0;
+        value = Math.max(0, Math.min(max, value));
+        input.value = String(value);
+        return value;
+    }
+
+    function readTimerInputs() {
+        const h = clampNumber(timerHours, 99);
+        const m = clampNumber(timerMinutes, 59);
+        const s = clampNumber(timerSeconds, 59);
+        return ((h * 3600) + (m * 60) + s) * 1000;
+    }
+
+    function formatTimer(ms) {
+        const totalSeconds = Math.ceil(Math.max(0, ms) / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        return [hours, minutes, seconds]
+            .map(value => String(value).padStart(2, "0"))
+            .join(":");
+    }
+
+    function updateTimerDisplay() {
+        timerDisplay.textContent = formatTimer(timerRemainingMs);
+        const ratio = timerInitialMs > 0 ? timerRemainingMs / timerInitialMs : 0;
+
+        timerProgress.style.strokeDasharray = String(timerCircumference);
+        timerProgress.style.strokeDashoffset =
+            String(timerCircumference * (1 - Math.max(0, Math.min(1, ratio))));
+    }
+
+    function stopTimerInterval() {
+        if (timerInterval !== null) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    function finishTimer() {
+        timerRunning = false;
+        timerCompleted = true;
+        timerRemainingMs = 0;
+        stopTimerInterval();
+        updateTimerDisplay();
+        timerStatus.textContent = "COMPLETE";
+        timerStart.textContent = "Start again";
+    }
+
+    function tickTimer() {
+        if (!timerRunning) return;
+
+        timerRemainingMs = Math.max(0, timerEndAt - performance.now());
+
+        if (timerRemainingMs <= 0) {
+            finishTimer();
+            return;
+        }
+
+        updateTimerDisplay();
+    }
+
+    function startTimer() {
+        if (timerRunning) return;
+
+        if (timerCompleted) {
+            timerInitialMs = readTimerInputs();
+            timerRemainingMs = timerInitialMs;
+            timerCompleted = false;
+        } else if (timerRemainingMs === timerInitialMs) {
+            timerInitialMs = readTimerInputs();
+            timerRemainingMs = timerInitialMs;
+        }
+
+        if (timerRemainingMs <= 0) {
+            timerStatus.textContent = "SET A DURATION";
+            return;
+        }
+
+        timerEndAt = performance.now() + timerRemainingMs;
+        timerRunning = true;
+        timerStatus.textContent = "COUNTING DOWN";
+        timerStart.textContent = "Running";
+        stopTimerInterval();
+        timerInterval = setInterval(tickTimer, 50);
+        tickTimer();
+    }
+
+    function pauseTimer() {
+        if (!timerRunning) return;
+
+        timerRemainingMs = Math.max(0, timerEndAt - performance.now());
+        timerRunning = false;
+        stopTimerInterval();
+
+        if (timerRemainingMs <= 0) {
+            finishTimer();
+            return;
+        }
+
+        timerStatus.textContent = "PAUSED";
+        timerStart.textContent = "Resume";
+        updateTimerDisplay();
+    }
+
+    function resetTimer() {
+        timerRunning = false;
+        timerCompleted = false;
+        stopTimerInterval();
+        timerInitialMs = readTimerInputs();
+        timerRemainingMs = timerInitialMs;
+        timerStatus.textContent = "READY";
+        timerStart.textContent = "Start";
+        updateTimerDisplay();
+    }
+
+    [timerHours, timerMinutes, timerSeconds].forEach(input => {
+        input.addEventListener("change", () => {
+            if (timerRunning) pauseTimer();
+
+            timerCompleted = false;
+            timerInitialMs = readTimerInputs();
+            timerRemainingMs = timerInitialMs;
+            timerStatus.textContent = "READY";
+            timerStart.textContent = "Start";
+            updateTimerDisplay();
+        });
+    });
+
+    timerStart.addEventListener("click", startTimer);
+    timerPause.addEventListener("click", pauseTimer);
+    timerReset.addEventListener("click", resetTimer);
+
+    timerInitialMs = readTimerInputs();
+    timerRemainingMs = timerInitialMs;
+    updateTimerDisplay();
+
+    /* Stopwatch */
+    const stopwatchMain = document.getElementById("stopwatchMain");
+    const stopwatchCentiseconds = document.getElementById("stopwatchCentiseconds");
+    const stopwatchStatus = document.getElementById("stopwatchStatus");
+    const stopwatchStart = document.getElementById("stopwatchStart");
+    const stopwatchLap = document.getElementById("stopwatchLap");
+    const stopwatchReset = document.getElementById("stopwatchReset");
+    const lapList = document.getElementById("lapList");
+    const lapCount = document.getElementById("lapCount");
+
+    let stopwatchRunning = false;
+    let stopwatchStartedAt = 0;
+    let stopwatchElapsedMs = 0;
+    let stopwatchInterval = null;
+    let stopwatchLaps = [];
+
+    function getStopwatchElapsed() {
+        return stopwatchElapsedMs +
+            (stopwatchRunning ? performance.now() - stopwatchStartedAt : 0);
+    }
+
+    function formatStopwatch(ms) {
+        const totalCentiseconds = Math.floor(Math.max(0, ms) / 10);
+        const centiseconds = totalCentiseconds % 100;
+        const totalSeconds = Math.floor(totalCentiseconds / 100);
+        const seconds = totalSeconds % 60;
+        const minutes = Math.floor(totalSeconds / 60) % 60;
+        const hours = Math.floor(totalSeconds / 3600);
+
+        return {
+            main: [hours, minutes, seconds]
+                .map(value => String(value).padStart(2, "0"))
+                .join(":"),
+            centiseconds: String(centiseconds).padStart(2, "0")
+        };
+    }
+
+    function updateStopwatchDisplay() {
+        const formatted = formatStopwatch(getStopwatchElapsed());
+        stopwatchMain.textContent = formatted.main;
+        stopwatchCentiseconds.textContent = "." + formatted.centiseconds;
+    }
+
+    function renderLaps() {
+        lapCount.textContent = `${stopwatchLaps.length} RECORDS`;
+
+        if (!stopwatchLaps.length) {
+            lapList.innerHTML =
+                '<div class="clock-empty-laps">Your lap times will appear here.</div>';
+            return;
+        }
+
+        lapList.replaceChildren();
+
+        stopwatchLaps.forEach((lap, index) => {
+            const row = document.createElement("div");
+            row.className = "clock-lap-row";
+
+            const label = document.createElement("span");
+            label.textContent = `Lap ${stopwatchLaps.length - index}`;
+
+            const value = document.createElement("span");
+            const formatted = formatStopwatch(lap);
+            value.textContent = `${formatted.main}.${formatted.centiseconds}`;
+
+            row.append(label, value);
+            lapList.appendChild(row);
+        });
+    }
+
+    function startStopwatch() {
+        if (stopwatchRunning) return;
+
+        stopwatchStartedAt = performance.now();
+        stopwatchRunning = true;
+        stopwatchStatus.textContent = "RUNNING";
+        stopwatchStart.textContent = "Pause";
+
+        if (stopwatchInterval !== null) clearInterval(stopwatchInterval);
+        stopwatchInterval = setInterval(updateStopwatchDisplay, 10);
+    }
+
+    function pauseStopwatch() {
+        if (!stopwatchRunning) return;
+
+        stopwatchElapsedMs += performance.now() - stopwatchStartedAt;
+        stopwatchRunning = false;
+
+        if (stopwatchInterval !== null) {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+        }
+
+        stopwatchStatus.textContent = "PAUSED";
+        stopwatchStart.textContent = "Resume";
+        updateStopwatchDisplay();
+    }
+
+    function resetStopwatch() {
+        stopwatchRunning = false;
+        stopwatchElapsedMs = 0;
+        stopwatchStartedAt = 0;
+
+        if (stopwatchInterval !== null) {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+        }
+
+        stopwatchLaps = [];
+        stopwatchStatus.textContent = "READY";
+        stopwatchStart.textContent = "Start";
+
+        updateStopwatchDisplay();
+        renderLaps();
+    }
+
+    function recordLap() {
+        if (!stopwatchRunning) return;
+        stopwatchLaps.unshift(getStopwatchElapsed());
+        renderLaps();
+    }
+
+    stopwatchStart.addEventListener("click", () => {
+        if (stopwatchRunning) pauseStopwatch();
+        else startStopwatch();
+    });
+
+    stopwatchLap.addEventListener("click", recordLap);
+    stopwatchReset.addEventListener("click", resetStopwatch);
+
+    updateStopwatchDisplay();
+    renderLaps();
+
+    /* Range / progress visualizations */
+    const rangeMinInput = document.getElementById("rangeMin");
+    const rangeMaxInput = document.getElementById("rangeMax");
+    const rangeCurrentInput = document.getElementById("rangeCurrent");
+    const rangeSlider = document.getElementById("rangeSlider");
+    const rangeSliderOutput = document.getElementById("rangeSliderOutput");
+    const rangeMinLabel = document.getElementById("rangeMinLabel");
+    const rangeMaxLabel = document.getElementById("rangeMaxLabel");
+    const rangePercent = document.getElementById("rangePercent");
+    const rangeValueCaption = document.getElementById("rangeValueCaption");
+    const rangeVisual = document.getElementById("rangeVisual");
+    const rangeNote = document.getElementById("rangeNote");
+    const rangeReset = document.getElementById("rangeReset");
+    const rangeStyleButtons = document.querySelectorAll("[data-range-style]");
+
+    let activeRangeStyle = "gradient";
+
+    const rangeStyleInfo = {
+        gradient: { note: "A smooth gradient bar showing the current position in the range." },
+        gauge: { note: "A semicircular gauge fills as the current value approaches the maximum." },
+        ring: { note: "A circular ring visualizes the percentage of the range completed." },
+        segments: { note: "A segmented circular display lights up in proportion to the current value." },
+        arc: { note: "An arc grows from the start point, with a glowing marker at the current value." },
+        blocks: { note: "A sequence of individual blocks fills to represent the current progress." },
+        graph: { note: "A line graph marks the current position against a horizontal range." },
+        marker: { note: "A simple track uses a moving marker to indicate the current value." },
+        wave: { note: "A liquid-style wave fills a container according to the progress percentage." },
+        ruler: { note: "A graduated ruler highlights the current position between the endpoints." }
+    };
+
+    function rangeNumber(input, fallback) {
+        const value = Number(input.value);
+        return Number.isFinite(value) ? value : fallback;
+    }
+
+    function getRangeData() {
+        let min = rangeNumber(rangeMinInput, 0);
+        let max = rangeNumber(rangeMaxInput, 100);
+        const current = rangeNumber(rangeCurrentInput, min);
+
+        if (max < min) [min, max] = [max, min];
+
+        const span = max - min;
+        const percent = span === 0
+            ? (current >= max ? 100 : 0)
+            : Math.max(0, Math.min(100, ((current - min) / span) * 100));
+
+        return { min, max, current, span, percent };
+    }
+
+    function formatRangeNumber(value) {
+        if (Object.is(value, -0)) value = 0;
+        return new Intl.NumberFormat(undefined, { maximumFractionDigits: 6 }).format(value);
+    }
+
+    function svgNode(tag, attributes = {}, textContent = null) {
+        const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+        Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+        if (textContent !== null) node.textContent = textContent;
+        return node;
+    }
+
+    function addSvg(parent, tag, attributes = {}, textContent = null) {
+        const node = svgNode(tag, attributes, textContent);
+        parent.appendChild(node);
+        return node;
+    }
+
+    function addText(parent, x, y, text, anchor = "middle") {
+        return addSvg(parent, "text", { x, y, "text-anchor": anchor }, text);
+    }
+
+    function polarPoint(cx, cy, radius, angleDegrees) {
+        const angle = (angleDegrees - 90) * Math.PI / 180;
+        return {
+            x: cx + radius * Math.cos(angle),
+            y: cy + radius * Math.sin(angle)
+        };
+    }
+
+    function describeArc(cx, cy, radius, startAngle, endAngle) {
+        const start = polarPoint(cx, cy, radius, startAngle);
+        const end = polarPoint(cx, cy, radius, endAngle);
+        const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+        return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
+    }
+
+    function clearRangeSvg() {
+        rangeVisual.replaceChildren();
+    }
+
+    function renderGradientBar(data) {
+        const x = 28, y = 76, w = 304, h = 18;
+        const filled = w * data.percent / 100;
+
+        addSvg(rangeVisual, "rect", { x, y, width: w, height: h, rx: 9, class: "range-track" });
+
+        if (data.percent > 0) {
+            const defs = addSvg(rangeVisual, "defs");
+            const gradient = addSvg(defs, "linearGradient", {
+                id: "rangeGradientFill", x1: "0%", y1: "0%", x2: "100%", y2: "0%"
+            });
+
+            addSvg(gradient, "stop", {
+                offset: "0%", "stop-color": "rgb(var(--orb-color))", "stop-opacity": ".55"
+            });
+            addSvg(gradient, "stop", {
+                offset: "100%", "stop-color": "rgb(var(--orb-color))"
+            });
+
+            addSvg(rangeVisual, "rect", {
+                x, y, width: filled, height: h, rx: 9,
+                fill: "url(#rangeGradientFill)",
+                filter: "drop-shadow(0 0 5px rgba(var(--orb-color), .45))"
+            });
+        }
+
+        addSvg(rangeVisual, "circle", { cx: x + filled, cy: y + h / 2, r: 5, class: "range-dot" });
+        addText(rangeVisual, x, 119, formatRangeNumber(data.min), "start");
+        addText(rangeVisual, x + w, 119, formatRangeNumber(data.max), "end");
+        addText(rangeVisual, x + filled, 58, `${data.percent.toFixed(1)}%`);
+    }
+
+    function renderGauge(data) {
+        const cx = 180, cy = 126, radius = 78;
+        const startAngle = -90, endAngle = 90;
+        const progressAngle = startAngle + (endAngle - startAngle) * data.percent / 100;
+
+        addSvg(rangeVisual, "path", {
+            d: describeArc(cx, cy, radius, startAngle, endAngle),
+            class: "range-track", "stroke-width": 13, "stroke-linecap": "round"
+        });
+
+        if (data.percent > 0) {
+            addSvg(rangeVisual, "path", {
+                d: describeArc(cx, cy, radius, startAngle, progressAngle),
+                class: "range-active", "stroke-width": 13, "stroke-linecap": "round"
+            });
+        }
+
+        const point = polarPoint(cx, cy, radius, progressAngle);
+        addSvg(rangeVisual, "circle", { cx: point.x, cy: point.y, r: 5, class: "range-dot" });
+        addText(rangeVisual, 180, 96, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, 40, 151, formatRangeNumber(data.min), "start");
+        addText(rangeVisual, 320, 151, formatRangeNumber(data.max), "end");
+    }
+
+    function renderRing(data) {
+        const cx = 180, cy = 87, radius = 56;
+        const circumference = 2 * Math.PI * radius;
+
+        addSvg(rangeVisual, "circle", { cx, cy, r: radius, class: "range-track", "stroke-width": 11 });
+        addSvg(rangeVisual, "circle", {
+            cx, cy, r: radius, class: "range-active", "stroke-width": 11,
+            "stroke-linecap": "round", "stroke-dasharray": circumference,
+            "stroke-dashoffset": circumference * (1 - data.percent / 100),
+            transform: `rotate(-90 ${cx} ${cy})`
+        });
+
+        addText(rangeVisual, cx, cy - 1, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, cx, cy + 15, "COMPLETE");
+        addText(rangeVisual, 180, 164, `${formatRangeNumber(data.current)} / ${formatRangeNumber(data.max)}`);
+    }
+
+    function renderSegmentedRing(data) {
+        const cx = 180, cy = 83, radius = 53;
+        const total = 24, segmentAngle = 360 / total, gap = 4;
+
+        for (let i = 0; i < total; i++) {
+            const start = i * segmentAngle + gap / 2;
+            const end = (i + 1) * segmentAngle - gap / 2;
+            const active = i < Math.round(data.percent / 100 * total);
+
+            addSvg(rangeVisual, "path", {
+                d: describeArc(cx, cy, radius, start, end),
+                class: active ? "range-active" : "range-track",
+                "stroke-width": 7, "stroke-linecap": "round",
+                ...(active ? {} : { "stroke-opacity": ".9" })
+            });
+        }
+
+        addText(rangeVisual, cx, cy - 1, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, cx, cy + 15, "PROGRESS");
+        addText(rangeVisual, 180, 158, `${formatRangeNumber(data.min)} — ${formatRangeNumber(data.max)}`);
+    }
+
+    function renderArc(data) {
+        const cx = 180, cy = 94, radius = 61;
+        const startAngle = -135, endAngle = 135;
+        const currentAngle = startAngle + (endAngle - startAngle) * data.percent / 100;
+
+        addSvg(rangeVisual, "path", {
+            d: describeArc(cx, cy, radius, startAngle, endAngle),
+            class: "range-track", "stroke-width": 5, "stroke-linecap": "round"
+        });
+
+        if (data.percent > 0) {
+            addSvg(rangeVisual, "path", {
+                d: describeArc(cx, cy, radius, startAngle, currentAngle),
+                class: "range-active", "stroke-width": 5, "stroke-linecap": "round"
+            });
+        }
+
+        const point = polarPoint(cx, cy, radius, currentAngle);
+        addSvg(rangeVisual, "circle", { cx: point.x, cy: point.y, r: 6, class: "range-dot" });
+
+        addText(rangeVisual, cx, cy + 2, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, 50, 153, formatRangeNumber(data.min));
+        addText(rangeVisual, 310, 153, formatRangeNumber(data.max));
+    }
+
+    function renderBlocks(data) {
+        const total = 20, x = 24, y = 77, gap = 4;
+        const blockWidth = (312 - (total - 1) * gap) / total;
+        const activeCount = Math.round(data.percent / 100 * total);
+
+        for (let i = 0; i < total; i++) {
+            addSvg(rangeVisual, "rect", {
+                x: x + i * (blockWidth + gap), y,
+                width: blockWidth, height: 24, rx: 3,
+                class: i < activeCount ? "range-block active" : "range-block"
+            });
+        }
+
+        addText(rangeVisual, 180, 57, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, x, 125, formatRangeNumber(data.min), "start");
+        addText(rangeVisual, x + 312, 125, formatRangeNumber(data.max), "end");
+    }
+
+    function renderGraph(data) {
+        const left = 28, right = 332, top = 32, bottom = 134;
+        const x = left + (right - left) * data.percent / 100;
+        const y = bottom - (bottom - top) * data.percent / 100;
+
+        for (let i = 0; i <= 4; i++) {
+            const gy = top + (bottom - top) * i / 4;
+            addSvg(rangeVisual, "line", {
+                x1: left, y1: gy, x2: right, y2: gy, class: "range-grid"
+            });
+        }
+
+        for (let i = 0; i <= 4; i++) {
+            const gx = left + (right - left) * i / 4;
+            addSvg(rangeVisual, "line", {
+                x1: gx, y1: top, x2: gx, y2: bottom, class: "range-grid"
+            });
+        }
+
+        const linePoints = [
+            [left, bottom],
+            [left + (right - left) * .25, bottom - (bottom - top) * .25],
+            [left + (right - left) * .5, bottom - (bottom - top) * .5],
+            [left + (right - left) * .75, bottom - (bottom - top) * .75],
+            [right, top]
+        ];
+
+        const areaPoints = linePoints.map(point => point.join(",")).join(" ");
+
+        addSvg(rangeVisual, "polygon", {
+            points: `${left},${bottom} ${areaPoints} ${right},${bottom}`,
+            class: "range-fill"
+        });
+
+        addSvg(rangeVisual, "polyline", { points: areaPoints, class: "range-line", opacity: ".38" });
+        addSvg(rangeVisual, "line", {
+            x1: x, y1: top, x2: x, y2: bottom,
+            class: "range-marker", "stroke-dasharray": "3 4"
+        });
+        addSvg(rangeVisual, "circle", { cx: x, cy: y, r: 5, class: "range-dot" });
+
+        addText(rangeVisual, left, 154, formatRangeNumber(data.min), "start");
+        addText(rangeVisual, right, 154, formatRangeNumber(data.max), "end");
+        addText(rangeVisual, x, Math.max(18, y - 12), `${data.percent.toFixed(1)}%`);
+    }
+
+    function renderMarker(data) {
+        const x = 27, y = 85, w = 306;
+        const currentX = x + w * data.percent / 100;
+
+        addSvg(rangeVisual, "line", {
+            x1: x, y1: y, x2: x + w, y2: y,
+            class: "range-track", "stroke-width": 8, "stroke-linecap": "round"
+        });
+
+        if (data.percent > 0) {
+            addSvg(rangeVisual, "line", {
+                x1: x, y1: y, x2: currentX, y2: y,
+                class: "range-active", "stroke-width": 8, "stroke-linecap": "round"
+            });
+        }
+
+        addSvg(rangeVisual, "line", {
+            x1: currentX, y1: y - 21, x2: currentX, y2: y + 21,
+            class: "range-marker"
+        });
+        addSvg(rangeVisual, "circle", { cx: currentX, cy: y, r: 6, class: "range-dot" });
+
+        addText(rangeVisual, currentX, 48, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, x, 126, formatRangeNumber(data.min), "start");
+        addText(rangeVisual, x + w, 126, formatRangeNumber(data.max), "end");
+    }
+
+    function renderWave(data) {
+        const x = 115, y = 26, w = 130, h = 118;
+        const fillHeight = h * data.percent / 100;
+        const waterY = y + h - fillHeight;
+
+        addSvg(rangeVisual, "rect", {
+            x, y, width: w, height: h, rx: 18,
+            class: "range-track", "stroke-width": 1.5
+        });
+
+        if (data.percent > 0) {
+            const waveAmplitude = data.percent < 100 ? 4 : 0;
+            const wavePath = [
+                `M ${x} ${waterY}`,
+                `C ${x + w * .22} ${waterY - waveAmplitude},`,
+                `${x + w * .32} ${waterY + waveAmplitude},`,
+                `${x + w * .5} ${waterY}`,
+                `S ${x + w * .78} ${waterY - waveAmplitude},`,
+                `${x + w} ${waterY}`,
+                `L ${x + w} ${y + h - 18}`,
+                `Q ${x + w} ${y + h} ${x + w - 18} ${y + h}`,
+                `L ${x + 18} ${y + h}`,
+                `Q ${x} ${y + h} ${x} ${y + h - 18}`,
+                "Z"
+            ].join(" ");
+
+            addSvg(rangeVisual, "path", {
+                d: wavePath,
+                fill: "rgb(var(--orb-color))",
+                "fill-opacity": ".68",
+                filter: "drop-shadow(0 0 5px rgba(var(--orb-color), .35))"
+            });
+        }
+
+        addText(rangeVisual, 180, 83, `${data.percent.toFixed(1)}%`);
+        addText(rangeVisual, 180, 162, `${formatRangeNumber(data.current)} / ${formatRangeNumber(data.max)}`);
+    }
+
+    function renderRuler(data) {
+        const left = 27, right = 333, y = 88, w = right - left;
+        const currentX = left + w * data.percent / 100;
+
+        addSvg(rangeVisual, "line", {
+            x1: left, y1: y, x2: right, y2: y,
+            class: "range-track", "stroke-width": 3
+        });
+
+        for (let i = 0; i <= 20; i++) {
+            const tickX = left + w * i / 20;
+            const major = i % 5 === 0;
+            const tickHeight = major ? 22 : 11;
+
+            addSvg(rangeVisual, "line", {
+                x1: tickX, y1: y - tickHeight / 2,
+                x2: tickX, y2: y + tickHeight / 2,
+                stroke: tickX <= currentX ? "rgb(var(--orb-color))" : "rgba(255,255,255,.24)",
+                "stroke-width": major ? 1.5 : 1
+            });
+
+            if (major) {
+                addText(
+                    rangeVisual, tickX, y + 36,
+                    formatRangeNumber(data.min + (data.max - data.min) * i / 20)
+                );
+            }
+        }
+
+        addSvg(rangeVisual, "line", {
+            x1: currentX, y1: y - 29, x2: currentX, y2: y - 13,
+            class: "range-marker"
+        });
+        addSvg(rangeVisual, "circle", { cx: currentX, cy: y - 34, r: 5, class: "range-dot" });
+        addText(rangeVisual, currentX, 34, `${data.percent.toFixed(1)}%`);
+    }
+
+    const rangeRenderers = {
+        gradient: renderGradientBar,
+        gauge: renderGauge,
+        ring: renderRing,
+        segments: renderSegmentedRing,
+        arc: renderArc,
+        blocks: renderBlocks,
+        graph: renderGraph,
+        marker: renderMarker,
+        wave: renderWave,
+        ruler: renderRuler
+    };
+
+    function syncRangeSlider(data) {
+        rangeSlider.min = String(data.min);
+        rangeSlider.max = String(data.max);
+
+        const step = data.span === 0 ? 1 : Math.abs(data.span) / 1000;
+        rangeSlider.step = String(Math.max(step, Number.EPSILON));
+
+        rangeSlider.value = String(Math.max(data.min, Math.min(data.max, data.current)));
+        rangeSliderOutput.textContent = formatRangeNumber(data.current);
+        rangeMinLabel.textContent = formatRangeNumber(data.min);
+        rangeMaxLabel.textContent = formatRangeNumber(data.max);
+    }
+
+    function renderRange() {
+        const data = getRangeData();
+
+        rangePercent.textContent = `${data.percent.toFixed(2)}%`;
+        rangeValueCaption.textContent =
+            `Current: ${formatRangeNumber(data.current)} · Range: ${formatRangeNumber(data.min)}–${formatRangeNumber(data.max)}`;
+
+        syncRangeSlider(data);
+        clearRangeSvg();
+
+        (rangeRenderers[activeRangeStyle] || renderGradientBar)(data);
+
+        rangeNote.textContent = rangeStyleInfo[activeRangeStyle].note;
+
+        rangeStyleButtons.forEach(button => {
+            const selected = button.dataset.rangeStyle === activeRangeStyle;
+            button.classList.toggle("active", selected);
+            button.setAttribute("aria-pressed", String(selected));
+        });
+    }
+
+    rangeSlider.addEventListener("input", () => {
+        rangeCurrentInput.value = rangeSlider.value;
+        renderRange();
+    });
+
+    [rangeMinInput, rangeMaxInput, rangeCurrentInput].forEach(input => {
+        input.addEventListener("input", renderRange);
+        input.addEventListener("change", renderRange);
+    });
+
+    rangeStyleButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            activeRangeStyle = button.dataset.rangeStyle;
+            renderRange();
+        });
+    });
+
+    rangeReset.addEventListener("click", () => {
+        rangeMinInput.value = "0";
+        rangeMaxInput.value = "100";
+        rangeCurrentInput.value = "50";
+        activeRangeStyle = "gradient";
+        renderRange();
+    });
+
+    renderRange();
+
+    window.addEventListener("keydown", event => {
+        if (event.key === "Escape" && overlay.classList.contains("open")) {
+            closeClockTool();
+        }
+    });
+})();
+</script>
+
+<!-- OAi chat integration through Cloudflare Worker. No API key in this file. -->
+<script>
+(() => {
+    "use strict";
+
+    /*
+     * OpenRouter API key must exist only as a Cloudflare Worker Secret:
+     * OPENROUTER_API_KEY
+     *
+     * This frontend sends requests to the Worker, not directly to OpenRouter.
+     */
+    const WORKER_ENDPOINT =
+        "https://viorx-io.koorosh10181391.workers.dev/chat";
+    const MODEL_LABEL = "openai/gpt-4o-mini";
     const REQUEST_TIMEOUT_MS = 30000;
 
     const SYSTEM_PROMPT =
@@ -2581,7 +3593,7 @@ input[type="color"] {
     let isSending = false;
     let conversation = [];
 
-    modelLabel.textContent = OPENROUTER_MODEL;
+    modelLabel.textContent = MODEL_LABEL;
 
     function setStatus(message, state = "ready") {
         statusText.textContent = message;
@@ -2597,10 +3609,7 @@ input[type="color"] {
         category.querySelector(".category-header")
             .setAttribute("aria-expanded", "true");
 
-        window.setTimeout(
-            () => input.focus({ preventScroll: true }),
-            80
-        );
+        window.setTimeout(() => input.focus({ preventScroll: true }), 80);
     }
 
     function closeOai() {
@@ -2616,10 +3625,7 @@ input[type="color"] {
     });
 
     window.addEventListener("keydown", event => {
-        if (
-            event.key === "Escape" &&
-            overlay.classList.contains("open")
-        ) {
+        if (event.key === "Escape" && overlay.classList.contains("open")) {
             closeOai();
         }
     });
@@ -2655,6 +3661,8 @@ input[type="color"] {
         message.append(label, bubble);
         messagesContainer.appendChild(message);
         scrollMessagesToBottom();
+
+        return { message, bubble };
     }
 
     function addTypingIndicator() {
@@ -2693,18 +3701,75 @@ input[type="color"] {
         isSending = busy;
         sendButton.disabled = busy;
         input.disabled = busy;
-        sendButton.title = busy
-            ? "Waiting for response..."
-            : "Send message";
+        sendButton.title = busy ? "Waiting for response..." : "Send message";
 
-        if (busy) {
-            setStatus("Connecting to Cloudflare Worker...", "busy");
+        if (busy) setStatus("Connecting to OAi...", "busy");
+    }
+
+    function explainHttpError(response, payload) {
+        const serverMessage =
+            payload?.error?.message ||
+            payload?.message ||
+            payload?.detail;
+
+        if (response.status === 400) {
+            return "HTTP 400: The Worker rejected the request. Check the Worker request format." +
+                (serverMessage ? ` Details: ${String(serverMessage)}` : "");
         }
+
+        if (response.status === 401) {
+            return "HTTP 401: The Worker or upstream API rejected the request. Check the Worker secret configuration.";
+        }
+
+        if (response.status === 402) {
+            return "HTTP 402: The OpenRouter account may have insufficient credits or a spending limit.";
+        }
+
+        if (response.status === 403) {
+            return "HTTP 403: The request is not permitted. Check the API key permissions and model access." +
+                (serverMessage ? ` Details: ${String(serverMessage)}` : "");
+        }
+
+        if (response.status === 404) {
+            return "HTTP 404: The Worker endpoint was not found. Confirm that the Worker handles POST /chat.";
+        }
+
+        if (response.status === 408) {
+            return "HTTP 408: The request timed out. Try again.";
+        }
+
+        if (response.status === 429) {
+            return "HTTP 429: Rate limit reached. Wait a little and try again.";
+        }
+
+        if (response.status >= 500) {
+            return `The Worker or its upstream provider returned HTTP ${response.status}. Try again later.` +
+                (serverMessage ? ` Details: ${String(serverMessage)}` : "");
+        }
+
+        return `The request failed with HTTP ${response.status}.` +
+            (serverMessage ? ` Details: ${String(serverMessage)}` : "");
+    }
+
+    function explainNetworkError(error) {
+        if (error?.name === "AbortError") {
+            return "The request timed out after 30 seconds. Check your connection and try again.";
+        }
+
+        if (navigator.onLine === false) {
+            return "Your browser reports that it is offline. Reconnect to the internet and try again.";
+        }
+
+        return [
+            "The browser could not read a response from the Cloudflare Worker.",
+            "Check that the Worker is deployed, that POST /chat is implemented, and that CORS allows https://kooroshzq.github.io.",
+            "Open Chrome DevTools (F12), then inspect Console and Network for the exact error."
+        ].join("\n");
     }
 
     async function requestOaiResponse() {
         const requestBody = {
-            model: OPENROUTER_MODEL,
+            model: MODEL_LABEL,
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 ...conversation
@@ -2715,14 +3780,15 @@ input[type="color"] {
         };
 
         const controller = new AbortController();
-
         const timeoutId = window.setTimeout(
             () => controller.abort(),
             REQUEST_TIMEOUT_MS
         );
 
+        let response;
+
         try {
-            const response = await fetch(OPENROUTER_ENDPOINT, {
+            response = await fetch(WORKER_ENDPOINT, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -2731,97 +3797,58 @@ input[type="color"] {
                 signal: controller.signal,
                 cache: "no-store"
             });
-
-            const responseText = await response.text();
-            let data = {};
-
-            try {
-                data = responseText ? JSON.parse(responseText) : {};
-            } catch {
-                data = { message: responseText };
-            }
-
-            if (!response.ok) {
-                const serverError = data?.error;
-                const details =
-                    (typeof serverError === "string" ? serverError : serverError?.message) ||
-                    data?.message ||
-                    data?.detail ||
-                    "";
-
-                if (response.status === 401) {
-                    throw new Error(
-                        "HTTP 401: OpenRouter rejected the API key stored in the Worker Secret."
-                    );
-                }
-
-                if (response.status === 402) {
-                    throw new Error(
-                        "HTTP 402: Check your OpenRouter credits and spending limit."
-                    );
-                }
-
-                if (response.status === 403) {
-                    throw new Error(
-                        "HTTP 403: The Worker origin check or OpenRouter permissions rejected the request."
-                    );
-                }
-
-                if (response.status === 404) {
-                    throw new Error(
-                        "HTTP 404: The Worker /chat route was not found."
-                    );
-                }
-
-                if (response.status === 429) {
-                    throw new Error(
-                        "HTTP 429: Rate limit reached. Please wait and try again."
-                    );
-                }
-
-                throw new Error(
-                    `Request failed with HTTP ${response.status}.` +
-                    (details ? ` Details: ${String(details).slice(0, 400)}` : "")
-                );
-            }
-
-            let answer = data?.choices?.[0]?.message?.content;
-
-            if (Array.isArray(answer)) {
-                answer = answer.map(part => {
-                    if (typeof part === "string") return part;
-
-                    return typeof part?.text === "string"
-                        ? part.text
-                        : "";
-                }).join("");
-            }
-
-            if (typeof answer !== "string" || !answer.trim()) {
-                console.error("Unexpected OAi response:", data);
-                throw new Error("The API returned an empty or unexpected response.");
-            }
-
-            return answer.trim();
         } catch (error) {
-            if (error?.name === "AbortError") {
-                throw new Error(
-                    "The request timed out after 30 seconds. Please try again."
-                );
-            }
+            console.error("OAi Worker network/fetch failure:", {
+                name: error?.name,
+                message: error?.message,
+                endpoint: WORKER_ENDPOINT,
+                pageOrigin: window.location.origin,
+                online: navigator.onLine
+            });
 
-            if (error instanceof TypeError) {
-                console.error("OAi Worker network error:", error);
-
-                throw new Error(
-                    "Could not connect to the Worker. Check its URL, CORS settings, and deployment."
-                );
-            }
-
-            throw error;
+            throw new Error(explainNetworkError(error));
         } finally {
             window.clearTimeout(timeoutId);
         }
+
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch {
+            // The Worker may return a non-JSON error response.
+        }
+
+        if (!response.ok) {
+            console.error("OAi Worker HTTP error:", {
+                status: response.status,
+                response: data
+            });
+
+            throw new Error(explainHttpError(response, data));
+        }
+
+        let answer =
+            data?.choices?.[0]?.message?.content ??
+            data?.reply ??
+            data?.answer ??
+            data?.output;
+
+        if (Array.isArray(answer)) {
+            answer = answer.map(part => {
+                if (typeof part === "string") return part;
+                return typeof part?.text === "string" ? part.text : "";
+            }).join("");
+        }
+
+        if (typeof answer !== "string" || !answer.trim()) {
+            console.error("Unexpected Worker response:", data);
+            throw new Error(
+                "The Worker returned an empty or unexpected response. Check the Worker response format and browser Console."
+            );
+        }
+
+        return answer.trim();
     }
 
     async function sendMessage(text) {
@@ -2831,11 +3858,9 @@ input[type="color"] {
         if (!userText) return;
 
         if (userText.length > 12000) {
-            addMessage(
-                "assistant",
-                "Please keep each message under 12,000 characters.",
-                { error: true }
-            );
+            addMessage("assistant", "Please keep each message under 12,000 characters.", {
+                error: true
+            });
             return;
         }
 
@@ -2854,10 +3879,7 @@ input[type="color"] {
         if (conversation.length > maxConversationMessages) {
             conversation = conversation.slice(-maxConversationMessages);
 
-            while (
-                conversation.length &&
-                conversation[0].role !== "user"
-            ) {
+            while (conversation.length && conversation[0].role !== "user") {
                 conversation.shift();
             }
         }
@@ -2912,17 +3934,13 @@ input[type="color"] {
     input.addEventListener("keydown", event => {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-
-            if (!isSending) {
-                form.requestSubmit();
-            }
+            if (!isSending) form.requestSubmit();
         }
     });
 
     input.addEventListener("input", () => {
         input.style.height = "42px";
-        input.style.height =
-            `${Math.min(input.scrollHeight, 150)}px`;
+        input.style.height = `${Math.min(input.scrollHeight, 150)}px`;
     });
 
     newChatButton.addEventListener("click", () => {
