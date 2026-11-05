@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050407">
-<title>K-dev 0.1</title>
+<title>K-dev 0.2</title>
 
 <style>
 :root {
@@ -3252,6 +3252,715 @@ input[type="color"] {
         transition-duration: .01ms !important;
     }
 }
+
+
+/* =========================================================
+   K-DEV MOTION + UX REFINEMENT
+   Compositor-friendly motion, keyboard clarity and touch polish.
+   ========================================================= */
+
+.app {
+    height: 100vh;
+    height: 100dvh;
+}
+
+/* Keep collapsed accordion controls out of the keyboard tab order. */
+.category-content {
+    visibility: hidden;
+    transition: grid-template-rows .32s cubic-bezier(.22,.7,.25,1),
+                opacity .22s ease,
+                visibility 0s linear .32s;
+}
+
+.category.open .category-content {
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.category-header { min-height: 44px; }
+
+/* Focus rings are deliberately visible against the dark glass surfaces. */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid rgba(var(--orb-color), .9);
+    outline-offset: 3px;
+}
+
+button:disabled { cursor: not-allowed; }
+button:active:not(:disabled) { filter: brightness(1.08); }
+
+.category-item:active:not(:disabled),
+.clock-action:active:not(:disabled),
+.oai-header-button:active:not(:disabled),
+.range-style-option:active:not(:disabled) {
+    transform: scale(.985);
+}
+
+.preset {
+    min-width: 28px;
+    min-height: 28px;
+}
+
+/* Canvas: avoid continuously promoting expensive filter layers. */
+#orbCanvas {
+    will-change: auto;
+    transition: transform 1.05s cubic-bezier(.22,.72,.2,1),
+                opacity .65s ease;
+}
+
+#app.workspace-open[data-workspace] #orbCanvas,
+#app.workspace-closing #orbCanvas {
+    filter: drop-shadow(0 0 18px rgba(var(--orb-color), .42))
+           drop-shadow(0 0 58px rgba(var(--orb-color), .18)) !important;
+    will-change: transform, opacity;
+}
+
+/* Full-screen surfaces animate transform + opacity instead of clip-path + blur. */
+.clock-overlay,
+.oai-overlay {
+    will-change: auto;
+}
+
+#app.workspace-opening .clock-overlay,
+#app.workspace-opening .oai-overlay,
+#app.workspace-closing .clock-overlay,
+#app.workspace-closing .oai-overlay {
+    will-change: transform, opacity;
+}
+
+@keyframes deviceIrisIn {
+    from { opacity: 0; transform: scale(.94); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes deviceIrisOut {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(.96); }
+}
+
+@keyframes worldSweepIn {
+    from { opacity: 0; transform: translateX(-2.5%) scale(.99); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes worldSweepOut {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to   { opacity: 0; transform: translateX(-2%) scale(.99); }
+}
+
+@keyframes timerLiquidIn {
+    from { opacity: 0; transform: scale(.965,.985); }
+    70%  { opacity: 1; transform: scale(1.008,1.004); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes timerLiquidOut {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(.975,.985); }
+}
+
+@keyframes stopwatchPrismIn {
+    from { opacity: 0; transform: translateY(1.5%); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes stopwatchPrismOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(1.5%); }
+}
+
+@keyframes rangeRibbonIn {
+    from { opacity: 0; transform: scaleX(.97); }
+    to   { opacity: 1; transform: scaleX(1); }
+}
+@keyframes rangeRibbonOut {
+    from { opacity: 1; transform: scaleX(1); }
+    to   { opacity: 0; transform: scaleX(.97); }
+}
+
+@keyframes oaiGlassUnfoldIn {
+    from { opacity: 0; transform: translateY(1%) scale(.985); }
+    70%  { opacity: 1; transform: translateY(0) scale(1.003); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes oaiGlassUnfoldOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(1%) scale(.985); }
+}
+
+/* Content entrances no longer animate CSS blur on large text and panels. */
+@keyframes deviceDigitsIn {
+    from { opacity: 0; transform: translateY(12px) scale(.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes worldCoordinatesIn {
+    from { opacity: 0; transform: translateX(22px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes timerControlsIn {
+    from { opacity: 0; transform: translateY(16px) scale(.985); }
+    70%  { opacity: 1; transform: translateY(-2px) scale(1.002); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes stopwatchDialIn {
+    from { opacity: 0; transform: rotate(-5deg) scale(.985); }
+    to   { opacity: 1; transform: rotate(0) scale(1); }
+}
+@keyframes rangeLinesIn {
+    from { opacity: 0; transform: scaleX(.94); }
+    to   { opacity: 1; transform: scaleX(1); }
+}
+@keyframes oaiComposerIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.clock-timer-progress { transition: stroke-dashoffset .25s linear; }
+
+@media (prefers-reduced-motion: reduce) {
+    #orbCanvas,
+    #app.workspace-open[data-workspace] #orbCanvas,
+    #app.workspace-closing #orbCanvas {
+        transition: none !important;
+        filter: none !important;
+    }
+
+    .clock-overlay,
+    .oai-overlay {
+        will-change: auto !important;
+    }
+}
+
+
+/* =========================================================
+   K-DEV MOTION STUDIO
+   Expressive, layered transitions with compositor-friendly motion.
+   ========================================================= */
+
+:root {
+    --motion-spring: cubic-bezier(.18, .92, .22, 1);
+    --motion-soft: cubic-bezier(.22, .72, .18, 1);
+    --motion-exit: cubic-bezier(.66, 0, .84, .18);
+}
+
+/* A little more dimensionality without adding permanent visual noise. */
+.experience::before {
+    animation: solarGlow 8.5s cubic-bezier(.45, 0, .55, 1) infinite;
+}
+
+.experience::after {
+    animation: nebulaRotate 68s linear infinite;
+    transform-origin: 50% 50%;
+}
+
+.intro h1 {
+    animation: kdevHeadlineIn 1.05s var(--motion-spring) both;
+}
+
+.intro p {
+    animation: kdevSublineIn .9s .14s var(--motion-spring) both;
+}
+
+.launch-button {
+    isolation: isolate;
+    overflow: hidden;
+    animation: kdevLaunchIn .9s .2s var(--motion-spring) both;
+}
+
+.launch-button::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(112deg,
+        transparent 15%,
+        rgba(255,255,255,.12) 47%,
+        rgba(var(--orb-color), .14) 56%,
+        transparent 82%);
+    transform: translateX(-125%);
+    opacity: 0;
+}
+
+.launch-button:hover::before {
+    opacity: 1;
+    animation: kdevButtonSheen .85s var(--motion-soft) both;
+}
+
+/* Accordion items arrive in a deliberate, short cascade. */
+.category.open .category-item {
+    animation: kdevNavItemIn .46s var(--motion-spring) both;
+}
+
+.category.open .category-item:nth-child(2) { animation-delay: .045s; }
+.category.open .category-item:nth-child(3) { animation-delay: .09s; }
+.category.open .category-item:nth-child(4) { animation-delay: .135s; }
+.category.open .category-item:nth-child(5) { animation-delay: .18s; }
+.category.open .category-item:nth-child(6) { animation-delay: .225s; }
+
+.category-item {
+    transform-origin: 88% 50%;
+    transition:
+        background .28s ease,
+        border-color .28s ease,
+        transform .42s var(--motion-spring),
+        box-shadow .32s ease;
+}
+
+.color-panel.open .panel-heading,
+.color-panel.open .color-row,
+.color-panel.open .presets {
+    animation: kdevPanelContentIn .48s var(--motion-spring) both;
+}
+
+.color-panel.open .color-row { animation-delay: .055s; }
+.color-panel.open .presets { animation-delay: .11s; }
+
+/* Full-screen workspace surfaces. */
+.clock-overlay,
+.oai-overlay {
+    transform-origin: 50% 48%;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.clock-overlay::before,
+.oai-overlay::before {
+    transform-origin: 50% 50%;
+    will-change: transform, opacity;
+}
+
+.clock-overlay.open::before,
+.oai-overlay.open::before {
+    animation: kdevAtmosphereDrift 22s ease-in-out infinite alternate;
+}
+
+.clock-overlay::after,
+.oai-overlay::after {
+    width: 48%;
+    left: -60%;
+    filter: none;
+    opacity: 0;
+    background: linear-gradient(105deg,
+        transparent 0%,
+        rgba(255,255,255,.018) 28%,
+        rgba(255,255,255,.16) 49%,
+        rgba(var(--orb-color), .08) 55%,
+        rgba(255,255,255,.025) 66%,
+        transparent 100%);
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+}
+
+/* DEVICE: a calm, dimensional lens opening. */
+@keyframes deviceIrisIn {
+    0%   { opacity: 0; transform: translate3d(0, 1.8%, 0) scale(.925) rotateX(2.2deg) rotateZ(-.55deg); }
+    54%  { opacity: 1; transform: translate3d(0, -.35%, 0) scale(1.012) rotateX(-.25deg) rotateZ(.08deg); }
+    78%  { opacity: 1; transform: translate3d(0, .12%, 0) scale(.997) rotateX(0) rotateZ(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotateX(0) rotateZ(0); }
+}
+
+@keyframes deviceIrisOut {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotateX(0); }
+    42%  { opacity: .82; transform: translate3d(0, -.5%, 0) scale(.985) rotateX(1deg); }
+    100% { opacity: 0; transform: translate3d(0, 1.2%, 0) scale(.93) rotateX(2deg); }
+}
+
+/* WORLD: a subtle dimensional glide from the side. */
+@keyframes worldSweepIn {
+    0%   { opacity: 0; transform: perspective(1500px) translate3d(3.2%, 0, 0) rotateY(4deg) scale(.965); }
+    62%  { opacity: 1; transform: perspective(1500px) translate3d(-.55%, 0, 0) rotateY(-.65deg) scale(1.008); }
+    82%  { opacity: 1; transform: perspective(1500px) translate3d(.18%, 0, 0) rotateY(.18deg) scale(.999); }
+    100% { opacity: 1; transform: perspective(1500px) translate3d(0, 0, 0) rotateY(0) scale(1); }
+}
+
+@keyframes worldSweepOut {
+    0%   { opacity: 1; transform: perspective(1500px) translate3d(0, 0, 0) rotateY(0) scale(1); }
+    48%  { opacity: .82; transform: perspective(1500px) translate3d(1.2%, 0, 0) rotateY(1.2deg) scale(.99); }
+    100% { opacity: 0; transform: perspective(1500px) translate3d(4%, 0, 0) rotateY(4deg) scale(.965); }
+}
+
+/* TIMER: a soft liquid expansion with one restrained overshoot. */
+@keyframes timerLiquidIn {
+    0%   { opacity: 0; transform: scale(.875, .945) rotateX(6deg) translate3d(0, 1.2%, 0); }
+    58%  { opacity: 1; transform: scale(1.018, 1.012) rotateX(-.5deg) translate3d(0, -.35%, 0); }
+    82%  { opacity: 1; transform: scale(.996, .998) rotateX(0) translate3d(0, .12%, 0); }
+    100% { opacity: 1; transform: scale(1) rotateX(0) translate3d(0, 0, 0); }
+}
+
+@keyframes timerLiquidOut {
+    0%   { opacity: 1; transform: scale(1) rotateX(0); }
+    42%  { opacity: .8; transform: scale(.985, .99) rotateX(-1deg); }
+    100% { opacity: 0; transform: scale(.945, .965) rotateX(3deg) translate3d(0, 1.4%, 0); }
+}
+
+/* STOPWATCH: a glass panel unrolling vertically. */
+@keyframes stopwatchPrismIn {
+    0%   { opacity: 0; transform: perspective(1200px) translate3d(0, 4%, 0) rotateX(-6deg) scale(.98); }
+    62%  { opacity: 1; transform: perspective(1200px) translate3d(0, -.45%, 0) rotateX(.5deg) scale(1.008); }
+    84%  { opacity: 1; transform: perspective(1200px) translate3d(0, .12%, 0) rotateX(0) scale(.999); }
+    100% { opacity: 1; transform: perspective(1200px) translate3d(0, 0, 0) rotateX(0) scale(1); }
+}
+
+@keyframes stopwatchPrismOut {
+    0%   { opacity: 1; transform: perspective(1200px) translate3d(0, 0, 0) rotateX(0) scale(1); }
+    48%  { opacity: .82; transform: perspective(1200px) translate3d(0, 1.5%, 0) rotateX(-2deg) scale(.99); }
+    100% { opacity: 0; transform: perspective(1200px) translate3d(0, 4.5%, 0) rotateX(-6deg) scale(.975); }
+}
+
+/* RANGE: a horizontal ribbon of light settling into place. */
+@keyframes rangeRibbonIn {
+    0%   { opacity: 0; transform: translate3d(-1.4%, 0, 0) scaleX(.86) scaleY(.985) skewX(-1.8deg); }
+    58%  { opacity: 1; transform: translate3d(.25%, 0, 0) scaleX(1.018) scaleY(1.004) skewX(.35deg); }
+    82%  { opacity: 1; transform: translate3d(-.08%, 0, 0) scaleX(.998) scaleY(1) skewX(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scaleX(1) scaleY(1) skewX(0); }
+}
+
+@keyframes rangeRibbonOut {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0) scaleX(1) scaleY(1); }
+    42%  { opacity: .82; transform: translate3d(-.7%, 0, 0) scaleX(.985) scaleY(.99) skewX(-.7deg); }
+    100% { opacity: 0; transform: translate3d(-2%, 0, 0) scaleX(.91) scaleY(.975) skewX(-2deg); }
+}
+
+/* OAi: a layered glass sheet unfolding toward the viewer. */
+@keyframes oaiGlassUnfoldIn {
+    0%   { opacity: 0; transform: perspective(1400px) translate3d(0, 3.2%, 0) rotateX(4.5deg) scale(.955); }
+    58%  { opacity: 1; transform: perspective(1400px) translate3d(0, -.45%, 0) rotateX(-.55deg) scale(1.012); }
+    82%  { opacity: 1; transform: perspective(1400px) translate3d(0, .12%, 0) rotateX(0) scale(.999); }
+    100% { opacity: 1; transform: perspective(1400px) translate3d(0, 0, 0) rotateX(0) scale(1); }
+}
+
+@keyframes oaiGlassUnfoldOut {
+    0%   { opacity: 1; transform: perspective(1400px) translate3d(0, 0, 0) rotateX(0) scale(1); }
+    48%  { opacity: .82; transform: perspective(1400px) translate3d(0, 1.3%, 0) rotateX(1.5deg) scale(.99); }
+    100% { opacity: 0; transform: perspective(1400px) translate3d(0, 3.6%, 0) rotateX(4deg) scale(.955); }
+}
+
+/* Reflections sweep across the glass, rather than blurring the whole screen. */
+@keyframes deviceGlassRefraction {
+    0%   { transform: translate3d(-115%, 0, 0) skewX(-13deg) scaleY(.82); opacity: 0; }
+    24%  { opacity: .78; }
+    100% { transform: translate3d(265%, 0, 0) skewX(-13deg) scaleY(1.08); opacity: 0; }
+}
+@keyframes worldGlassSweep {
+    0%   { transform: translate3d(-145%, 0, 0) skewX(-18deg); opacity: 0; }
+    20%  { opacity: .72; }
+    100% { transform: translate3d(280%, 0, 0) skewX(-18deg); opacity: 0; }
+}
+@keyframes timerLiquidGlint {
+    0%   { transform: translate3d(-105%, 0, 0) scaleY(.35) skewX(14deg); opacity: 0; }
+    32%  { opacity: .72; }
+    100% { transform: translate3d(250%, 0, 0) scaleY(1.35) skewX(-10deg); opacity: 0; }
+}
+@keyframes stopwatchPrismGlint {
+    0%   { transform: translate3d(-130%, 0, 0) rotate(-2deg) skewX(-14deg); opacity: 0; }
+    28%  { opacity: .78; }
+    100% { transform: translate3d(285%, 0, 0) rotate(2deg) skewX(-14deg); opacity: 0; }
+}
+@keyframes rangeRibbonGlint {
+    0%   { transform: translate3d(-145%, 0, 0) scaleY(.3) skewX(-12deg); opacity: 0; }
+    34%  { opacity: .76; }
+    100% { transform: translate3d(285%, 0, 0) scaleY(1.25) skewX(-12deg); opacity: 0; }
+}
+@keyframes oaiGlassGlint {
+    0%   { transform: translate3d(-155%, 0, 0) skewX(-15deg); opacity: 0; }
+    25%  { opacity: .82; }
+    100% { transform: translate3d(300%, 0, 0) skewX(-15deg); opacity: 0; }
+}
+
+@keyframes kdevAtmosphereDrift {
+    from { transform: translate3d(-1.2%, .7%, 0) scale(1.02) rotate(-1deg); opacity: .82; }
+    to   { transform: translate3d(1.4%, -.8%, 0) scale(1.08) rotate(1deg); opacity: 1; }
+}
+
+/* Content motion: each workspace has its own visual rhythm. */
+@keyframes deviceDigitsIn {
+    0%   { opacity: 0; transform: translate3d(0, 20px, 0) scale(.91); }
+    68%  { opacity: 1; transform: translate3d(0, -3px, 0) scale(1.014); }
+    86%  { opacity: 1; transform: translate3d(0, 1px, 0) scale(.998); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes worldCoordinatesIn {
+    0%   { opacity: 0; transform: translate3d(34px, 0, 0) rotateY(-7deg) scale(.965); }
+    70%  { opacity: 1; transform: translate3d(-3px, 0, 0) rotateY(1deg) scale(1.008); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) rotateY(0) scale(1); }
+}
+
+@keyframes timerControlsIn {
+    0%   { opacity: 0; transform: translate3d(0, 22px, 0) scale(.89, .96) rotateX(3deg); }
+    62%  { opacity: 1; transform: translate3d(0, -4px, 0) scale(1.018, 1.008) rotateX(-.3deg); }
+    84%  { opacity: 1; transform: translate3d(0, 1px, 0) scale(.998) rotateX(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotateX(0); }
+}
+
+@keyframes stopwatchDialIn {
+    0%   { opacity: 0; transform: translate3d(0, 15px, 0) rotate(-7deg) scale(.86); }
+    68%  { opacity: 1; transform: translate3d(0, -2px, 0) rotate(1.4deg) scale(1.018); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0) scale(1); }
+}
+
+@keyframes rangeLinesIn {
+    0%   { opacity: 0; transform: translate3d(0, 12px, 0) scaleX(.82); }
+    72%  { opacity: 1; transform: translate3d(0, -2px, 0) scaleX(1.012); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scaleX(1); }
+}
+
+@keyframes oaiComposerIn {
+    0%   { opacity: 0; transform: translate3d(0, 22px, 0) scale(.97); }
+    72%  { opacity: 1; transform: translate3d(0, -3px, 0) scale(1.008); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes kdevHeadlineIn {
+    0%   { opacity: 0; transform: translate3d(0, 22px, 0); letter-spacing: -.06em; }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); letter-spacing: -1.8px; }
+}
+@keyframes kdevSublineIn {
+    from { opacity: 0; transform: translate3d(0, 12px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes kdevLaunchIn {
+    0%   { opacity: 0; transform: translate3d(-50%, 18px, 0) scale(.94); }
+    72%  { opacity: 1; transform: translate3d(-50%, -2px, 0) scale(1.025); }
+    100% { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); }
+}
+@keyframes kdevButtonSheen {
+    0%   { transform: translateX(-125%); }
+    100% { transform: translateX(125%); }
+}
+@keyframes kdevNavItemIn {
+    from { opacity: 0; transform: translate3d(10px, 7px, 0) scale(.97); }
+    72%  { opacity: 1; transform: translate3d(-2px, -1px, 0) scale(1.006); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes kdevPanelContentIn {
+    from { opacity: 0; transform: translate3d(0, 9px, 0) scale(.985); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes oaiMessageIn {
+    from { opacity: 0; transform: translate3d(0, 10px, 0) scale(.985); }
+    72%  { opacity: 1; transform: translate3d(0, -1px, 0) scale(1.002); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes kdevWelcomeMarkIn {
+    0%   { opacity: 0; transform: rotate(-18deg) scale(.72); }
+    68%  { opacity: 1; transform: rotate(5deg) scale(1.06); }
+    100% { opacity: 1; transform: rotate(0) scale(1); }
+}
+@keyframes kdevLapIn {
+    from { opacity: 0; transform: translate3d(0, 8px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* The existing per-workspace timings now have a more expressive arc. */
+#app.workspace-opening[data-workspace="device"] .clock-overlay.open { animation-duration: 1.18s; animation-timing-function: var(--motion-spring); }
+#app.workspace-opening[data-workspace="world"] .clock-overlay.open { animation-duration: 1.22s; animation-timing-function: var(--motion-spring); }
+#app.workspace-opening[data-workspace="timer"] .clock-overlay.open { animation-duration: 1.26s; animation-timing-function: var(--motion-spring); }
+#app.workspace-opening[data-workspace="stopwatch"] .clock-overlay.open { animation-duration: 1.2s; animation-timing-function: var(--motion-spring); }
+#app.workspace-opening[data-workspace="range"] .clock-overlay.open { animation-duration: 1.22s; animation-timing-function: var(--motion-spring); }
+#app.workspace-opening[data-workspace="oai"] .oai-overlay.open { animation-duration: 1.28s; animation-timing-function: var(--motion-spring); }
+
+#app.workspace-closing[data-workspace] .clock-overlay,
+#app.workspace-closing[data-workspace="oai"] .oai-overlay {
+    animation-duration: .82s;
+    animation-timing-function: var(--motion-exit);
+}
+
+#app.workspace-opening[data-workspace="device"] .clock-tool[data-clock-panel="device"].active .clock-display {
+    animation-duration: .92s;
+}
+#app.workspace-opening[data-workspace="world"] .clock-tool[data-clock-panel="world"].active .clock-world-card {
+    animation-duration: .98s;
+}
+#app.workspace-opening[data-workspace="timer"] .clock-tool[data-clock-panel="timer"].active .clock-timer-visual {
+    animation-duration: 1.02s;
+}
+#app.workspace-opening[data-workspace="stopwatch"] .clock-tool[data-clock-panel="stopwatch"].active .clock-stopwatch-display {
+    animation-duration: .96s;
+}
+#app.workspace-opening[data-workspace="range"] .clock-tool[data-clock-panel="range"].active .range-summary {
+    animation-duration: .98s;
+}
+#app.workspace-opening[data-workspace="oai"] .oai-welcome-symbol {
+    animation: kdevWelcomeMarkIn .9s .35s var(--motion-spring) both;
+}
+
+/* Additional staggered pieces: enough rhythm to feel designed, not busy. */
+#app.workspace-opening[data-workspace="device"] .clock-tool[data-clock-panel="device"].active .clock-eyebrow {
+    animation: kdevSublineIn .65s .08s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="world"] .clock-tool[data-clock-panel="world"].active .clock-world-city {
+    animation: kdevSublineIn .72s .12s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="world"] .clock-tool[data-clock-panel="world"].active .clock-world-difference {
+    animation: kdevSublineIn .72s .28s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="timer"] .clock-tool[data-clock-panel="timer"].active .clock-inputs {
+    animation-delay: .24s;
+}
+#app.workspace-opening[data-workspace="timer"] .clock-tool[data-clock-panel="timer"].active .clock-actions {
+    animation: kdevSublineIn .72s .38s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="stopwatch"] .clock-tool[data-clock-panel="stopwatch"].active .clock-actions {
+    animation: kdevSublineIn .7s .3s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="stopwatch"] .clock-tool[data-clock-panel="stopwatch"].active .clock-laps {
+    animation-delay: .34s;
+}
+#app.workspace-opening[data-workspace="range"] .clock-tool[data-clock-panel="range"].active .range-controls {
+    animation: worldCoordinatesIn .78s .24s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="range"] .clock-tool[data-clock-panel="range"].active .range-slider-wrap {
+    animation: kdevSublineIn .7s .32s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="range"] .clock-tool[data-clock-panel="range"].active .range-style-grid {
+    animation: kdevSublineIn .72s .42s var(--motion-spring) both;
+}
+#app.workspace-opening[data-workspace="oai"] .oai-status-row {
+    animation: kdevSublineIn .68s .2s var(--motion-spring) both;
+}
+
+.oai-message { animation-duration: .38s; animation-timing-function: var(--motion-spring); }
+.clock-lap-row { animation: kdevLapIn .34s var(--motion-spring) both; }
+
+/* Refined interactive motion — slightly tactile, never bouncy for its own sake. */
+.clock-action,
+.range-style-option,
+.oai-header-button,
+.oai-send,
+.clock-close,
+.category-header,
+.preset {
+    transition-timing-function: var(--motion-spring);
+}
+
+.clock-action:hover:not(:disabled),
+.range-style-option:hover:not(:disabled) {
+    transform: translate3d(0, -3px, 0) scale(1.018);
+}
+
+.oai-send:hover:not(:disabled) {
+    transform: translate3d(0, -2px, 0) scale(1.035) rotate(-2deg);
+}
+
+.preset:hover { transform: scale(1.13); }
+
+@media (hover: none) {
+    .clock-action:hover:not(:disabled),
+    .range-style-option:hover:not(:disabled),
+    .oai-send:hover:not(:disabled),
+    .preset:hover { transform: none; }
+}
+
+@media (max-width: 600px) {
+    .clock-overlay,
+    .oai-overlay { transform-origin: 50% 52%; }
+
+    #app.workspace-opening[data-workspace="world"] .clock-overlay.open,
+    #app.workspace-opening[data-workspace="oai"] .oai-overlay.open {
+        animation-duration: 1.05s;
+    }
+
+    .clock-overlay::after,
+    .oai-overlay::after { width: 64%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .experience::before,
+    .experience::after,
+    .clock-overlay.open::before,
+    .oai-overlay.open::before {
+        animation: none !important;
+    }
+
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+
+
+/* =========================================================
+   K-DEV 0.2 — SHARED ORB / WORKSPACE TRANSITIONS
+   The original orb travels into the exact visual anchor of each tool.
+   ========================================================= */
+#app.workspace-morphing .experience {
+    z-index: 110;
+    pointer-events: none;
+    background: transparent !important;
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#app.workspace-morphing .experience::before,
+#app.workspace-morphing .experience::after {
+    opacity: 0 !important;
+    animation: none !important;
+    filter: none !important;
+}
+
+#app.workspace-morphing #ambientCanvas {
+    opacity: 0 !important;
+}
+
+#app.workspace-morphing #orbCanvas {
+    z-index: 2;
+    opacity: 1 !important;
+    filter:
+        drop-shadow(0 0 18px rgba(var(--orb-color), .72))
+        drop-shadow(0 0 48px rgba(var(--orb-color), .38)) !important;
+    transition: none !important;
+    will-change: transform, opacity;
+}
+
+#app.workspace-morphing .close-button,
+#app.workspace-morphing .hud {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: none !important;
+}
+
+#app.workspace-morphing .clock-overlay.open,
+#app.workspace-morphing .oai-overlay.open {
+    animation: none !important;
+    clip-path: none !important;
+    filter: none !important;
+    transition: none !important;
+}
+
+#app.workspace-morphing .clock-overlay::before,
+#app.workspace-morphing .oai-overlay::before,
+#app.workspace-morphing .clock-overlay::after,
+#app.workspace-morphing .oai-overlay::after {
+    animation: none !important;
+}
+
+#app.workspace-morphing .clock-window-header,
+#app.workspace-morphing .clock-tool.active > *,
+#app.workspace-morphing .oai-header,
+#app.workspace-morphing .oai-status-row,
+#app.workspace-morphing .oai-composer-wrap,
+#app.workspace-morphing .oai-welcome h3,
+#app.workspace-morphing .oai-welcome p {
+    animation: none !important;
+}
+
+#app.workspace-morphing .clock-tool:not(.active) {
+    visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #app.workspace-morphing .experience {
+        z-index: auto;
+    }
+}
+
 </style>
 </head>
 
@@ -3262,8 +3971,8 @@ input[type="color"] {
     <header class="topbar">
         <div class="brand">
             <span class="brand-mark"></span>
-            <span>K-DEV 0.1</span>
-            <span class="version">ORB 0.1</span>
+            <span>K-DEV 2</span>
+            <span class="version">ORB 0.2</span>
         </div>
 
         <nav class="nav-categories" aria-label="Main categories">
@@ -3738,12 +4447,14 @@ input[type="color"] {
         app.classList.add("launched");
         experience.classList.add("active");
         resize();
+        startAnimationLoops();
     }
 
     function closeExperience() {
         app.classList.remove("launched");
         experience.classList.remove("active");
         setPanelOpen(false);
+        stopAnimationLoops();
     }
 
     openButton.addEventListener("click", openExperience);
@@ -3792,22 +4503,37 @@ input[type="color"] {
     });
 
     let gl = null;
+    let ambientRaf = null;
+    let orbRaf = null;
+    let animationActive = false;
+    let lastAmbientFrame = 0;
+    let ambientHasDrawn = false;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function resize() {
         const rect = experience.getBoundingClientRect();
 
         width = Math.max(1, rect.width);
         height = Math.max(1, rect.height);
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const isSmallScreen = window.matchMedia("(max-width: 600px)").matches;
+        dpr = Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.35 : 1.65);
 
-        ambientCanvas.width = Math.round(width * dpr);
-        ambientCanvas.height = Math.round(height * dpr);
+        const ambientWidth = Math.max(1, Math.round(width * dpr));
+        const ambientHeight = Math.max(1, Math.round(height * dpr));
+        const orbWidth = Math.max(1, Math.round((orbCanvas.clientWidth || orbCanvas.offsetWidth || 1) * dpr));
+        const orbHeight = Math.max(1, Math.round((orbCanvas.clientHeight || orbCanvas.offsetHeight || 1) * dpr));
+
+        if (ambientCanvas.width !== ambientWidth) ambientCanvas.width = ambientWidth;
+        if (ambientCanvas.height !== ambientHeight) ambientCanvas.height = ambientHeight;
+        if (orbCanvas.width !== orbWidth) orbCanvas.width = orbWidth;
+        if (orbCanvas.height !== orbHeight) orbCanvas.height = orbHeight;
+
         ambientCanvas.style.width = width + "px";
         ambientCanvas.style.height = height + "px";
-
         ambientCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         if (gl) gl.viewport(0, 0, orbCanvas.width, orbCanvas.height);
+        ambientHasDrawn = false;
     }
 
     window.addEventListener("resize", resize);
@@ -3822,12 +4548,29 @@ input[type="color"] {
     }));
 
     function drawAmbient(time) {
-        requestAnimationFrame(drawAmbient);
+        if (!animationActive || document.hidden) {
+            ambientRaf = null;
+            return;
+        }
 
-        const t = time * .0001;
+        if (prefersReducedMotion && ambientHasDrawn) {
+            ambientRaf = null;
+            return;
+        }
 
-        pointerX += (targetX - pointerX) * .025;
-        pointerY += (targetY - pointerY) * .025;
+        const frameInterval = 1000 / 30;
+        if (!prefersReducedMotion && time - lastAmbientFrame < frameInterval) {
+            ambientRaf = requestAnimationFrame(drawAmbient);
+            return;
+        }
+
+        const delta = lastAmbientFrame ? Math.min(80, time - lastAmbientFrame) : frameInterval;
+        lastAmbientFrame = time;
+        const t = prefersReducedMotion ? 0 : time * .0001;
+        const pointerEase = 1 - Math.pow(.975, delta / (1000 / 60));
+
+        pointerX += (targetX - pointerX) * pointerEase;
+        pointerY += (targetY - pointerY) * pointerEase;
 
         ambientCtx.clearRect(0, 0, width, height);
 
@@ -3908,6 +4651,13 @@ input[type="color"] {
 
         ambientCtx.fillStyle = vignette;
         ambientCtx.fillRect(0, 0, width, height);
+        ambientHasDrawn = true;
+
+        if (!prefersReducedMotion && animationActive && !document.hidden) {
+            ambientRaf = requestAnimationFrame(drawAmbient);
+        } else {
+            ambientRaf = null;
+        }
     }
 
     /* Original WebGL Orb shader */
@@ -4125,15 +4875,9 @@ input[type="color"] {
     gl.clearColor(0, 0, 0, 0);
 
     function render(time) {
-        requestAnimationFrame(render);
-
-        const rect = orbCanvas.getBoundingClientRect();
-        const pixelWidth = Math.max(1, Math.round(rect.width * dpr));
-        const pixelHeight = Math.max(1, Math.round(rect.height * dpr));
-
-        if (orbCanvas.width !== pixelWidth || orbCanvas.height !== pixelHeight) {
-            orbCanvas.width = pixelWidth;
-            orbCanvas.height = pixelHeight;
+        if (!animationActive || document.hidden) {
+            orbRaf = null;
+            return;
         }
 
         gl.viewport(0, 0, orbCanvas.width, orbCanvas.height);
@@ -4141,18 +4885,56 @@ input[type="color"] {
         gl.useProgram(program);
 
         gl.uniform2f(resolutionLocation, orbCanvas.width, orbCanvas.height);
-        gl.uniform1f(timeLocation, time * .001);
+        gl.uniform1f(timeLocation, prefersReducedMotion ? 0 : time * .001);
         gl.uniform2f(mouseLocation, pointerX, pointerY);
         gl.uniform3f(colorLocation, rgb[0] / 255, rgb[1] / 255, rgb[2] / 255);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+        if (!prefersReducedMotion && animationActive && !document.hidden) {
+            orbRaf = requestAnimationFrame(render);
+        } else {
+            orbRaf = null;
+        }
     }
+
+    function startAnimationLoops() {
+        if (animationActive || document.hidden || !gl) return;
+
+        animationActive = true;
+        lastAmbientFrame = 0;
+        ambientHasDrawn = false;
+        resize();
+        ambientRaf = requestAnimationFrame(drawAmbient);
+        orbRaf = requestAnimationFrame(render);
+    }
+
+    function stopAnimationLoops() {
+        animationActive = false;
+
+        if (ambientRaf !== null) {
+            cancelAnimationFrame(ambientRaf);
+            ambientRaf = null;
+        }
+
+        if (orbRaf !== null) {
+            cancelAnimationFrame(orbRaf);
+            orbRaf = null;
+        }
+    }
+
+    window.KDevOrb = {
+        start: startAnimationLoops,
+        stop: stopAnimationLoops
+    };
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopAnimationLoops();
+        else if (experience.classList.contains("active")) startAnimationLoops();
+    });
 
     setColor("#7c3cff");
     resize();
-
-    requestAnimationFrame(drawAmbient);
-    requestAnimationFrame(render);
 })();
 </script>
 
@@ -4197,6 +4979,10 @@ input[type="color"] {
     }
 
     function closeClockTool() {
+        if (window.KDevWorkspace?.close) {
+            window.KDevWorkspace.close();
+            return;
+        }
         overlay.classList.remove("open");
         overlay.setAttribute("aria-hidden", "true");
         toolButtons.forEach(button => button.classList.remove("active"));
@@ -4239,7 +5025,7 @@ input[type="color"] {
     }
 
     updateDeviceClock();
-    setInterval(updateDeviceClock, 250);
+    setInterval(updateDeviceClock, 1000);
 
     /* World clock */
     const worldCity = document.getElementById("worldCity");
@@ -4444,7 +5230,7 @@ input[type="color"] {
         timerStart.textContent = "Running";
 
         stopTimerInterval();
-        timerInterval = setInterval(tickTimer, 50);
+        timerInterval = setInterval(tickTimer, 250);
         tickTimer();
     }
 
@@ -4515,7 +5301,7 @@ input[type="color"] {
     let stopwatchRunning = false;
     let stopwatchStartedAt = 0;
     let stopwatchElapsedMs = 0;
-    let stopwatchInterval = null;
+    let stopwatchRaf = null;
     let stopwatchLaps = [];
 
     function getStopwatchElapsed() {
@@ -4543,6 +5329,23 @@ input[type="color"] {
         const formatted = formatStopwatch(getStopwatchElapsed());
         stopwatchMain.textContent = formatted.main;
         stopwatchCentiseconds.textContent = "." + formatted.centiseconds;
+    }
+
+    function stopStopwatchFrames() {
+        if (stopwatchRaf !== null) {
+            cancelAnimationFrame(stopwatchRaf);
+            stopwatchRaf = null;
+        }
+    }
+
+    function tickStopwatchFrame() {
+        if (!stopwatchRunning) {
+            stopwatchRaf = null;
+            return;
+        }
+
+        updateStopwatchDisplay();
+        stopwatchRaf = requestAnimationFrame(tickStopwatchFrame);
     }
 
     function renderLaps() {
@@ -4581,8 +5384,9 @@ input[type="color"] {
         stopwatchStatus.textContent = "RUNNING";
         stopwatchStart.textContent = "Pause";
 
-        if (stopwatchInterval !== null) clearInterval(stopwatchInterval);
-        stopwatchInterval = setInterval(updateStopwatchDisplay, 10);
+        stopStopwatchFrames();
+        updateStopwatchDisplay();
+        stopwatchRaf = requestAnimationFrame(tickStopwatchFrame);
     }
 
     function pauseStopwatch() {
@@ -4591,10 +5395,7 @@ input[type="color"] {
         stopwatchElapsedMs += performance.now() - stopwatchStartedAt;
         stopwatchRunning = false;
 
-        if (stopwatchInterval !== null) {
-            clearInterval(stopwatchInterval);
-            stopwatchInterval = null;
-        }
+        stopStopwatchFrames();
 
         stopwatchStatus.textContent = "PAUSED";
         stopwatchStart.textContent = "Resume";
@@ -4607,10 +5408,7 @@ input[type="color"] {
         stopwatchElapsedMs = 0;
         stopwatchStartedAt = 0;
 
-        if (stopwatchInterval !== null) {
-            clearInterval(stopwatchInterval);
-            stopwatchInterval = null;
-        }
+        stopStopwatchFrames();
 
         stopwatchLaps = [];
 
@@ -5222,10 +6020,14 @@ input[type="color"] {
         category.querySelector(".category-header")
             .setAttribute("aria-expanded", "true");
 
-        window.setTimeout(() => input.focus({ preventScroll: true }), 250);
+        /* The workspace controller owns focus placement and restoration. */
     }
 
     function closeOai() {
+        if (window.KDevWorkspace?.close) {
+            window.KDevWorkspace.close();
+            return;
+        }
         overlay.classList.remove("open");
         overlay.setAttribute("aria-hidden", "true");
     }
@@ -5597,29 +6399,73 @@ input[type="color"] {
 })();
 </script>
 
-<!-- UNIQUE WORKSPACE TRANSITION CONTROLLER -->
+<!-- UNIQUE WORKSPACE TRANSITION CONTROLLER — SHARED ELEMENT MORPH -->
 <script>
 (() => {
     "use strict";
 
     const app = document.getElementById("app");
     const experience = document.getElementById("experience");
+    const orbCanvas = document.getElementById("orbCanvas");
     const clockOverlay = document.getElementById("clockOverlay");
     const oaiOverlay = document.getElementById("oaiOverlay");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const morphTargets = {
+        device: "#deviceTime",
+        world: ".clock-world-card",
+        timer: ".clock-timer-visual",
+        stopwatch: ".clock-stopwatch-display",
+        range: ".range-summary",
+        oai: ".oai-welcome-symbol"
+    };
+
+    const rotationByWorkspace = {
+        device: 155,
+        world: 245,
+        timer: 225,
+        stopwatch: 145,
+        range: 90,
+        oai: -110
+    };
 
     let transitionTimer = null;
-    let switchTimer = null;
+    let returnFocusTo = null;
+    let runningAnimations = [];
+    let activeTransitionId = 0;
 
-    function clearTimers() {
+    function setActiveOverlay(workspace) {
+        const isOai = workspace === "oai";
+        clockOverlay.classList.toggle("open", !isOai);
+        oaiOverlay.classList.toggle("open", isOai);
+        clockOverlay.setAttribute("aria-hidden", String(isOai));
+        oaiOverlay.setAttribute("aria-hidden", String(!isOai));
+    }
+
+    function focusWorkspace(workspace) {
+        const target = workspace === "oai"
+            ? document.getElementById("oaiInput")
+            : document.getElementById("clockClose");
+        target?.focus({ preventScroll: true });
+    }
+
+    function clearTransitionTimer() {
         if (transitionTimer !== null) {
             clearTimeout(transitionTimer);
             transitionTimer = null;
         }
+    }
 
-        if (switchTimer !== null) {
-            clearTimeout(switchTimer);
-            switchTimer = null;
-        }
+    function cancelRunningAnimations() {
+        runningAnimations.forEach(animation => {
+            try { animation.cancel(); } catch (_) {}
+        });
+        runningAnimations = [];
+    }
+
+    function trackAnimation(animation) {
+        if (animation) runningAnimations.push(animation);
+        return animation;
     }
 
     function workspaceIsOpen() {
@@ -5629,82 +6475,297 @@ input[type="color"] {
     function revealOrb() {
         app.classList.add("launched");
         experience.classList.add("active");
-
+        window.KDevOrb?.start();
         window.dispatchEvent(new Event("resize"));
-
-        requestAnimationFrame(() => {
-            window.dispatchEvent(new Event("resize"));
-        });
     }
 
-    function openWorkspace(workspace) {
-        if (!workspace) return;
+    function activeSurface(workspace) {
+        return workspace === "oai" ? oaiOverlay : clockOverlay;
+    }
 
-        clearTimers();
+    function activePanel(workspace) {
+        return workspace === "oai"
+            ? document.querySelector("#oaiOverlay .oai-welcome")
+            : clockOverlay.querySelector(`.clock-tool[data-clock-panel="${workspace}"]`);
+    }
+
+    function getMorphGeometry(workspace) {
+        const selector = morphTargets[workspace];
+        const target = selector ? document.querySelector(selector) : null;
+        if (!target) return null;
+
+        const rect = target.getBoundingClientRect();
+        const orbWidth = orbCanvas.offsetWidth || orbCanvas.clientWidth || 1;
+        const orbHeight = orbCanvas.offsetHeight || orbCanvas.clientHeight || 1;
+        if (!rect.width || !rect.height || !orbWidth || !orbHeight) return null;
+
+        const dx = rect.left + rect.width / 2 - window.innerWidth / 2;
+        const dy = rect.top + rect.height / 2 - window.innerHeight / 2;
+        const scale = Math.max(.075, Math.min(rect.width / orbWidth, rect.height / orbHeight) * 1.04);
+        const angle = rotationByWorkspace[workspace] || 160;
+
+        const center = "translate(-50%, -50%) scale(1) rotate(0deg)";
+        const destination = `translate(calc(-50% + ${dx.toFixed(2)}px), calc(-50% + ${dy.toFixed(2)}px)) scale(${scale.toFixed(4)}) rotate(${angle}deg)`;
+        const middleScale = Math.max(scale, .28) * .92 + .08;
+        const middle = `translate(calc(-50% + ${(dx * .56).toFixed(2)}px), calc(-50% + ${(dy * .56).toFixed(2)}px)) scale(${middleScale.toFixed(4)}) rotate(${(angle * .62).toFixed(1)}deg)`;
+
+        return { target, rect, center, middle, destination, scale, angle };
+    }
+
+    function animateUIIn(workspace, target) {
+        const surface = activeSurface(workspace);
+        const header = workspace === "oai"
+            ? surface.querySelector(".oai-header")
+            : surface.querySelector(".clock-window-header");
+
+        if (header) {
+            trackAnimation(header.animate([
+                { opacity: 0, transform: "translateY(-14px)" },
+                { opacity: 1, transform: "translateY(0)" }
+            ], {
+                duration: 650,
+                delay: 280,
+                easing: "cubic-bezier(.16,1,.3,1)",
+                fill: "both"
+            }));
+        }
+
+        let extras = [];
+        if (workspace === "oai") {
+            extras = [
+                surface.querySelector(".oai-status-row"),
+                surface.querySelector(".oai-welcome h3"),
+                surface.querySelector(".oai-welcome p"),
+                surface.querySelector(".oai-composer-wrap")
+            ].filter(Boolean);
+        } else {
+            extras = [...(activePanel(workspace)?.children || [])].filter(element => element !== target);
+        }
+
+        extras.forEach((element, index) => {
+            trackAnimation(element.animate([
+                { opacity: 0, transform: "translateY(18px) scale(.985)" },
+                { opacity: 1, transform: "translateY(-2px) scale(1.003)", offset: .78 },
+                { opacity: 1, transform: "translateY(0) scale(1)" }
+            ], {
+                duration: 620,
+                delay: 390 + index * 95,
+                easing: "cubic-bezier(.16,1,.3,1)",
+                fill: "both"
+            }));
+        });
+
+        if (target) {
+            trackAnimation(target.animate([
+                { opacity: 0, transform: "scale(.72) rotate(-12deg)" },
+                { opacity: 1, transform: "scale(1.055) rotate(3deg)", offset: .76 },
+                { opacity: 1, transform: "scale(1) rotate(0deg)" }
+            ], {
+                duration: 660,
+                delay: 700,
+                easing: "cubic-bezier(.16,1,.3,1)",
+                fill: "both"
+            }));
+
+            if (workspace === "timer") {
+                const track = target.querySelector(".clock-timer-track");
+                if (track) {
+                    track.style.strokeDasharray = "326.73";
+                    track.style.strokeDashoffset = "326.73";
+                    track.style.opacity = "0";
+                    const ringAnimation = track.animate([
+                        { strokeDashoffset: "326.73", opacity: 0 },
+                        { strokeDashoffset: "0", opacity: 1 }
+                    ], {
+                        duration: 520,
+                        delay: 740,
+                        easing: "cubic-bezier(.16,1,.3,1)",
+                        fill: "both"
+                    });
+                    trackAnimation(ringAnimation);
+                }
+            }
+        }
+    }
+
+    function playMorphIn(workspace, transitionId) {
+        const geometry = getMorphGeometry(workspace);
+        if (!geometry) {
+            app.classList.remove("workspace-morphing");
+            app.classList.remove("workspace-opening");
+            return;
+        }
+
+        const { target, center, middle, destination, scale, angle } = geometry;
+        const surface = activeSurface(workspace);
+
+        trackAnimation(surface.animate([
+            { opacity: .12 },
+            { opacity: .76, offset: .52 },
+            { opacity: 1 }
+        ], {
+            duration: 850,
+            easing: "cubic-bezier(.22,.7,.25,1)",
+            fill: "both"
+        }));
+
+        const orbAnimation = trackAnimation(orbCanvas.animate([
+            { offset: 0, transform: center, opacity: 1 },
+            { offset: .38, transform: middle, opacity: 1, easing: "cubic-bezier(.2,.75,.25,1)" },
+            { offset: .78, transform: destination, opacity: .96, easing: "cubic-bezier(.16,1,.3,1)" },
+            { offset: 1, transform: destination, opacity: 0 }
+        ], {
+            duration: 1450,
+            easing: "cubic-bezier(.16,1,.3,1)",
+            fill: "both"
+        }));
+
+        animateUIIn(workspace, target);
+
+        orbAnimation.finished.then(() => {
+            if (transitionId !== activeTransitionId) return;
+            if (workspace === "timer") {
+                const ring = target?.querySelector(".clock-timer-track");
+                if (ring) {
+                    ring.style.strokeDasharray = "326.73";
+                    ring.style.strokeDashoffset = "0";
+                    ring.style.opacity = "1";
+                }
+            }
+            cancelRunningAnimations();
+            app.classList.remove("workspace-morphing", "workspace-opening", "workspace-switching");
+        }).catch(() => {});
+    }
+
+    function playMorphOut(workspace, transitionId) {
+        const geometry = getMorphGeometry(workspace);
+        const surface = activeSurface(workspace);
+        if (!geometry) {
+            finishClose(workspace);
+            return;
+        }
+
+        const { target, center, middle, destination } = geometry;
+
+        trackAnimation(surface.animate([
+            { opacity: 1 },
+            { opacity: .72, offset: .34 },
+            { opacity: 0 }
+        ], {
+            duration: 980,
+            easing: "cubic-bezier(.7,0,.3,1)",
+            fill: "both"
+        }));
+
+        if (target) {
+            trackAnimation(target.animate([
+                { opacity: 1, transform: "scale(1) rotate(0deg)" },
+                { opacity: .25, transform: "scale(.76) rotate(-8deg)" },
+                { opacity: 0, transform: "scale(.5) rotate(-14deg)" }
+            ], {
+                duration: 540,
+                easing: "cubic-bezier(.7,0,.3,1)",
+                fill: "both"
+            }));
+        }
+
+        const orbAnimation = trackAnimation(orbCanvas.animate([
+            { offset: 0, transform: destination, opacity: 0 },
+            { offset: .2, transform: destination, opacity: .92 },
+            { offset: .62, transform: middle, opacity: 1, easing: "cubic-bezier(.2,.75,.25,1)" },
+            { offset: 1, transform: center, opacity: 1 }
+        ], {
+            duration: 1240,
+            easing: "cubic-bezier(.16,1,.3,1)",
+            fill: "both"
+        }));
+
+        orbAnimation.finished.then(() => {
+            if (transitionId !== activeTransitionId) return;
+            cancelRunningAnimations();
+            finishClose(workspace);
+        }).catch(() => {});
+    }
+
+    function finishClose(workspace) {
+        cancelRunningAnimations();
+        clockOverlay.classList.remove("open");
+        oaiOverlay.classList.remove("open");
+        clockOverlay.setAttribute("aria-hidden", "true");
+        oaiOverlay.setAttribute("aria-hidden", "true");
+        app.classList.remove(
+            "workspace-open",
+            "workspace-opening",
+            "workspace-switching",
+            "workspace-closing",
+            "workspace-morphing"
+        );
+        delete app.dataset.workspace;
+
+        if (returnFocusTo?.isConnected) {
+            returnFocusTo.focus({ preventScroll: true });
+        }
+        returnFocusTo = null;
+    }
+
+    function openWorkspace(workspace, trigger = document.activeElement) {
+        if (!morphTargets[workspace]) return;
+        if (workspaceIsOpen() && app.dataset.workspace === workspace && !app.classList.contains("workspace-closing")) {
+            focusWorkspace(workspace);
+            return;
+        }
+
+        if (trigger instanceof HTMLElement && trigger !== document.body) {
+            returnFocusTo = trigger;
+        }
+
+        clearTransitionTimer();
+        activeTransitionId++;
+        cancelRunningAnimations();
+        app.classList.remove("workspace-closing", "workspace-morphing", "workspace-opening", "workspace-switching");
+
         revealOrb();
-
-        /*
-         * Switching from a tool already on screen should animate only its
-         * content; do not replay the whole-screen transition.
-         */
-        if (workspaceIsOpen() && app.dataset.workspace !== workspace) {
-            app.classList.remove("workspace-opening", "workspace-closing");
-            app.classList.add("workspace-switching");
-            app.dataset.workspace = workspace;
-
-            switchTimer = window.setTimeout(() => {
-                app.classList.remove("workspace-switching");
-                switchTimer = null;
-            }, 1000);
-
-            return;
-        }
-
-        if (workspaceIsOpen() && app.dataset.workspace === workspace) {
-            app.classList.remove("workspace-closing");
-            return;
-        }
-
-        app.classList.remove("workspace-closing", "workspace-switching");
+        setActiveOverlay(workspace);
         app.dataset.workspace = workspace;
-
-        /*
-         * Force the browser to resolve the initial state before starting
-         * an animation. This helps avoid a static flash on first opening.
-         */
+        app.classList.add("workspace-open");
+        if (!reducedMotion.matches) {
+            app.classList.add("workspace-opening", "workspace-morphing");
+        }
         void app.offsetWidth;
 
-        app.classList.add("workspace-open", "workspace-opening");
+        requestAnimationFrame(() => {
+            if (app.dataset.workspace !== workspace || !app.classList.contains("workspace-open")) return;
+            if (!reducedMotion.matches) playMorphIn(workspace, activeTransitionId);
+            focusWorkspace(workspace);
+        });
 
-        transitionTimer = window.setTimeout(() => {
-            app.classList.remove("workspace-opening");
-            transitionTimer = null;
-        }, 1400);
+        if (!reducedMotion.matches) {
+            clearTransitionTimer();
+            transitionTimer = window.setTimeout(() => {
+                app.classList.remove("workspace-opening");
+                transitionTimer = null;
+            }, 1500);
+        }
     }
 
     function closeWorkspace() {
-        if (!workspaceIsOpen() && !app.classList.contains("workspace-opening")) {
+        if (!workspaceIsOpen() || app.classList.contains("workspace-closing")) return;
+        const workspace = app.dataset.workspace;
+        if (!workspace) return;
+
+        clearTransitionTimer();
+        activeTransitionId++;
+        const transitionId = activeTransitionId;
+        cancelRunningAnimations();
+
+        if (reducedMotion.matches) {
+            finishClose(workspace);
             return;
         }
 
-        clearTimers();
-
-        const currentWorkspace = app.dataset.workspace;
-        if (!currentWorkspace) return;
-
         app.classList.remove("workspace-opening", "workspace-switching");
-        app.classList.add("workspace-closing");
-        app.classList.remove("workspace-open");
-
-        /*
-         * Keep data-workspace through the exit animation, so its matching
-         * closing animation and the proper orb transform remain active.
-         */
-        transitionTimer = window.setTimeout(() => {
-            app.classList.remove("workspace-closing");
-            delete app.dataset.workspace;
-            transitionTimer = null;
-        }, 1500);
+        app.classList.add("workspace-closing", "workspace-morphing");
+        playMorphOut(workspace, transitionId);
     }
 
     window.KDevWorkspace = {
@@ -5715,23 +6776,19 @@ input[type="color"] {
         }
     };
 
-    /* Open CLOCK tools with their own distinct transition. */
     document.querySelectorAll("[data-clock-tool]").forEach(button => {
         button.addEventListener("click", () => {
-            openWorkspace(button.dataset.clockTool);
+            openWorkspace(button.dataset.clockTool, button);
         });
     });
 
-    /* Open OAi workspace. */
-    document.getElementById("openOaiChat").addEventListener("click", () => {
-        openWorkspace("oai");
+    document.getElementById("openOaiChat").addEventListener("click", event => {
+        openWorkspace("oai", event.currentTarget);
     });
 
-    /* Close controls. The existing handlers also remove the .open class. */
     document.getElementById("clockClose").addEventListener("click", closeWorkspace);
     document.getElementById("oaiClose").addEventListener("click", closeWorkspace);
 
-    /* Clicking outside the content closes the corresponding workspace. */
     clockOverlay.addEventListener("click", event => {
         if (event.target === clockOverlay) closeWorkspace();
     });
@@ -5740,10 +6797,33 @@ input[type="color"] {
         if (event.target === oaiOverlay) closeWorkspace();
     });
 
-    /* Escape closes the workspace, not the underlying Orb experience. */
     window.addEventListener("keydown", event => {
         if (event.key === "Escape" && workspaceIsOpen()) {
             closeWorkspace();
+            return;
+        }
+
+        if (event.key !== "Tab" || !workspaceIsOpen()) return;
+
+        const activeOverlay = app.dataset.workspace === "oai" ? oaiOverlay : clockOverlay;
+        const focusable = [...activeOverlay.querySelectorAll(
+            'button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])'
+        )].filter(element => element.getClientRects().length && !element.closest('[aria-hidden="true"]'));
+
+        if (!focusable.length) {
+            event.preventDefault();
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
         }
     });
 })();
