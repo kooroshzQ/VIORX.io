@@ -4408,6 +4408,9 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     let width = 1;
     let height = 1;
     let dpr = 1;
+    let orbDpr = 1;
+    let lastOrbFrame = 0;
+    const orbFrameInterval = 1000 / 50;
 
     function setColor(hex) {
         const clean = hex.replace("#", "");
@@ -4516,12 +4519,18 @@ button:active:not(:disabled) { filter: brightness(1.08); }
         width = Math.max(1, rect.width);
         height = Math.max(1, rect.height);
         const isSmallScreen = window.matchMedia("(max-width: 600px)").matches;
-        dpr = Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.35 : 1.65);
+        const deviceDpr = window.devicePixelRatio || 1;
+
+        // The ambient layer is deliberately low-resolution: its gradients are soft by design.
+        dpr = Math.min(deviceDpr, 1.0);
+
+        // Keep the Orb's full CSS size and shader intact while avoiding excessive backing pixels.
+        orbDpr = Math.min(deviceDpr, isSmallScreen ? 1.2 : 1.35);
 
         const ambientWidth = Math.max(1, Math.round(width * dpr));
         const ambientHeight = Math.max(1, Math.round(height * dpr));
-        const orbWidth = Math.max(1, Math.round((orbCanvas.clientWidth || orbCanvas.offsetWidth || 1) * dpr));
-        const orbHeight = Math.max(1, Math.round((orbCanvas.clientHeight || orbCanvas.offsetHeight || 1) * dpr));
+        const orbWidth = Math.max(1, Math.round((orbCanvas.clientWidth || orbCanvas.offsetWidth || 1) * orbDpr));
+        const orbHeight = Math.max(1, Math.round((orbCanvas.clientHeight || orbCanvas.offsetHeight || 1) * orbDpr));
 
         if (ambientCanvas.width !== ambientWidth) ambientCanvas.width = ambientWidth;
         if (ambientCanvas.height !== ambientHeight) ambientCanvas.height = ambientHeight;
@@ -4558,7 +4567,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
             return;
         }
 
-        const frameInterval = 1000 / 30;
+        const frameInterval = 1000 / 24;
         if (!prefersReducedMotion && time - lastAmbientFrame < frameInterval) {
             ambientRaf = requestAnimationFrame(drawAmbient);
             return;
@@ -4663,7 +4672,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     /* Original WebGL Orb shader */
     gl = orbCanvas.getContext("webgl", {
         alpha: true,
-        antialias: true,
+        antialias: false,
         premultipliedAlpha: false
     });
 
@@ -4851,6 +4860,8 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     }
 
     gl.useProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
 
     const vertices = new Float32Array([
         -1, -1, 1, -1, -1, 1,
@@ -4880,9 +4891,15 @@ button:active:not(:disabled) { filter: brightness(1.08); }
             return;
         }
 
-        gl.viewport(0, 0, orbCanvas.width, orbCanvas.height);
+        // Cap shader execution at 50 FPS instead of running a costly fragment shader
+        // on every display refresh. The Orb's geometry, colors and shader are unchanged.
+        if (lastOrbFrame && time - lastOrbFrame < orbFrameInterval) {
+            orbRaf = requestAnimationFrame(render);
+            return;
+        }
+        lastOrbFrame = time;
+
         gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.useProgram(program);
 
         gl.uniform2f(resolutionLocation, orbCanvas.width, orbCanvas.height);
         gl.uniform1f(timeLocation, prefersReducedMotion ? 0 : time * .001);
@@ -4903,6 +4920,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
 
         animationActive = true;
         lastAmbientFrame = 0;
+        lastOrbFrame = 0;
         ambientHasDrawn = false;
         resize();
         ambientRaf = requestAnimationFrame(drawAmbient);
