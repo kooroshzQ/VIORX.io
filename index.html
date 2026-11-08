@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050407">
-<title>K-dev 0.2</title>
+<title>K-dev 0.3</title>
+<link id="site-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cdefs%3E%3CradialGradient id=%27g%27 cx=%2738%25%27 cy=%2732%25%27 r=%2765%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ffffff%27/%3E%3Cstop offset=%2718%25%27 stop-color=%27%23d9c8ff%27/%3E%3Cstop offset=%2748%25%27 stop-color=%27%237c3cff%27/%3E%3Cstop offset=%2780%25%27 stop-color=%27%232c126f%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%23080512%27/%3E%3C/radialGradient%3E%3CradialGradient id=%27h%27%3E%3Cstop stop-color=%27%237c3cff%27 stop-opacity=%27.65%27/%3E%3Cstop offset=%271%27 stop-color=%27%237c3cff%27 stop-opacity=%270%27/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2731%27 fill=%27url(%23h)%27/%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2721%27 fill=%27url(%23g)%27/%3E%3C/svg%3E">
 
 <style>
 :root {
@@ -24,7 +25,7 @@ html, body {
     overflow: hidden;
     background: var(--bg);
     color: var(--text);
-    font-family: Inter, "Segoe UI", sans-serif;
+    font-family: "Alloy Body Text Font", "Alloy Body Text", Alloy, Inter, "Segoe UI", sans-serif;
 }
 
 button, input, select, textarea { font: inherit; }
@@ -576,6 +577,15 @@ input[type="color"] {
     box-shadow: 0 0 10px rgba(var(--orb-color), .8);
 }
 
+/* Piston Black — use the locally installed font when available. */
+@font-face {
+    font-family: "Piston Black";
+    src: local("Piston Black"), local("PistonBlackRegular"), local("Piston-Black");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
 /* LANDING */
 
 .intro {
@@ -592,10 +602,11 @@ input[type="color"] {
 
 .intro h1 {
     direction: ltr;
-    font-size: clamp(29px, 5vw, 48px);
-    font-weight: 500;
-    letter-spacing: -1.8px;
-    line-height: 1.1;
+    font-family: "Piston Black", "PistonBlack", "Old English Text MT", Georgia, serif;
+    font-size: clamp(31px, 5.2vw, 51px);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.18;
 }
 
 .intro h1 span {
@@ -610,6 +621,26 @@ input[type="color"] {
     font-size: 12px;
     line-height: 2;
 }
+
+.developer-credit {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    color: rgba(225, 216, 242, .34);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 2.1px;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+.developer-credit span {
+    color: rgba(var(--orb-color), .9);
+    text-shadow: 0 0 14px rgba(var(--orb-color), .28);
+}
+.app.launched .developer-credit { opacity: 0; visibility: hidden; }
 
 .launch-button {
     position: absolute;
@@ -1039,7 +1070,7 @@ input[type="color"] {
 
 .range-visual text {
     fill: #bcb4cb;
-    font-family: Inter, "Segoe UI", sans-serif;
+    font-family: "Alloy Body Text Font", "Alloy Body Text", Alloy, Inter, "Segoe UI", sans-serif;
     font-size: 9px;
 }
 
@@ -3886,7 +3917,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
 
 
 /* =========================================================
-   K-DEV 0.2 — SHARED ORB / WORKSPACE TRANSITIONS
+   K-DEV 0.3 — SHARED ORB / WORKSPACE TRANSITIONS
    The original orb travels into the exact visual anchor of each tool.
    ========================================================= */
 #app.workspace-morphing .experience {
@@ -3961,6 +3992,94 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     }
 }
 
+
+
+/* =========================================================
+   K-CALC — exact fractions, scientific tools and tactile keys
+   ========================================================= */
+.calc-tool.active {
+    width: min(100%, 820px);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 0 24px;
+}
+.calc-shell {
+    width: min(100%, 690px);
+    margin: 0 auto;
+    padding: clamp(14px, 2.3vw, 24px);
+    border: 1px solid rgba(255,255,255,.105);
+    border-radius: 26px;
+    background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.012) 48%, rgba(var(--orb-color),.045));
+    box-shadow: 0 24px 80px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07), 0 0 50px rgba(var(--orb-color),.055);
+    backdrop-filter: blur(26px) saturate(145%);
+    -webkit-backdrop-filter: blur(26px) saturate(145%);
+    text-align: left;
+}
+.calc-topline { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+.calc-mode-switch { display:flex; gap:4px; padding:4px; border:1px solid rgba(255,255,255,.075); border-radius:13px; background:rgba(0,0,0,.19); }
+.calc-mode, .calc-history-toggle { border:0; color:rgba(238,233,248,.62); background:transparent; cursor:pointer; }
+.calc-mode { padding:8px 13px; border-radius:9px; font-size:11px; transition:background .25s ease,color .25s ease, transform .25s ease; }
+.calc-mode.active { color:#fff; background:rgba(var(--orb-color),.22); box-shadow:inset 0 0 0 1px rgba(var(--orb-color),.25), 0 3px 14px rgba(var(--orb-color),.12); }
+.calc-history-toggle { padding:8px 10px; font-size:11px; border-radius:10px; transition:background .2s ease,color .2s ease; }
+.calc-history-toggle:hover { color:#fff; background:rgba(255,255,255,.07); }
+.calc-history-toggle span { margin-right:5px; font-size:16px; vertical-align:-1px; }
+.calc-display-card { min-height:158px; padding:18px 19px 15px; border:1px solid rgba(var(--orb-color),.18); border-radius:19px; background:linear-gradient(135deg,rgba(0,0,0,.32),rgba(var(--orb-color),.045)); box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 12px 35px rgba(0,0,0,.13); overflow:hidden; }
+.calc-expression-label,.calc-result-label { display:block; color:rgba(225,216,242,.42); font-size:9px; letter-spacing:1.8px; font-weight:650; }
+.calc-expression { display:block; width:100%; margin:10px 0 16px; padding:0; border:0; outline:0; background:transparent; color:rgba(244,239,255,.8); font:500 clamp(17px,3vw,23px)/1.4 ui-monospace,SFMono-Regular,Consolas,monospace; text-align:right; letter-spacing:.01em; }
+.calc-expression::placeholder { color:rgba(225,216,242,.2); }
+.calc-result-row { display:flex; justify-content:space-between; align-items:flex-end; gap:15px; min-height:40px; }
+.calc-result-label { padding-bottom:5px; }
+.calc-result { display:flex; align-items:center; justify-content:flex-end; min-width:0; color:#fff; font-size:clamp(25px,5vw,39px); font-weight:560; line-height:1.1; letter-spacing:-1.3px; text-align:right; text-shadow:0 0 28px rgba(var(--orb-color),.22); overflow-wrap:anywhere; transition:opacity .16s ease,transform .22s cubic-bezier(.16,1,.3,1); }
+.calc-result.is-updating { opacity:.42; transform:translateY(3px); }
+.calc-result.error { color:#ff9caa; font-size:17px; letter-spacing:0; }
+.calc-result-meta { min-height:15px; margin-top:9px; color:rgba(225,216,242,.39); font-size:10px; text-align:right; }
+.calc-result-fraction { display:inline-flex; flex-direction:column; align-items:stretch; min-width:22px; max-width:100%; font:600 .82em/1.05 ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:0; text-align:center; vertical-align:middle; }
+.calc-result-fraction .calc-frac-top { padding:0 5px 4px; border-bottom:1.5px solid rgba(255,255,255,.78); }
+.calc-result-fraction .calc-frac-bottom { padding:4px 5px 0; }
+.calc-history { margin:12px 0 0; padding:13px 14px; border:1px solid rgba(255,255,255,.075); border-radius:15px; background:rgba(0,0,0,.18); animation:calcPanelIn .3s cubic-bezier(.16,1,.3,1) both; }
+.calc-history[hidden],.calc-scientific-keys[hidden] { display:none !important; }
+.calc-history-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; color:rgba(225,216,242,.45); font-size:9px; letter-spacing:1.5px; }
+.calc-history-head button { border:0; background:transparent; color:rgba(var(--orb-color),.9); font-size:10px; cursor:pointer; }
+.calc-history-list { display:grid; gap:5px; max-height:150px; overflow:auto; }
+.calc-history-entry { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; padding:8px 9px; border:0; border-radius:9px; color:rgba(244,239,255,.68); background:rgba(255,255,255,.035); text-align:left; cursor:pointer; transition:background .2s ease,color .2s ease; }
+.calc-history-entry:hover { color:#fff; background:rgba(var(--orb-color),.12); }
+.calc-history-entry span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:11px ui-monospace,monospace; }
+.calc-history-entry span:last-child { flex:0 0 auto; color:#fff; font-size:11px; }
+.calc-history-empty { padding:10px 0; color:rgba(225,216,242,.3); font-size:11px; text-align:center; }
+.calc-memory-row { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; margin-top:12px; }
+.calc-memory-row button { min-height:30px; border:1px solid rgba(255,255,255,.055); border-radius:9px; color:rgba(225,216,242,.47); background:rgba(255,255,255,.025); font-size:9px; letter-spacing:.7px; cursor:pointer; transition:background .2s ease,color .2s ease,border-color .2s ease; }
+.calc-memory-row button:hover { color:#fff; border-color:rgba(var(--orb-color),.28); background:rgba(var(--orb-color),.1); }
+.calc-keypad { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:9px; margin-top:9px; }
+.calc-key { position:relative; display:grid; place-items:center; min-width:0; min-height:clamp(45px,6.1vw,59px); border:1px solid rgba(255,255,255,.075); border-radius:14px; color:rgba(249,246,255,.91); background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)); box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 4px 12px rgba(0,0,0,.12); font-size:clamp(14px,2.1vw,18px); font-weight:520; cursor:pointer; user-select:none; transition:transform .22s cubic-bezier(.16,1,.3,1),background .2s ease,border-color .2s ease,box-shadow .2s ease; }
+.calc-key:hover { transform:translateY(-2px); border-color:rgba(var(--orb-color),.34); background:linear-gradient(145deg,rgba(var(--orb-color),.18),rgba(255,255,255,.035)); box-shadow:0 7px 18px rgba(var(--orb-color),.09); }
+.calc-key:active { transform:scale(.96); }
+.calc-key.utility { color:rgba(225,216,242,.75); background:rgba(255,255,255,.045); }
+.calc-key.operator { color:rgba(var(--orb-color),1); background:rgba(var(--orb-color),.09); border-color:rgba(var(--orb-color),.13); }
+.calc-key.fraction-key { color:#e8dfff; background:linear-gradient(145deg,rgba(var(--orb-color),.2),rgba(var(--orb-color),.07)); border-color:rgba(var(--orb-color),.24); font-size:15px; }
+.calc-key.equals { color:#fff; border-color:rgba(var(--orb-color),.45); background:linear-gradient(145deg,rgba(var(--orb-color),.9),rgba(var(--orb-color),.55)); box-shadow:0 5px 20px rgba(var(--orb-color),.2),inset 0 1px 0 rgba(255,255,255,.25); }
+.calc-scientific-keys { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; margin-top:9px; animation:calcPanelIn .28s cubic-bezier(.16,1,.3,1) both; }
+.calc-scientific-keys .calc-key { min-height:39px; border-radius:11px; font-size:12px; color:rgba(224,210,255,.88); }
+.calc-footnote { display:flex; align-items:center; justify-content:center; gap:7px; margin-top:15px; color:rgba(225,216,242,.32); font-size:9px; letter-spacing:.3px; }
+.calc-live-dot { width:5px; height:5px; border-radius:50%; background:#9b77ff; box-shadow:0 0 9px rgba(var(--orb-color),.8); }
+@keyframes calcPanelIn { from {opacity:0;transform:translateY(7px)} to {opacity:1;transform:translateY(0)} }
+#app.workspace-opening[data-workspace="calculator"] .calc-display-card { animation:timerControlsIn .82s .12s cubic-bezier(.2,.8,.2,1) both; }
+#app.workspace-opening[data-workspace="calculator"] .calc-keypad { animation:calcPanelIn .65s .23s cubic-bezier(.16,1,.3,1) both; }
+#app.workspace-opening[data-workspace="calculator"] .calc-topline { animation:kdevSublineIn .62s .15s var(--motion-spring) both; }
+#app.workspace-switching[data-workspace="calculator"] .calc-display-card { animation:calcPanelIn .55s cubic-bezier(.16,1,.3,1) both; }
+@media(max-width:600px) {
+    .calc-shell { padding:12px; border-radius:20px; }
+    .calc-keypad { gap:6px; margin-top:11px; }
+    .calc-key { min-height:48px; border-radius:11px; }
+    .calc-display-card { padding:15px 14px 12px; }
+    .calc-mode { padding:8px 10px; }
+    .calc-scientific-keys { gap:6px; }
+    .calc-scientific-keys .calc-key { min-height:37px; }
+}
+@media(prefers-reduced-motion:reduce) { .calc-history,.calc-scientific-keys { animation:none !important; } }
+
 </style>
 </head>
 
@@ -3971,8 +4090,8 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     <header class="topbar">
         <div class="brand">
             <span class="brand-mark"></span>
-            <span>K-DEV 2</span>
-            <span class="version">ORB 0.2</span>
+            <span>K-DEV 3</span>
+            <span class="version">ORB 0.3</span>
         </div>
 
         <nav class="nav-categories" aria-label="Main categories">
@@ -4069,6 +4188,14 @@ button:active:not(:disabled) { filter: brightness(1.08); }
                                 </svg>
                                 <span class="category-item-label">Range / Progress</span>
                             </button>
+
+                            <button class="category-item" type="button" data-clock-tool="calculator">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="4" y="2.5" width="16" height="19" rx="3"></rect>
+                                    <path d="M7.5 6.5h9M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01"></path>
+                                </svg>
+                                <span class="category-item-label">K-Calc</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -4104,6 +4231,8 @@ button:active:not(:disabled) { filter: brightness(1.08); }
         <h1>Beyond <span>Light.</span></h1>
         <p>A little universe, suspended in darkness.</p>
     </div>
+
+    <div class="developer-credit">DEVELOPED BY <span>SYNTAXDEV</span></div>
 
     <button class="launch-button" id="launchButton" type="button">
         <span class="launch-icon">✧</span>
@@ -4321,6 +4450,83 @@ button:active:not(:disabled) { filter: brightness(1.08); }
                     <div class="range-note" id="rangeNote" aria-live="polite">Gradient bar — progress between your minimum and maximum.</div>
                     <button class="range-reset" id="rangeReset" type="button">Reset to 0–100</button>
                 </section>
+
+                <section class="clock-tool calc-tool" data-clock-panel="calculator">
+                    <div class="clock-eyebrow">K-DEV CALCULATION ENGINE</div>
+                    <div class="calc-shell">
+                        <div class="calc-topline">
+                            <div class="calc-mode-switch" role="group" aria-label="Calculator mode">
+                                <button class="calc-mode active" type="button" data-calc-mode="standard">Standard</button>
+                                <button class="calc-mode" type="button" data-calc-mode="scientific">Scientific</button>
+                            </div>
+                            <button class="calc-history-toggle" id="calcHistoryToggle" type="button" aria-expanded="false"><span>↶</span> History</button>
+                        </div>
+                        <div class="calc-display-card">
+                            <label class="calc-expression-label" for="calcExpression">EXPRESSION</label>
+                            <input class="calc-expression" id="calcExpression" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="Start calculating…" aria-label="Calculation expression">
+                            <div class="calc-result-row">
+                                <span class="calc-result-label">RESULT</span>
+                                <div class="calc-result" id="calcResult" aria-live="polite">0</div>
+                            </div>
+                            <div class="calc-result-meta" id="calcResultMeta">Ready</div>
+                        </div>
+                        <div class="calc-history" id="calcHistory" hidden>
+                            <div class="calc-history-head"><span>RECENT CALCULATIONS</span><button id="calcClearHistory" type="button">Clear</button></div>
+                            <div class="calc-history-list" id="calcHistoryList"><div class="calc-history-empty">Your calculations will appear here.</div></div>
+                        </div>
+                        <div class="calc-memory-row" aria-label="Calculator memory">
+                            <button type="button" data-calc-memory="clear">MC</button>
+                            <button type="button" data-calc-memory="recall">MR</button>
+                            <button type="button" data-calc-memory="add">M+</button>
+                            <button type="button" data-calc-memory="subtract">M−</button>
+                            <button type="button" id="calcAngleMode">DEG</button>
+                        </div>
+                        <div class="calc-keypad" id="calcKeypad">
+                            <button class="calc-key utility" data-calc-action="clear">AC</button>
+                            <button class="calc-key utility" data-calc-action="backspace" aria-label="Backspace">⌫</button>
+                            <button class="calc-key utility" data-calc-insert="%">%</button>
+                            <button class="calc-key operator" data-calc-insert="÷">÷</button>
+                            <button class="calc-key operator" data-calc-insert="^">xʸ</button>
+
+                            <button class="calc-key" data-calc-insert="7">7</button>
+                            <button class="calc-key" data-calc-insert="8">8</button>
+                            <button class="calc-key" data-calc-insert="9">9</button>
+                            <button class="calc-key operator" data-calc-insert="×">×</button>
+                            <button class="calc-key operator" data-calc-insert="(" >(</button>
+
+                            <button class="calc-key" data-calc-insert="4">4</button>
+                            <button class="calc-key" data-calc-insert="5">5</button>
+                            <button class="calc-key" data-calc-insert="6">6</button>
+                            <button class="calc-key operator" data-calc-insert="−">−</button>
+                            <button class="calc-key operator" data-calc-insert=")">)</button>
+
+                            <button class="calc-key" data-calc-insert="1">1</button>
+                            <button class="calc-key" data-calc-insert="2">2</button>
+                            <button class="calc-key" data-calc-insert="3">3</button>
+                            <button class="calc-key operator" data-calc-insert="+">+</button>
+                            <button class="calc-key fraction-key" data-calc-action="fraction" aria-label="Insert fraction">a⁄b</button>
+
+                            <button class="calc-key utility" data-calc-insert="π">π</button>
+                            <button class="calc-key" data-calc-insert="0">0</button>
+                            <button class="calc-key" data-calc-insert=".">.</button>
+                            <button class="calc-key utility" data-calc-action="sign">±</button>
+                            <button class="calc-key equals" data-calc-action="equals">=</button>
+                        </div>
+                        <div class="calc-scientific-keys" id="calcScientificKeys" hidden>
+                            <button class="calc-key" data-calc-insert="sin(">sin</button>
+                            <button class="calc-key" data-calc-insert="cos(">cos</button>
+                            <button class="calc-key" data-calc-insert="tan(">tan</button>
+                            <button class="calc-key" data-calc-insert="sqrt(">√</button>
+                            <button class="calc-key" data-calc-insert="log(">log</button>
+                            <button class="calc-key" data-calc-insert="ln(">ln</button>
+                            <button class="calc-key" data-calc-insert="abs(">|x|</button>
+                            <button class="calc-key" data-calc-insert="!">n!</button>
+                            <button class="calc-key" data-calc-insert="e">e</button>
+                            <button class="calc-key" data-calc-insert="Ans">Ans</button>
+                        </div>
+                        <div class="calc-footnote"><span class="calc-live-dot"></span> Exact fraction arithmetic · Keyboard supported</div>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
@@ -4401,6 +4607,15 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     });
 
     let rgb = [124, 60, 255];
+    const faviconLink = document.getElementById("site-favicon");
+
+    function updateFavicon(color) {
+        if (!faviconLink) return;
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><radialGradient id="orb" cx="38%" cy="32%" r="68%"><stop offset="0" stop-color="#fff"/><stop offset=".17" stop-color="#eee7ff"/><stop offset=".43" stop-color="${color}"/><stop offset=".78" stop-color="#26104f"/><stop offset="1" stop-color="#080512"/></radialGradient><radialGradient id="glow"><stop stop-color="${color}" stop-opacity=".72"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="32" fill="url(#glow)"/><circle cx="32" cy="32" r="21.5" fill="url(#orb)"/></svg>`;
+        faviconLink.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+    updateFavicon("#7c3cff");
+
     let pointerX = 0;
     let pointerY = 0;
     let targetX = 0;
@@ -4422,6 +4637,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
         ];
 
         document.documentElement.style.setProperty("--orb-color", rgb.join(", "));
+        updateFavicon(hex);
         colorPicker.value = hex;
         hexValue.textContent = hex.toUpperCase();
 
@@ -4956,6 +5172,232 @@ button:active:not(:disabled) { filter: brightness(1.08); }
 })();
 </script>
 
+<!-- K-CALC ENGINE -->
+<script>
+(() => {
+    "use strict";
+    const input = document.getElementById("calcExpression");
+    const result = document.getElementById("calcResult");
+    const meta = document.getElementById("calcResultMeta");
+    const keypad = document.getElementById("calcKeypad");
+    const scientificKeys = document.getElementById("calcScientificKeys");
+    const historyPanel = document.getElementById("calcHistory");
+    const historyList = document.getElementById("calcHistoryList");
+    const history = [];
+    let lastAnswer = null;
+    let lastValue = null;
+    let memoryValue = null;
+    let angleMode = "DEG";
+
+    const gcd = (a, b) => {
+        a = a < 0n ? -a : a; b = b < 0n ? -b : b;
+        while (b) [a, b] = [b, a % b];
+        return a || 1n;
+    };
+    const rat = (n, d=1n) => {
+        if (d === 0n) throw new Error("Division by zero");
+        if (d < 0n) { n = -n; d = -d; }
+        const g = gcd(n, d); return { n:n/g, d:d/g };
+    };
+    // Initialize memory only after the rational-number helper exists.
+    memoryValue = rat(0n);
+    const fromDecimal = value => {
+        if (!Number.isFinite(value)) throw new Error("Undefined result");
+        const str = Number(value).toPrecision(13).replace(/\.?(0+)(e|$)/i, "$2");
+        if (/e/i.test(str)) {
+            const [mant, expText] = str.split("e"); const exp = Number(expText);
+            const base = fromDecimal(Number(mant));
+            return exp >= 0 ? rat(base.n * (10n ** BigInt(exp)), base.d) : rat(base.n, base.d * (10n ** BigInt(-exp)));
+        }
+        const parts = str.split(".");
+        const decimals = (parts[1] || "").length;
+        return rat(BigInt(parts.join("")), 10n ** BigInt(decimals));
+    };
+    const toNumber = a => Number(a.n) / Number(a.d);
+    const add = (a,b) => rat(a.n*b.d+b.n*a.d,a.d*b.d);
+    const sub = (a,b) => rat(a.n*b.d-b.n*a.d,a.d*b.d);
+    const mul = (a,b) => rat(a.n*b.n,a.d*b.d);
+    const div = (a,b) => rat(a.n*b.d,a.d*b.n);
+    const pow = (a,b) => {
+        if (b.d === 1n && b.n >= -1000n && b.n <= 1000n) {
+            const e = Number(b.n); return e >= 0 ? rat(a.n ** BigInt(e),a.d ** BigInt(e)) : rat(a.d ** BigInt(-e),a.n ** BigInt(-e));
+        }
+        return fromDecimal(Math.pow(toNumber(a),toNumber(b)));
+    };
+    const factorial = a => {
+        if (a.d !== 1n || a.n < 0n || a.n > 500n) throw new Error("Factorial needs a whole number from 0 to 500");
+        let out=1n; for(let i=2n;i<=a.n;i++) out*=i; return rat(out);
+    };
+    const isqrt = n => {
+        if (n < 0n) return null; if (n < 2n) return n;
+        let x=n, y=(x+1n)>>1n; while(y<x){x=y;y=(x+n/x)>>1n;} return x;
+    };
+    const sqrtRat = a => {
+        if (a.n < 0n) throw new Error("Square root of a negative number");
+        const n=isqrt(a.n), d=isqrt(a.d);
+        if(n*n===a.n && d*d===a.d) return rat(n,d);
+        return fromDecimal(Math.sqrt(toNumber(a)));
+    };
+
+    function tokenize(source) {
+        const text = source.replace(/[×]/g,"*").replace(/[÷]/g,"/").replace(/[−–]/g,"-").replace(/√/g,"sqrt").replace(/π/g,"pi").replace(/\s+/g,"");
+        const tokens=[]; let i=0;
+        while(i<text.length){
+            const rest=text.slice(i); let m;
+            if((m=rest.match(/^(?:\d+\.\d*|\.\d+|\d+)(?:e[+-]?\d+)?/i))){tokens.push({type:"number",value:m[0]});i+=m[0].length;continue;}
+            if((m=rest.match(/^[a-z]+/i))){tokens.push({type:"name",value:m[0].toLowerCase()});i+=m[0].length;continue;}
+            if("+-*/^()%!,".includes(text[i])){tokens.push({type:text[i],value:text[i]});i++;continue;}
+            throw new Error("Invalid character: "+text[i]);
+        }
+        return tokens;
+    }
+    function parse(source) {
+        const t=tokenize(source); let pos=0;
+        const peek=()=>t[pos]; const take=()=>t[pos++];
+        const startsPrimary=x=>x&&(x.type==="number"||x.type==="name"||x.type==="(");
+        function expression(){let a=term();while(peek()?.type==="+"||peek()?.type==="-"){const op=take().type,b=term();a=op==="+"?add(a,b):sub(a,b);}return a;}
+        function term(){let a=unary();while(true){if(peek()?.type==="*"||peek()?.type==="/"){const op=take().type,b=unary();a=op==="*"?mul(a,b):div(a,b);}else if(startsPrimary(peek())){a=mul(a,unary());}else break;}return a;}
+        function unary(){if(peek()?.type==="+"){take();return unary();}if(peek()?.type==="-"){take();const a=unary();return rat(-a.n,a.d);}return power();}
+        function power(){let a=postfix();if(peek()?.type==="^"){take();a=pow(a,unary());}return a;}
+        function postfix(){let a=primary();while(peek()?.type==="!"||peek()?.type==="%"){const op=take().type;a=op==="!"?factorial(a):div(a,rat(100n));}return a;}
+        function primary(){
+            const x=take(); if(!x) throw new Error("Incomplete expression");
+            if(x.type==="number") return decimalToken(x.value);
+            if(x.type==="("){const a=expression();if(take()?.type!==")")throw new Error("Missing closing parenthesis");return a;}
+            if(x.type==="name"){
+                if(x.value==="pi")return fromDecimal(Math.PI); if(x.value==="e")return fromDecimal(Math.E); if(x.value==="ans")return lastAnswer||rat(0n);
+                if(peek()?.type==="("){
+                    take();const a=expression();if(take()?.type!==")")throw new Error("Missing closing parenthesis");const n=toNumber(a);
+                    switch(x.value){
+                        case "sqrt":return sqrtRat(a); case "abs":return rat(a.n<0n?-a.n:a.n,a.d);
+                        case "sin":return fromDecimal(Math.sin(angleMode==="DEG"?n*Math.PI/180:n));
+                        case "cos":return fromDecimal(Math.cos(angleMode==="DEG"?n*Math.PI/180:n));
+                        case "tan":return fromDecimal(Math.tan(angleMode==="DEG"?n*Math.PI/180:n));
+                        case "log":return fromDecimal(Math.log10(n)); case "ln":return fromDecimal(Math.log(n));
+                        default:throw new Error("Unknown function: "+x.value);
+                    }
+                }
+                throw new Error("Unknown value: "+x.value);
+            }
+            throw new Error("Unexpected symbol");
+        }
+        function decimalToken(str){
+            const [mant,expText]=str.toLowerCase().split("e");const exp=Number(expText||0);const parts=mant.split(".");const digits=(parts[0]+(parts[1]||""));let n=BigInt(digits);const scale=(parts[1]||"").length-exp;
+            return scale>=0?rat(n,10n**BigInt(scale)):rat(n*10n**BigInt(-scale));
+        }
+        if(!t.length) throw new Error("Enter an expression");
+        const value=expression();if(pos<t.length)throw new Error("Unexpected "+t[pos].value);return value;
+    }
+    function formatDecimal(a){
+        const n=toNumber(a); if(!Number.isFinite(n)) return "Error";
+        return n.toLocaleString("en-US",{maximumFractionDigits:10,useGrouping:true});
+    }
+    function formatFraction(a){
+        if(a.d===1n)return a.n.toString();
+        const sign=a.n<0n?"−":"";const n=a.n<0n?-a.n:a.n;
+        const whole=n/a.d, rem=n%a.d;
+        return whole?`${sign}${whole} ${rem}/${a.d}`:`${sign}${n}/${a.d}`;
+    }
+    function renderResult(a){
+        if(a.d===1n){result.textContent=formatDecimal(a);return;}
+        const sign=a.n<0n?"−":"";const n=a.n<0n?-a.n:a.n;const whole=n/a.d;const rem=n%a.d;
+        const wrapper=document.createElement("span");wrapper.className="calc-result-fraction";
+        if(whole){const w=document.createElement("span");w.textContent=sign+whole.toString();w.style.marginRight="7px";wrapper.append(w);}
+        else if(sign){const w=document.createElement("span");w.textContent=sign;w.style.marginRight="3px";wrapper.append(w);}
+        const top=document.createElement("span");top.className="calc-frac-top";top.textContent=(whole?rem:n).toString();
+        const bottom=document.createElement("span");bottom.className="calc-frac-bottom";bottom.textContent=a.d.toString();
+        wrapper.append(top,bottom);result.replaceChildren(wrapper);
+    }
+    function evaluate(showError=false){
+        const source=input.value.trim();
+        if(!source){result.textContent="0";result.classList.remove("error");meta.textContent="Ready";lastValue=null;return null;}
+        try{
+            const value=parse(source);lastValue=value;result.classList.remove("error");renderResult(value);
+            meta.textContent=value.d===1n?"Exact integer · "+formatDecimal(value):"Exact fraction · "+formatFraction(value)+"  |  "+formatDecimal(value);
+            return value;
+        }catch(error){
+            if(showError){result.textContent="Check expression";result.classList.add("error");meta.textContent=error.message;}
+            else {result.textContent="—";result.classList.remove("error");meta.textContent="Enter a valid expression";}
+            lastValue=null;return null;
+        }
+    }
+    function renderHistory(){
+        historyList.replaceChildren();
+        if(!history.length){const empty=document.createElement("div");empty.className="calc-history-empty";empty.textContent="Your calculations will appear here.";historyList.append(empty);return;}
+        history.slice().reverse().forEach(item=>{
+            const button=document.createElement("button");button.type="button";button.className="calc-history-entry";
+            const expr=document.createElement("span");expr.textContent=item.expression;
+            const value=document.createElement("span");value.textContent=item.result;
+            button.append(expr,value);button.addEventListener("click",()=>{input.value=item.expression;input.focus();evaluate();});historyList.append(button);
+        });
+    }
+    function commit(){const value=evaluate(true);if(!value)return;
+        const expression=input.value.trim();const answer=formatFraction(value);
+        lastAnswer=value;history.push({expression,result:answer});if(history.length>15)history.shift();renderHistory();meta.textContent="Saved to history · "+formatDecimal(value);
+    }
+    function insertText(text,caretOffset=null){
+        const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;
+        input.setRangeText(text,start,end,"end");
+        if(caretOffset!==null){const pos=start+caretOffset;input.setSelectionRange(pos,pos);}
+        input.focus();evaluate();
+    }
+    keypad.addEventListener("click",event=>{
+        const button=event.target.closest("button");if(!button)return;
+        if(button.dataset.calcAction){
+            const action=button.dataset.calcAction;
+            if(action==="clear"){input.value="";evaluate();input.focus();}
+            if(action==="backspace"){
+                const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;
+                if(start===end&&start>0)input.setRangeText("",start-1,start,"end");else input.setRangeText("",start,end,"end");
+                input.focus();evaluate();
+            }
+            if(action==="equals")commit();
+            if(action==="fraction")insertText("()/()",1);
+            if(action==="sign"){
+                const start=input.selectionStart??input.value.length;
+                const before=input.value.slice(0,start);const match=before.match(/(?:^|[+\-×÷*/(])\s*(\d*\.?\d+)$/);
+                if(match){const begin=start-match[1].length;input.setRangeText(match[1].startsWith("-")?match[1].slice(1):"-"+match[1],begin,start,"end");evaluate();}
+                else insertText("-");
+            }
+            return;
+        }
+        if(button.dataset.calcInsert)insertText(button.dataset.calcInsert);
+    });
+    scientificKeys.addEventListener("click",event=>{const button=event.target.closest("button[data-calc-insert]");if(button)insertText(button.dataset.calcInsert);});
+    document.querySelectorAll("[data-calc-mode]").forEach(button=>button.addEventListener("click",()=>{
+        const scientific=button.dataset.calcMode==="scientific";
+        document.querySelectorAll("[data-calc-mode]").forEach(b=>b.classList.toggle("active",b===button));
+        scientificKeys.hidden=!scientific;
+    }));
+    input.addEventListener("input",()=>evaluate());
+    input.addEventListener("keydown",event=>{
+        if(event.key==="Enter"){event.preventDefault();commit();}
+        if(event.key==="Escape"){input.value="";evaluate();}
+    });
+    document.getElementById("calcHistoryToggle").addEventListener("click",event=>{
+        const open=historyPanel.hidden;historyPanel.hidden=!open;event.currentTarget.setAttribute("aria-expanded",String(open));
+    });
+    document.getElementById("calcClearHistory").addEventListener("click",()=>{history.length=0;renderHistory();});
+    document.querySelectorAll("[data-calc-memory]").forEach(button=>button.addEventListener("click",()=>{
+        const action=button.dataset.calcMemory;
+        if(action==="clear")memoryValue=rat(0n);
+        if(action==="recall")insertText(memoryValue.d===1n?memoryValue.n.toString():`(${memoryValue.n}/${memoryValue.d})`);
+        if(action==="add"||action==="subtract"){
+            const value=evaluate(true);if(value)memoryValue=action==="add"?add(memoryValue,value):sub(memoryValue,value);
+        }
+        meta.textContent=action==="clear"?"Memory cleared":"Memory · "+formatFraction(memoryValue);
+    }));
+    document.getElementById("calcAngleMode").addEventListener("click",event=>{
+        angleMode=angleMode==="DEG"?"RAD":"DEG";event.currentTarget.textContent=angleMode;
+        meta.textContent="Angle mode · "+angleMode;
+    });
+    document.addEventListener("keydown",event=>{
+        if(event.key==="Enter"&&document.activeElement!==input&&document.querySelector('[data-workspace="calculator"]')&&document.getElementById("app").classList.contains("workspace-open")){event.preventDefault();commit();}
+    });
+    renderHistory();
+})();
+</script>
+
 <!-- CLOCK FUNCTIONALITY -->
 <script>
 (() => {
@@ -4973,7 +5415,8 @@ button:active:not(:disabled) { filter: brightness(1.08); }
         world: { title: "WORLD CLOCK", subtitle: "Explore time in another city" },
         timer: { title: "TIMER", subtitle: "A simple, precise countdown" },
         stopwatch: { title: "STOPWATCH", subtitle: "Measure elapsed time and laps" },
-        range: { title: "RANGE / PROGRESS", subtitle: "Visualize any value within a range" }
+        range: { title: "RANGE / PROGRESS", subtitle: "Visualize any value within a range" },
+        calculator: { title: "K-CALC", subtitle: "Standard, scientific and exact fraction calculations" }
     };
 
     function openClockTool(tool) {
@@ -6435,6 +6878,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
         timer: ".clock-timer-visual",
         stopwatch: ".clock-stopwatch-display",
         range: ".range-summary",
+        calculator: ".calc-display-card",
         oai: ".oai-welcome-symbol"
     };
 
@@ -6444,6 +6888,7 @@ button:active:not(:disabled) { filter: brightness(1.08); }
         timer: 225,
         stopwatch: 145,
         range: 90,
+        calculator: -35,
         oai: -110
     };
 
@@ -6463,7 +6908,9 @@ button:active:not(:disabled) { filter: brightness(1.08); }
     function focusWorkspace(workspace) {
         const target = workspace === "oai"
             ? document.getElementById("oaiInput")
-            : document.getElementById("clockClose");
+            : workspace === "calculator"
+                ? document.getElementById("calcExpression")
+                : document.getElementById("clockClose");
         target?.focus({ preventScroll: true });
     }
 
